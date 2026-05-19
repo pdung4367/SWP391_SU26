@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Bell, Mail, MessageSquare, Search, ChevronDown } from 'lucide-react';
 import Sidebar from '../components/layout/Sidebar';
+import SearchOverlay from '../components/ui/SearchOverlay';
 import { ROUTES } from '../constants';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
   const location = useLocation();
   const isMessagesActive = location.pathname === ROUTES.LANDLORD.MESSAGES;
-  const isRequestsPage = location.pathname === ROUTES.LANDLORD.REQUESTS;
+ const isRequestsPage = location.pathname === ROUTES.LANDLORD.REQUESTS;
+ const [showSearchOverlay, setShowSearchOverlay] = useState(false);
 
   return (
     <div className="admin-layout">
@@ -18,6 +20,7 @@ const AdminLayout = () => {
       {/* Main Content Area */}
       <div className="admin-main-container">
 
+
         {/* Topbar (Hidden on Requests Page to match Figma design) */}
         {!isRequestsPage && (
           <header className="admin-topbar">
@@ -25,6 +28,18 @@ const AdminLayout = () => {
               <Search size={18} className="search-icon" />
               <input type="text" placeholder="Search..." />
             </div>
+
+        {/* Topbar */}
+        <header className="admin-topbar">
+          <div 
+            className="topbar-search" 
+            onClick={() => setShowSearchOverlay(true)}
+            style={{ cursor: 'pointer' }}
+          >
+            <Search size={18} className="search-icon" />
+            <input type="text" placeholder="Search..." readOnly style={{ cursor: 'pointer' }} />
+          </div>
+
 
             <div className="topbar-actions">
               {/* Notification Bell wrapped in a link to Notifications page */}
@@ -65,8 +80,18 @@ const AdminLayout = () => {
           <Outlet />
         </main>
       </div>
+
+      {showSearchOverlay && (
+        <SearchOverlay 
+          onClose={() => setShowSearchOverlay(false)} 
+          onSearchSubmit={(query) => {
+            console.log('Admin search submitted query:', query);
+          }}
+        />
+      )}
     </div>
   );
 };
 
 export default AdminLayout;
+
