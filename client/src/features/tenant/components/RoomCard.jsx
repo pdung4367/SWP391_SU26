@@ -1,13 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Star, MapPin, Heart, BedDouble, Bath, Maximize } from 'lucide-react';
 import { clsx } from 'clsx';
 import './RoomCard.css';
 
 const RoomCard = ({ room, variant = 'standard' }) => {
-  const { title, price, rating, location, distance, tags = [], imageTags = [], specs = [], isFavorite, image } = room;
+  const navigate = useNavigate();
+  const { id, title, price, rating, location, distance, tags = [], imageTags = [], specs = [], isFavorite, image } = room;
+
+  const handleClick = () => {
+    if (variant === 'standard') {
+      navigate(`/rooms/${id}`);
+    }
+  };
 
   return (
-    <div className={clsx("room-card", `room-card-${variant}`)}>
+    <div className={clsx("room-card", `room-card-${variant}`)} onClick={handleClick}>
       <div className="room-card-image-wrapper">
         <img src={image} alt={title} className="room-card-image" />
         
