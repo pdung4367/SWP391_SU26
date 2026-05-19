@@ -10,7 +10,7 @@ import AdminLayout from '../layouts/AdminLayout';
 // Features (using unified exports)
 import { LoginPage, RegisterPage } from '../features/auth';
 import { SearchPage, FavoritesPage, DepositPaymentPage } from '../features/tenant';
-import { AnalyticsPage, TransactionsPage } from '../features/admin';
+import { AnalyticsPage, TransactionsPage, ListingsPage } from '../features/admin';
 
 // Pages
 import HomePage from '../pages/HomePage';
@@ -43,7 +43,7 @@ const AppRoutes = () => {
         <Route path={ROUTES.LANDLORD.DASHBOARD} element={<Navigate to={ROUTES.LANDLORD.HELP} replace />} />
         <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
         <Route path={ROUTES.LANDLORD.USERS} element={<div style={{ padding: '1rem' }}><h2>Users Management</h2><p>Admin console users database table.</p></div>} />
-        <Route path={ROUTES.LANDLORD.LISTINGS} element={<div style={{ padding: '1rem' }}><h2>Listings Management</h2><p>Admin console property listings database table.</p></div>} />
+        <Route path={ROUTES.LANDLORD.LISTINGS} element={<ListingsPage />} />
         <Route path={ROUTES.LANDLORD.REQUESTS} element={<div style={{ padding: '1rem' }}><h2>Requests Management</h2><p>Admin console tenant requests database table.</p></div>} />
         <Route path={ROUTES.LANDLORD.ANALYTICS} element={<AnalyticsPage />} />
         <Route path={ROUTES.LANDLORD.TRANSACTIONS} element={<TransactionsPage />} />
