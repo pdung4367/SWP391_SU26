@@ -313,7 +313,7 @@ const LandlordDashboard = () => {
             )}
           </div>
           
-          <Button variant="primary" onClick={() => navigate(ROUTES.LANDLORD.LISTINGS)}>
+          <Button variant="primary" onClick={() => navigate(ROUTES.LANDLORD.NEW_LISTING)}>
             <Plus size={16} />
             <span>New Listing</span>
           </Button>
