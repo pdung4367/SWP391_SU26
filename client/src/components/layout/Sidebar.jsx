@@ -29,28 +29,42 @@ const Sidebar = () => {
 
   return (
     <aside className="admin-sidebar">
-      {/* Brand Header (Matches Figma Brand Element - No Avatar) */}
-      <div className="sidebar-brand-profile">
-        <div className="profile-info">
-          <span className="profile-title">Management Portal</span>
-          <span className="profile-subtitle">Smart Boarding Admin</span>
+      {/* Brand Header (Matches Figma Brand Element with Avatar) */}
+      <Link to={ROUTES.LANDLORD.PROFILE} className="sidebar-brand-profile-link">
+        <div className="sidebar-brand-profile">
+          <img 
+            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&auto=format&fit=crop&q=80" 
+            alt="Robert Sterling" 
+            className="sidebar-brand-avatar"
+          />
+          <div className="profile-info">
+            <span className="profile-title">Management Portal</span>
+            <span className="profile-subtitle">Smart Boarding Admin</span>
+          </div>
         </div>
-      </div>
+      </Link>
 
       {/* Navigation Links */}
       <nav className="sidebar-nav">
         <ul>
-          {navLinks.map((link) => (
-            <li key={link.label}>
-              <Link
-                to={link.path}
-                className={`sidebar-link ${location.pathname === link.path ? 'active' : ''}`}
-              >
-                {link.icon}
-                <span>{link.label}</span>
-              </Link>
-            </li>
-          ))}
+          {navLinks.map((link) => {
+            const isSettingsOrProfileActive = 
+              link.path === ROUTES.LANDLORD.SETTINGS && 
+              (location.pathname === ROUTES.LANDLORD.SETTINGS || location.pathname === ROUTES.LANDLORD.PROFILE);
+            const isActive = location.pathname === link.path || isSettingsOrProfileActive;
+
+            return (
+              <li key={link.label}>
+                <Link
+                  to={link.path}
+                  className={`sidebar-link ${isActive ? 'active' : ''}`}
+                >
+                  {link.icon}
+                  <span>{link.label}</span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
