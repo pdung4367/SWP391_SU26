@@ -73,6 +73,11 @@ const Sidebar = () => {
             </Link>
           </li>
         </ul>
+        <div className="support-btn-container" style={{ marginTop: '0.75rem' }}>
+          <Link to={ROUTES.LANDLORD.HELP} className="btn-support-center">
+            Support Center
+          </Link>
+        </div>
       </div>
     </aside>
   );
