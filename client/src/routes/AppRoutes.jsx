@@ -14,6 +14,7 @@ import RegisterPage from '../features/auth/pages/RegisterPage';
 import SearchPage from '../features/tenant/pages/SearchPage';
 import FavoritesPage from '../features/tenant/pages/FavoritesPage';
 import DepositPaymentPage from '../features/tenant/pages/DepositPaymentPage';
+import AIChatPage from '../features/tenant/pages/AIChatPage';
 
 // Placeholder Pages (Will be created later)
 const NotFoundPage = () => <div style={{ padding: '2rem', textAlign: 'center' }}><h1>404</h1><p>Page Not Found</p></div>;
@@ -26,6 +27,7 @@ const AppRoutes = () => {
         <Route path={ROUTES.HOME} element={<HomePage />} />
         <Route path={ROUTES.ROOMS} element={<SearchPage />} />
         <Route path={ROUTES.TENANT.FAVORITES} element={<FavoritesPage />} />
+        <Route path={ROUTES.TENANT.CHAT} element={<AIChatPage />} />
       </Route>
 
       {/* Auth Routes */}

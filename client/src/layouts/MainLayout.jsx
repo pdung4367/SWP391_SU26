@@ -7,9 +7,10 @@ import './MainLayout.css';
 const MainLayout = () => {
   const location = useLocation();
   const isAuthenticated = false; // Mock state, ideally from useAuthStore
+  const isChatPage = location.pathname === ROUTES.TENANT.CHAT;
 
   return (
-    <div className="main-layout">
+    <div className={`main-layout ${isChatPage ? 'chat-layout-mode' : ''}`}>
       {/* Header */}
       <header className="header">
         <div className="container header-content">
@@ -45,20 +46,22 @@ const MainLayout = () => {
       </main>
 
       {/* Footer */}
-      <footer className="footer-minimal">
-        <div className="container footer-minimal-content">
-          <div className="footer-left">
-            &copy; 2024 SmartBoard AI. Modern housing for modern people.
+      {!isChatPage && (
+        <footer className="footer-minimal">
+          <div className="container footer-minimal-content">
+            <div className="footer-left">
+              &copy; 2024 SmartBoard AI. Modern housing for modern people.
+            </div>
+            <div className="footer-right">
+              <Link to="#">Terms</Link>
+              <Link to="#">Privacy</Link>
+              <Link>Support</Link>
+              <span>English</span>
+              <button className="grid-icon-btn"><Grid size={20} /></button>
+            </div>
           </div>
-          <div className="footer-right">
-            <Link to="#">Terms</Link>
-            <Link to="#">Privacy</Link>
-            <Link>Support</Link>
-            <span>English</span>
-            <button className="grid-icon-btn"><Grid size={20} /></button>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      )}
     </div>
   );
 };
