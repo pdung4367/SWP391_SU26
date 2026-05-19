@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ROUTES } from '../constants';
 
 // Layouts
@@ -7,16 +7,21 @@ import MainLayout from '../layouts/MainLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import AdminLayout from '../layouts/AdminLayout';
 
+// Features (using unified exports)
+import { LoginPage, RegisterPage } from '../features/auth';
+import { SearchPage, FavoritesPage, DepositPaymentPage } from '../features/tenant';
+
 // Pages
 import HomePage from '../pages/HomePage';
-import LoginPage from '../features/auth/pages/LoginPage';
-import RegisterPage from '../features/auth/pages/RegisterPage';
-import SearchPage from '../features/tenant/pages/SearchPage';
-import FavoritesPage from '../features/tenant/pages/FavoritesPage';
-import DepositPaymentPage from '../features/tenant/pages/DepositPaymentPage';
+import HelpCenterPage from '../pages/HelpCenterPage';
 
 // Placeholder Pages (Will be created later)
-const NotFoundPage = () => <div style={{ padding: '2rem', textAlign: 'center' }}><h1>404</h1><p>Page Not Found</p></div>;
+const NotFoundPage = () => (
+  <div style={{ padding: '2rem', textAlign: 'center' }}>
+    <h1>404</h1>
+    <p>Page Not Found</p>
+  </div>
+);
 
 const AppRoutes = () => {
   return (
@@ -35,7 +40,13 @@ const AppRoutes = () => {
 
       {/* Admin / Landlord Routes */}
       <Route element={<AdminLayout />}>
-        <Route path={ROUTES.LANDLORD.DASHBOARD} element={<div>Admin Dashboard Placeholder</div>} />
+        <Route path={ROUTES.LANDLORD.DASHBOARD} element={<Navigate to={ROUTES.LANDLORD.HELP} replace />} />
+        <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
+        <Route path={ROUTES.LANDLORD.USERS} element={<div style={{ padding: '1rem' }}><h2>Users Management</h2><p>Admin console users database table.</p></div>} />
+        <Route path={ROUTES.LANDLORD.LISTINGS} element={<div style={{ padding: '1rem' }}><h2>Listings Management</h2><p>Admin console property listings database table.</p></div>} />
+        <Route path={ROUTES.LANDLORD.REQUESTS} element={<div style={{ padding: '1rem' }}><h2>Requests Management</h2><p>Admin console tenant requests database table.</p></div>} />
+        <Route path={ROUTES.LANDLORD.ANALYTICS} element={<div style={{ padding: '1rem' }}><h2>Analytics Dashboard</h2><p>Admin console property business analytics graphs.</p></div>} />
+        <Route path={ROUTES.LANDLORD.SETTINGS} element={<div style={{ padding: '1rem' }}><h2>Portal Settings</h2><p>Admin console configuration fields.</p></div>} />
       </Route>
 
       {/* Standalone Split & Minimal Layouts */}
