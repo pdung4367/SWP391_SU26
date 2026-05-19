@@ -16,9 +16,9 @@ const HelpCenterPage = () => {
         {/* Large Central Search Box */}
         <div className="help-search-container">
           <Search size={22} className="help-search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search for articles, guides, or keywords..." 
+          <input
+            type="text"
+            placeholder="Search for articles, guides, or keywords..."
             className="help-search-input"
           />
         </div>
