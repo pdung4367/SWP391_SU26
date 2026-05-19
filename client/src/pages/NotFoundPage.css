@@ -1,0 +1,205 @@
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--bg-main);
+  font-family: 'Inter', sans-serif;
+}
+
+.not-found-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  width: 100%;
+  max-width: 1050px;
+  background-color: var(--bg-card);
+  padding: 3rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .not-found-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+    padding: 4rem;
+  }
+}
+
+/* Left side: Illustration */
+.not-found-illustration {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 420px;
+  width: 100%;
+}
+
+.not-found-illustration img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.5s ease;
+}
+
+.not-found-illustration:hover img {
+  transform: translateY(-5px);
+}
+
+/* Right side: Information block */
+.not-found-info {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .not-found-info {
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+.error-code {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.error-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 1.25rem;
+  line-height: 1.2;
+}
+
+.error-description {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+/* Back on track block */
+.track-section {
+  width: 100%;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.track-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-main);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.05em;
+}
+
+.shortcut-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.shortcut-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.25rem 0.5rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.shortcut-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+  background-color: var(--primary-light);
+}
+
+.shortcut-card:active {
+  transform: translateY(-1px);
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background-color: var(--primary-light);
+  border-radius: var(--radius-full);
+  color: var(--primary);
+  transition: all 0.2s ease;
+}
+
+.shortcut-card:hover .icon-wrapper {
+  background-color: var(--primary);
+  color: var(--text-inverse);
+}
+
+.shortcut-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
+  transition: color 0.2s ease;
+}
+
+.shortcut-card:hover .shortcut-text {
+  color: var(--primary-hover);
+}
+
+/* Contact Support button link */
+.support-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.support-link:hover {
+  color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+.support-link svg {
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.support-link:hover svg {
+  color: var(--primary);
+}

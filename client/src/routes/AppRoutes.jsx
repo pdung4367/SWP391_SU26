@@ -18,17 +18,7 @@ import NotificationsPage from '../pages/NotificationsPage';
 import MessagesPage from '../pages/MessagesPage';
 import TermsPage from '../pages/TermsPage';
 import SettingsPage from '../pages/SettingsPage';
-
-
-
-
-// Placeholder Pages (Will be created later)
-const NotFoundPage = () => (
-  <div style={{ padding: '2rem', textAlign: 'center' }}>
-    <h1>404</h1>
-    <p>Page Not Found</p>
-  </div>
-);
+import NotFoundPage from '../pages/NotFoundPage';
 
 const AppRoutes = () => {
   return (
