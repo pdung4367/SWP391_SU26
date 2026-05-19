@@ -18,6 +18,10 @@ export const ROUTES = {
     LISTINGS: '/admin/listings',
     NEW_LISTING: '/admin/listings/new',
     REQUESTS: '/admin/requests',
+    USERS: '/admin/users',
+    ANALYTICS: '/admin/analytics',
+    SETTINGS: '/admin/settings',
+    HELP: '/admin/help',
   }
 };
 
@@ -26,3 +30,4 @@ export const ROLES = {
   LANDLORD: 'LANDLORD',
   ADMIN: 'ADMIN'
 };
+
