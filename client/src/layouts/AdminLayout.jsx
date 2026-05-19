@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Bell, Mail, MessageSquare, Search } from 'lucide-react';
 import Sidebar from '../components/layout/Sidebar';
+import SearchOverlay from '../components/ui/SearchOverlay';
 import { ROUTES } from '../constants';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
   const location = useLocation();
   const isMessagesActive = location.pathname === ROUTES.LANDLORD.MESSAGES;
+  const [showSearchOverlay, setShowSearchOverlay] = useState(false);
 
   return (
     <div className="admin-layout">
@@ -19,9 +21,13 @@ const AdminLayout = () => {
         
         {/* Topbar */}
         <header className="admin-topbar">
-          <div className="topbar-search">
+          <div 
+            className="topbar-search" 
+            onClick={() => setShowSearchOverlay(true)}
+            style={{ cursor: 'pointer' }}
+          >
             <Search size={18} className="search-icon" />
-            <input type="text" placeholder="Search..." />
+            <input type="text" placeholder="Search..." readOnly style={{ cursor: 'pointer' }} />
           </div>
 
           <div className="topbar-actions">
@@ -61,8 +67,18 @@ const AdminLayout = () => {
           <Outlet />
         </main>
       </div>
+
+      {showSearchOverlay && (
+        <SearchOverlay 
+          onClose={() => setShowSearchOverlay(false)} 
+          onSearchSubmit={(query) => {
+            console.log('Admin search submitted query:', query);
+          }}
+        />
+      )}
     </div>
   );
 };
 
 export default AdminLayout;
+

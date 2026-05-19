@@ -19,7 +19,6 @@ import MessagesPage from '../pages/MessagesPage';
 import TermsPage from '../pages/TermsPage';
 import SettingsPage from '../pages/SettingsPage';
 import NotFoundPage from '../pages/NotFoundPage';
-import ErrorPage from '../pages/ErrorPage';
 
 const AppRoutes = () => {
   return (
@@ -55,7 +54,6 @@ const AppRoutes = () => {
       <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       <Route path={ROUTES.TENANT.PAYMENT} element={<DepositPaymentPage />} />
       <Route path={ROUTES.TERMS} element={<TermsPage />} />
-      <Route path={ROUTES.ERROR} element={<ErrorPage />} />
 
 
       {/* Fallback */}
