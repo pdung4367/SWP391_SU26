@@ -9,7 +9,9 @@ import AdminLayout from '../layouts/AdminLayout';
 
 // Features (using unified exports)
 import { LoginPage, RegisterPage } from '../features/auth';
-import { SearchPage, FavoritesPage, DepositPaymentPage } from '../features/tenant';
+import { SearchPage, FavoritesPage, DepositPaymentPage, RoomDetailPage, AIChatPage } from '../features/tenant';
+import { LandlordDashboard } from '../features/landlord';
+import { VerificationPage } from '../features/verification';
 
 // Pages
 import HomePage from '../pages/HomePage';
@@ -65,6 +67,7 @@ const AppRoutes = () => {
       <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       <Route path={ROUTES.TENANT.PAYMENT} element={<DepositPaymentPage />} />
       <Route path={ROUTES.TERMS} element={<TermsPage />} />
+      <Route path={ROUTES.VERIFICATION} element={<VerificationPage />} />
 
 
       {/* Fallback */}

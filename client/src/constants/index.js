@@ -10,6 +10,7 @@ export const ROUTES = {
   ROOMS: '/rooms',
   ROOM_DETAIL: '/rooms/:id',
   TERMS: '/terms',
+  VERIFICATION: '/verification',
   TENANT: {
     PROFILE: '/profile',
     FAVORITES: '/favorites',
