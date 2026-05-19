@@ -1,6 +1,17 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Wallet, Building2, ClipboardList, BarChart3, Users, HelpCircle, LogOut, LifeBuoy } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  Users, 
+  Building2, 
+  ClipboardList, 
+  BarChart3, 
+  Settings, 
+  Plus, 
+  HelpCircle, 
+  LogOut,
+  Home
+} from 'lucide-react';
 import { ROUTES } from '../../constants';
 import './Sidebar.css';
 
@@ -9,23 +20,26 @@ const Sidebar = () => {
 
   const navLinks = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.LANDLORD.DASHBOARD },
-    { icon: <Wallet size={20} />, label: 'Deposits', path: ROUTES.LANDLORD.DEPOSITS },
+    { icon: <Users size={20} />, label: 'Users', path: ROUTES.LANDLORD.USERS },
     { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
     { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.LANDLORD.REQUESTS },
-    { icon: <BarChart3 size={20} />, label: 'Analytics', path: '/admin/analytics' },
-    { icon: <Users size={20} />, label: 'Users', path: '/admin/users' },
+    { icon: <BarChart3 size={20} />, label: 'Analytics', path: ROUTES.LANDLORD.ANALYTICS },
+    { icon: <Settings size={20} />, label: 'Settings', path: ROUTES.LANDLORD.SETTINGS },
   ];
 
   return (
     <aside className="admin-sidebar">
+      {/* Brand Header */}
       <div className="sidebar-brand">
-        <div className="brand-logo">MB</div>
-        <div className="brand-text">
-          <h2>Management Portal</h2>
-          <p>Smart Boarding Admin</p>
+        <div className="brand-logo-container">
+          <Home className="brand-icon" size={24} />
+          <span className="brand-text">SmartBoarding</span>
         </div>
       </div>
 
+      <div className="console-label">ADMIN CONSOLE</div>
+
+      {/* Navigation Links */}
       <nav className="sidebar-nav">
         <ul>
           {navLinks.map((link) => (
@@ -42,37 +56,32 @@ const Sidebar = () => {
         </ul>
       </nav>
 
+      {/* Sidebar Footer with Buttons & Help */}
       <div className="sidebar-footer">
-        <div className="support-center">
-          <button className="btn-support">
-            <LifeBuoy size={18} />
-            Support Center
-          </button>
+        <div className="new-listing-btn-container">
+          <Link to={ROUTES.LANDLORD.NEW_LISTING} className="btn-new-listing">
+            <Plus size={18} />
+            <span>New Listing</span>
+          </Link>
         </div>
+
         <ul className="footer-links">
           <li>
-            <Link to="#" className="sidebar-link">
+            <Link 
+              to={ROUTES.LANDLORD.HELP} 
+              className={`sidebar-link ${location.pathname === ROUTES.LANDLORD.HELP ? 'active-help' : ''}`}
+            >
               <HelpCircle size={20} />
-              <span>Help</span>
+              <span>Help Center</span>
             </Link>
           </li>
           <li>
-            <Link to="#" className="sidebar-link text-danger">
+            <Link to={ROUTES.LOGIN} className="sidebar-link logout-link">
               <LogOut size={20} />
-              <span>Sign Out</span>
+              <span>Logout</span>
             </Link>
           </li>
         </ul>
-
-        <div className="user-profile">
-          <div className="user-avatar">
-            <img src="https://i.pravatar.cc/150?img=11" alt="Admin" />
-          </div>
-          <div className="user-info">
-            <h4>Admin User</h4>
-            <p>admin@smartboard.com</p>
-          </div>
-        </div>
       </div>
     </aside>
   );
