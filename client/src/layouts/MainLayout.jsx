@@ -11,7 +11,6 @@ const MainLayout = () => {
 
   return (
     <div className={`main-layout ${isChatPage ? 'chat-layout-mode' : ''}`}>
-      {/* Header */}
       <Header />
 
       {/* Main Content */}
@@ -19,8 +18,7 @@ const MainLayout = () => {
         <Outlet />
       </main>
 
-      {/* Footer */}
-      <Footer />
+      {!isChatPage && <Footer />}
     </div>
   );
 };
