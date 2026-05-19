@@ -9,8 +9,8 @@ import {
   ArrowRight,
   Sparkles
 } from 'lucide-react';
-import Button from '../components/common/Button';
-import './NotificationsPage.css';
+import Button from '../../../components/common/Button';
+import './LandlordNotificationsPage.css';
 
 const MOCK_NOTIFICATIONS = [
   {
@@ -69,7 +69,7 @@ const MOCK_NOTIFICATIONS = [
   }
 ];
 
-const NotificationsPage = () => {
+const LandlordNotificationsPage = () => {
   const [activeTab, setActiveTab] = useState('All Alerts');
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
 
@@ -196,4 +196,4 @@ const NotificationsPage = () => {
   );
 };
 
-export default NotificationsPage;
+export default LandlordNotificationsPage;

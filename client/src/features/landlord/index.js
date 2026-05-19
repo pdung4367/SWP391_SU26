@@ -4,3 +4,5 @@ export { default as ManageListingsPage } from './pages/ManageListingsPage';
 export { default as AddNewPropertyPage } from './pages/AddNewPropertyPage';
 export { default as DepositManagementPage } from './pages/DepositManagementPage';
 export { default as LandlordProfilePage } from './pages/LandlordProfilePage';
+export { default as MessagesPage } from './pages/MessagesPage';
+export { default as LandlordNotificationsPage } from './pages/LandlordNotificationsPage';
