@@ -40,7 +40,7 @@ const HomePage = () => {
             </div>
             
             <h1 className="hero-title">
-              Find your perfect stay with AI.
+              Find your perfect stay with AI<span className="hero-title-dot">.</span>
             </h1>
             
             <p className="hero-subtitle">
@@ -55,6 +55,8 @@ const HomePage = () => {
                 Explore Rooms
               </Button>
             </div>
+            
+            <div className="hero-divider-line"></div>
             
             <div className="hero-stats">
               <div className="stat-item">
@@ -73,8 +75,8 @@ const HomePage = () => {
           <div className="hero-graphic-side">
             <div className="hero-image-wrapper">
               <img 
-                src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&h=600&q=80" 
-                alt="Beautiful modern bedroom interior" 
+                src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&h=600&q=80" 
+                alt="Cozy clean bedroom interior" 
                 className="hero-main-img"
               />
               
@@ -96,7 +98,7 @@ const HomePage = () => {
                   </div>
                   <div className="ai-progress-labels">
                     <span>Scanning verified listings</span>
-                    <span>68%</span>
+                    <span className="percentage-text">68%</span>
                   </div>
                 </div>
               </div>

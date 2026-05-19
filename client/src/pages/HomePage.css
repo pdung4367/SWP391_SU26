@@ -10,7 +10,7 @@
 /* Hero Section */
 .hero {
   background-color: #FFFFFF;
-  padding: 4rem 0 7rem;
+  padding: 4.5rem 0 7rem;
   position: relative;
 }
 
@@ -54,6 +54,10 @@
   margin-bottom: 1rem;
 }
 
+.hero-title-dot {
+  color: #2563EB;
+}
+
 .hero-subtitle {
   font-size: 1.1rem;
   color: #475569;
@@ -66,7 +70,14 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 3.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero-divider-line {
+  width: 100%;
+  height: 1px;
+  background-color: #E2E8F0;
+  margin-bottom: 2.5rem;
 }
 
 .hero-stats {
@@ -123,12 +134,13 @@
 /* Floating AI Card */
 .floating-ai-card {
   position: absolute;
-  bottom: 2rem;
-  right: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -2rem;
   background-color: #FFFFFF;
   border-radius: 16px;
   padding: 1.25rem;
-  width: 280px;
+  width: 290px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   border: 1px solid #F1F5F9;
   z-index: 5;
@@ -218,7 +230,7 @@
   display: grid;
   grid-template-columns: 1fr 1px 1fr 1px 1fr auto;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .filter-field {
@@ -230,6 +242,8 @@
 .filter-field-icon {
   color: #2563EB;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .filter-field-text {
@@ -269,7 +283,7 @@
 }
 
 .filter-search-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -282,6 +296,8 @@
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.2s;
+  min-width: 130px;
+  white-space: nowrap;
 }
 
 .filter-search-btn:hover {
@@ -457,5 +473,7 @@
     bottom: 0;
     margin: 1.5rem auto 0;
     width: 100%;
+    transform: none;
+    top: auto;
   }
 }
