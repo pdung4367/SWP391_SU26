@@ -9,8 +9,7 @@ import AdminLayout from '../layouts/AdminLayout';
 
 // Features (using unified exports)
 import { LoginPage, RegisterPage } from '../features/auth';
-import { SearchPage, FavoritesPage, DepositPaymentPage, AIChatPage, RoomDetailPage } from '../features/tenant';
-import { LandlordDashboard } from '../features/landlord';
+import { SearchPage, FavoritesPage, DepositPaymentPage } from '../features/tenant';
 
 // Pages
 import HomePage from '../pages/HomePage';
@@ -32,15 +31,15 @@ const AppRoutes = () => {
         <Route path={ROUTES.ROOM_DETAIL} element={<RoomDetailPage />} />
         <Route path={ROUTES.TENANT.FAVORITES} element={<FavoritesPage />} />
         <Route path={ROUTES.TENANT.CHAT} element={<AIChatPage />} />
-        <Route path={ROUTES.TENANT.NOTIFICATIONS} element={<div className="container" style={{padding:'2rem'}}><h2>Notifications</h2><p>Coming soon...</p></div>} />
-        <Route path={ROUTES.TENANT.PROFILE} element={<div className="container" style={{padding:'2rem'}}><h2>Profile</h2><p>Coming soon...</p></div>} />
+        <Route path={ROUTES.TENANT.NOTIFICATIONS} element={<div className="container" style={{ padding: '2rem' }}><h2>Notifications</h2><p>Coming soon...</p></div>} />
+        <Route path={ROUTES.TENANT.PROFILE} element={<div className="container" style={{ padding: '2rem' }}><h2>Profile</h2><p>Coming soon...</p></div>} />
         <Route path={ROUTES.HELP} element={<HelpCenterPage />} />
       </Route>
 
       {/* Auth Routes */}
       <Route element={<AuthLayout />}>
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-        <Route path={ROUTES.FORGOT_PASSWORD} element={<div style={{maxWidth:480,margin:'0 auto',textAlign:'center',padding:'3rem'}}><h2>Forgot Password</h2><p>Coming soon...</p></div>} />
+        <Route path={ROUTES.FORGOT_PASSWORD} element={<div style={{ maxWidth: 480, margin: '0 auto', textAlign: 'center', padding: '3rem' }}><h2>Forgot Password</h2><p>Coming soon...</p></div>} />
       </Route>
 
       {/* Standalone Pages (no layout wrapper) */}
@@ -62,6 +61,12 @@ const AppRoutes = () => {
         <Route path={ROUTES.LANDLORD.SETTINGS} element={<SettingsPage />} />
       </Route>
 
+      {/* Standalone Split & Minimal Layouts */}
+      <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+      <Route path={ROUTES.TENANT.PAYMENT} element={<DepositPaymentPage />} />
+      <Route path={ROUTES.TERMS} element={<TermsPage />} />
+
+
       {/* Fallback */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
@@ -69,3 +74,4 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+

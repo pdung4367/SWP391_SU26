@@ -9,7 +9,7 @@ export const ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   ROOMS: '/rooms',
   ROOM_DETAIL: '/rooms/:id',
-
+  TERMS: '/terms',
   TENANT: {
     PROFILE: '/profile',
     FAVORITES: '/favorites',
