@@ -10,7 +10,7 @@ import AdminLayout from '../layouts/AdminLayout';
 // Features (using unified exports)
 import { LoginPage, RegisterPage } from '../features/auth';
 import { SearchPage, FavoritesPage, DepositPaymentPage, RoomDetailPage, AIChatPage, TenantNotificationsPage } from '../features/tenant';
-import { LandlordDashboard, ManageListingsPage, AddNewPropertyPage, DepositManagementPage } from '../features/landlord';
+import { LandlordDashboard, ManageListingsPage, AddNewPropertyPage, DepositManagementPage, LandlordProfilePage } from '../features/landlord';
 import { VerificationPage } from '../features/verification';
 
 // Pages
@@ -62,6 +62,7 @@ const AppRoutes = () => {
         <Route path={ROUTES.LANDLORD.NEW_LISTING} element={<AddNewPropertyPage />} />
         <Route path={ROUTES.LANDLORD.REQUESTS} element={<RentalRequestManagementPage />} />
         <Route path={ROUTES.LANDLORD.ANALYTICS} element={<div style={{ padding: '1rem' }}><h2>Analytics Dashboard</h2><p>Admin console property business analytics graphs.</p></div>} />
+        <Route path={ROUTES.LANDLORD.PROFILE} element={<LandlordProfilePage />} />
         <Route path={ROUTES.LANDLORD.SETTINGS} element={<SettingsPage />} />
       </Route>
 
