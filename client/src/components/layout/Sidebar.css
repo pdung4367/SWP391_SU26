@@ -9,48 +9,71 @@
   bottom: 0;
   left: 0;
   z-index: 40;
+  padding: 1.5rem 0;
 }
 
-.sidebar-brand {
+/* User Profile Header */
+.sidebar-brand-profile {
   display: flex;
   align-items: center;
-  padding: 1.5rem 1.25rem;
   gap: 0.75rem;
-  border-bottom: 1px solid var(--border-light);
+  padding: 0 1.25rem 1.25rem;
 }
 
-.sidebar-avatar {
-  width: 40px;
-  height: 40px;
+.profile-avatar {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  flex-shrink: 0;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-.sidebar-brand-text {
+.profile-info {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
-.brand-text {
+.profile-title {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #1e3a8a;
-  line-height: 1.2;
+  color: #1E3A8A; /* Dark blue title */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.brand-subtext {
+.profile-subtitle {
   font-size: 0.75rem;
   color: var(--text-muted);
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.sidebar-divider {
+  height: 1px;
+  background-color: var(--border-light);
+  margin: 0 1.25rem 1rem;
+}
+
+/* Navigation Links */
 .sidebar-nav {
   flex: 1;
-  padding: 1rem 0;
+  padding: 0 1rem;
   overflow-y: auto;
 }
 
-.sidebar-nav ul, .footer-links {
+.sidebar-nav ul,
+.footer-links {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -63,14 +86,13 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1rem;
   color: #475569;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
+  border-radius: var(--radius-md);
   text-decoration: none;
-  transition: all 0.2s;
-  margin: 0.125rem 0.75rem;
-  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .sidebar-link:hover {
@@ -80,49 +102,52 @@
 
 .sidebar-link svg {
   color: #64748B;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
 }
 
-.sidebar-link.active {
-  background-color: #EEF2F6;
-  color: #3b82f6;
+/* Active Nav Item - Pill Shape Matches Figma */
+.sidebar-link.active,
+.sidebar-link.active-help {
+  background-color: #EFF6FF;
+  color: #2563EB;
   font-weight: 600;
 }
 
-.sidebar-link.active svg {
-  color: #3b82f6;
+.sidebar-link.active svg,
+.sidebar-link.active-help svg {
+  color: #2563EB;
 }
 
+/* Footer Section */
 .sidebar-footer {
-  padding: 1.25rem 0;
+  padding: 1.25rem 1rem 0;
   border-top: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  margin-top: auto;
 }
 
-.support-center-btn-container {
-  padding: 0 0.75rem;
+.support-btn-container {
   margin-bottom: 0.25rem;
 }
 
 .btn-support-center {
   width: 100%;
   display: block;
+  text-align: center;
   padding: 0.75rem;
-  background-color: #F1F5F9;
+  background-color: #E2E8F0;
   color: #334155;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
-  text-align: center;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease;
 }
 
 .btn-support-center:hover {
-  background-color: #E2E8F0;
+  background-color: #CBD5E1;
 }
 
 .logout-link {

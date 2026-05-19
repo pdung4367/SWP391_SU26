@@ -1,16 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Building2, 
-  ClipboardList, 
-  BarChart3, 
-  Settings, 
-  Plus, 
-  HelpCircle, 
+import {
+  LayoutDashboard,
+  Building2,
+  ClipboardList,
+  MessageSquare,
+  BarChart3,
+  Users,
+  Settings,
+  HelpCircle,
   LogOut,
-  Home
 } from 'lucide-react';
 import { ROUTES } from '../../constants';
 import './Sidebar.css';
@@ -18,10 +17,13 @@ import './Sidebar.css';
 const Sidebar = () => {
   const location = useLocation();
 
+  // Navigation Links ordered exactly as Figma design, including Messages from main branch:
+  // Dashboard -> Listings -> Requests -> Messages -> Analytics -> Users -> Settings
   const navLinks = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.LANDLORD.DASHBOARD },
-    { icon: <Home size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
+    { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
     { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.LANDLORD.REQUESTS },
+    { icon: <MessageSquare size={20} />, label: 'Messages', path: ROUTES.LANDLORD.MESSAGES },
     { icon: <BarChart3 size={20} />, label: 'Analytics', path: ROUTES.LANDLORD.ANALYTICS },
     { icon: <Users size={20} />, label: 'Users', path: ROUTES.LANDLORD.USERS },
     { icon: <Settings size={20} />, label: 'Settings', path: ROUTES.LANDLORD.SETTINGS },
@@ -29,18 +31,18 @@ const Sidebar = () => {
 
   return (
     <aside className="admin-sidebar">
-      {/* Brand Header with User Profile */}
-      <div className="sidebar-brand">
-        <img 
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop&q=80" 
-          alt="Avatar" 
-          className="sidebar-avatar" 
-        />
-        <div className="sidebar-brand-text">
-          <div className="brand-text">Management Portal</div>
-          <div className="brand-subtext">Smart Boarding Admin</div>
+      {/* User Header Profile (Matches Figma Management Portal Brand Element) */}
+      <div className="sidebar-brand-profile">
+        <div className="profile-avatar">
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=120&h=120&q=80" alt="Admin Profile" />
+        </div>
+        <div className="profile-info">
+          <span className="profile-title">Management Portal</span>
+          <span className="profile-subtitle">Smart Boarding Admin</span>
         </div>
       </div>
+
+      <div className="sidebar-divider"></div>
 
       {/* Navigation Links */}
       <nav className="sidebar-nav">
@@ -59,9 +61,9 @@ const Sidebar = () => {
         </ul>
       </nav>
 
-      {/* Sidebar Footer with Support Center & Help */}
+      {/* Sidebar Footer */}
       <div className="sidebar-footer">
-        <div className="support-center-btn-container">
+        <div className="support-btn-container">
           <Link to={ROUTES.LANDLORD.HELP} className="btn-support-center">
             Support Center
           </Link>
@@ -69,8 +71,8 @@ const Sidebar = () => {
 
         <ul className="footer-links">
           <li>
-            <Link 
-              to={ROUTES.LANDLORD.HELP} 
+            <Link
+              to={ROUTES.LANDLORD.HELP}
               className={`sidebar-link ${location.pathname === ROUTES.LANDLORD.HELP ? 'active-help' : ''}`}
             >
               <HelpCircle size={20} />
