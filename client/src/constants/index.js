@@ -43,6 +43,9 @@ export const ROUTES = {
     MODERATION: '/admin/moderation',
     ANALYTICS: '/admin/analytics',
     SETTINGS: '/admin/settings',
+    HELP: '/admin/help',
+    NOTIFICATIONS: '/admin/notifications',
+    MESSAGES: '/admin/messages',
   },
 
   TERMS: '/terms',

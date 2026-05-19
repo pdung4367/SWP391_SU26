@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   Building2,
   ClipboardList,
+  MessageSquare,
   BarChart3,
   Users,
   Settings,
@@ -16,12 +17,13 @@ import './Sidebar.css';
 const Sidebar = () => {
   const location = useLocation();
 
-  // Navigation Links ordered exactly as Figma design:
-  // Dashboard -> Listings -> Requests -> Analytics -> Users -> Settings
+  // Navigation Links ordered exactly as Figma design, including Messages from main branch:
+  // Dashboard -> Listings -> Requests -> Messages -> Analytics -> Users -> Settings
   const navLinks = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.LANDLORD.DASHBOARD },
     { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
     { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.LANDLORD.REQUESTS },
+    { icon: <MessageSquare size={20} />, label: 'Messages', path: ROUTES.LANDLORD.MESSAGES },
     { icon: <BarChart3 size={20} />, label: 'Analytics', path: ROUTES.LANDLORD.ANALYTICS },
     { icon: <Users size={20} />, label: 'Users', path: ROUTES.LANDLORD.USERS },
     { icon: <Settings size={20} />, label: 'Settings', path: ROUTES.LANDLORD.SETTINGS },

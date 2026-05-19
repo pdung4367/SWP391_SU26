@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ROUTES } from '../constants';
 
 // Layouts
@@ -15,6 +15,10 @@ import { LandlordDashboard } from '../features/landlord';
 // Pages
 import HomePage from '../pages/HomePage';
 import HelpCenterPage from '../pages/HelpCenterPage';
+import NotificationsPage from '../pages/NotificationsPage';
+import MessagesPage from '../pages/MessagesPage';
+import TermsPage from '../pages/TermsPage';
+import SettingsPage from '../pages/SettingsPage';
 
 // Placeholder — Not Found Page
 const NotFoundPage = () => (
@@ -63,16 +67,20 @@ const AppRoutes = () => {
       {/* Standalone Pages (no layout wrapper) */}
       <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       <Route path={ROUTES.TENANT.PAYMENT} element={<DepositPaymentPage />} />
+      <Route path={ROUTES.TERMS} element={<TermsPage />} />
 
-      {/* Landlord Routes */}
+      {/* Admin / Landlord Routes */}
       <Route element={<AdminLayout />}>
         <Route path={ROUTES.LANDLORD.DASHBOARD} element={<LandlordDashboard />} />
         <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
-        <Route path={ROUTES.LANDLORD.USERS} element={<div style={{padding:'1rem'}}><h2>Users Management</h2></div>} />
-        <Route path={ROUTES.LANDLORD.LISTINGS} element={<div style={{padding:'1rem'}}><h2>Listings Management</h2></div>} />
-        <Route path={ROUTES.LANDLORD.REQUESTS} element={<div style={{padding:'1rem'}}><h2>Requests Management</h2></div>} />
-        <Route path={ROUTES.LANDLORD.ANALYTICS} element={<div style={{padding:'1rem'}}><h2>Analytics Dashboard</h2></div>} />
-        <Route path={ROUTES.LANDLORD.SETTINGS} element={<div style={{padding:'1rem'}}><h2>Portal Settings</h2></div>} />
+        <Route path={ROUTES.LANDLORD.NOTIFICATIONS} element={<NotificationsPage />} />
+        <Route path={ROUTES.LANDLORD.MESSAGES} element={<MessagesPage />} />
+
+        <Route path={ROUTES.LANDLORD.USERS} element={<div style={{ padding: '1rem' }}><h2>Users Management</h2><p>Admin console users database table.</p></div>} />
+        <Route path={ROUTES.LANDLORD.LISTINGS} element={<div style={{ padding: '1rem' }}><h2>Listings Management</h2><p>Admin console property listings database table.</p></div>} />
+        <Route path={ROUTES.LANDLORD.REQUESTS} element={<div style={{ padding: '1rem' }}><h2>Requests Management</h2><p>Admin console tenant requests database table.</p></div>} />
+        <Route path={ROUTES.LANDLORD.ANALYTICS} element={<div style={{ padding: '1rem' }}><h2>Analytics Dashboard</h2><p>Admin console property business analytics graphs.</p></div>} />
+        <Route path={ROUTES.LANDLORD.SETTINGS} element={<SettingsPage />} />
       </Route>
 
       {/* Fallback */}
