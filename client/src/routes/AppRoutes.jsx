@@ -10,17 +10,11 @@ import AdminLayout from '../layouts/AdminLayout';
 // Features (using unified exports)
 import { LoginPage, RegisterPage } from '../features/auth';
 import { SearchPage, FavoritesPage, DepositPaymentPage, AIChatPage, RoomDetailPage } from '../features/tenant';
-import { SearchPage, FavoritesPage, DepositPaymentPage, AIChatPage } from '../features/tenant';
 import { LandlordDashboard } from '../features/landlord';
 
 // Pages
 import HomePage from '../pages/HomePage';
-import LoginPage from '../features/auth/pages/LoginPage';
-import RegisterPage from '../features/auth/pages/RegisterPage';
-import SearchPage from '../features/tenant/pages/SearchPage';
-import FavoritesPage from '../features/tenant/pages/FavoritesPage';
-import DepositPaymentPage from '../features/tenant/pages/DepositPaymentPage';
-import RentalRequestManagementPage from '../features/rental';
+import { RentalRequestManagementPage } from '../features/rental';
 import HelpCenterPage from '../pages/HelpCenterPage';
 import NotificationsPage from '../pages/NotificationsPage';
 import MessagesPage from '../pages/MessagesPage';
