@@ -17,6 +17,8 @@ import HelpCenterPage from '../pages/HelpCenterPage';
 import NotificationsPage from '../pages/NotificationsPage';
 import MessagesPage from '../pages/MessagesPage';
 import TermsPage from '../pages/TermsPage';
+import SettingsPage from '../pages/SettingsPage';
+
 
 
 
@@ -54,7 +56,8 @@ const AppRoutes = () => {
         <Route path={ROUTES.LANDLORD.LISTINGS} element={<div style={{ padding: '1rem' }}><h2>Listings Management</h2><p>Admin console property listings database table.</p></div>} />
         <Route path={ROUTES.LANDLORD.REQUESTS} element={<div style={{ padding: '1rem' }}><h2>Requests Management</h2><p>Admin console tenant requests database table.</p></div>} />
         <Route path={ROUTES.LANDLORD.ANALYTICS} element={<div style={{ padding: '1rem' }}><h2>Analytics Dashboard</h2><p>Admin console property business analytics graphs.</p></div>} />
-        <Route path={ROUTES.LANDLORD.SETTINGS} element={<div style={{ padding: '1rem' }}><h2>Portal Settings</h2><p>Admin console configuration fields.</p></div>} />
+        <Route path={ROUTES.LANDLORD.SETTINGS} element={<SettingsPage />} />
+
       </Route>
 
       {/* Standalone Split & Minimal Layouts */}

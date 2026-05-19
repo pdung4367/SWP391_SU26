@@ -85,10 +85,15 @@ const Sidebar = () => {
           </li>
         </ul>
 
-        {/* Small Avatar Image at the very bottom left corner as per the new Figma layout */}
+        {/* Expanded User Profile Details at the bottom left corner as per the new Figma layout */}
         <div className="sidebar-avatar-container">
           <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="sidebar-avatar-img" />
+          <div className="sidebar-avatar-info">
+            <span className="avatar-name">Admin User</span>
+            <span className="avatar-email">admin@smartboarding.com</span>
+          </div>
         </div>
+
       </div>
     </aside>
   );
