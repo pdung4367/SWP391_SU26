@@ -23,6 +23,10 @@
   letter-spacing: 0.05em;
 }
 
+.th-actions {
+  text-align: right;
+}
+
 .transaction-table td {
   padding: 16px 24px;
   border-bottom: 1px solid #f1f5f9;
@@ -81,9 +85,9 @@
   font-weight: 600;
 }
 
-.status-completed {
-  background-color: #d1fae5;
-  color: #059669;
+.status-success {
+  background-color: #e0f2fe;
+  color: #0369a1;
 }
 
 .status-pending {
@@ -91,7 +95,40 @@
   color: #d97706;
 }
 
+.status-refunded {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
 .status-failed {
   background-color: #fee2e2;
   color: #dc2626;
+}
+
+.tx-actions {
+  text-align: right;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn-action-icon {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-action-icon:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
 }

@@ -1,14 +1,18 @@
 import React from 'react';
+import { MoreVertical, Eye, Download } from 'lucide-react';
 import { formatCurrency, formatDateTime } from '../../../utils/format';
 import './TransactionTable.css';
 
 const TransactionTable = ({ transactions }) => {
   const getStatusBadge = (status) => {
     switch (status.toLowerCase()) {
+      case 'success':
       case 'completed':
-        return <span className="status-badge status-completed">Completed</span>;
+        return <span className="status-badge status-success">Success</span>;
       case 'pending':
         return <span className="status-badge status-pending">Pending</span>;
+      case 'refunded':
+        return <span className="status-badge status-refunded">Refunded</span>;
       case 'failed':
         return <span className="status-badge status-failed">Failed</span>;
       default:
@@ -28,6 +32,7 @@ const TransactionTable = ({ transactions }) => {
             <th>Type</th>
             <th>Amount</th>
             <th>Status</th>
+            <th className="th-actions">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -47,6 +52,19 @@ const TransactionTable = ({ transactions }) => {
               <td className="tx-type">{tx.type}</td>
               <td className="tx-amount">{formatCurrency(tx.amount)}</td>
               <td className="tx-status">{getStatusBadge(tx.status)}</td>
+              <td className="tx-actions">
+                <div className="action-buttons">
+                  <button className="btn-action-icon" title="View Details">
+                    <Eye size={18} />
+                  </button>
+                  <button className="btn-action-icon" title="Download Invoice">
+                    <Download size={18} />
+                  </button>
+                  <button className="btn-action-icon" title="More Options">
+                    <MoreVertical size={18} />
+                  </button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
