@@ -7,16 +7,20 @@ import MainLayout from '../layouts/MainLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import AdminLayout from '../layouts/AdminLayout';
 
+// Features (using unified exports)
+import { LoginPage, RegisterPage } from '../features/auth';
+import { SearchPage, FavoritesPage, DepositPaymentPage } from '../features/tenant';
+
 // Pages
 import HomePage from '../pages/HomePage';
-import LoginPage from '../features/auth/pages/LoginPage';
-import RegisterPage from '../features/auth/pages/RegisterPage';
-import SearchPage from '../features/tenant/pages/SearchPage';
-import FavoritesPage from '../features/tenant/pages/FavoritesPage';
-import DepositPaymentPage from '../features/tenant/pages/DepositPaymentPage';
 
 // Placeholder Pages (Will be created later)
-const NotFoundPage = () => <div style={{ padding: '2rem', textAlign: 'center' }}><h1>404</h1><p>Page Not Found</p></div>;
+const NotFoundPage = () => (
+  <div style={{ padding: '2rem', textAlign: 'center' }}>
+    <h1>404</h1>
+    <p>Page Not Found</p>
+  </div>
+);
 
 const AppRoutes = () => {
   return (
