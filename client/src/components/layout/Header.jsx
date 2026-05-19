@@ -28,13 +28,10 @@ const Header = () => {
         </nav>
 
         <div className="header-right">
-          {!isAuthenticated ? (
-            <Link to={ROUTES.LOGIN} className="sign-in-btn">Sign In</Link>
-          ) : (
-            <div className="header-avatar">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
-            </div>
-          )}
+          <Link to={ROUTES.LOGIN} className="sign-in-btn">Sign In</Link>
+          <div className="header-avatar">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
+          </div>
           <button className="mobile-menu-btn">
             <Menu size={22} />
           </button>
