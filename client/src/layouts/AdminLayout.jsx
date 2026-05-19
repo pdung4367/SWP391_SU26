@@ -9,8 +9,10 @@ import './AdminLayout.css';
 const AdminLayout = () => {
   const location = useLocation();
   const isMessagesActive = location.pathname === ROUTES.LANDLORD.MESSAGES;
- const isRequestsPage = location.pathname === ROUTES.LANDLORD.REQUESTS;
- const [showSearchOverlay, setShowSearchOverlay] = useState(false);
+  const hideTopbar = 
+    location.pathname === ROUTES.LANDLORD.REQUESTS || 
+    location.pathname === ROUTES.LANDLORD.SETTINGS;
+  const [showSearchOverlay, setShowSearchOverlay] = useState(false);
 
   return (
     <div className="admin-layout">
@@ -20,26 +22,17 @@ const AdminLayout = () => {
       {/* Main Content Area */}
       <div className="admin-main-container">
 
-
-        {/* Topbar (Hidden on Requests Page to match Figma design) */}
-        {!isRequestsPage && (
+        {/* Topbar (Hidden on Requests and Settings to match Figma design) */}
+        {!hideTopbar && (
           <header className="admin-topbar">
-            <div className="topbar-search">
+            <div 
+              className="topbar-search" 
+              onClick={() => setShowSearchOverlay(true)}
+              style={{ cursor: 'pointer' }}
+            >
               <Search size={18} className="search-icon" />
-              <input type="text" placeholder="Search..." />
+              <input type="text" placeholder="Search..." readOnly style={{ cursor: 'pointer' }} />
             </div>
-
-        {/* Topbar */}
-        <header className="admin-topbar">
-          <div 
-            className="topbar-search" 
-            onClick={() => setShowSearchOverlay(true)}
-            style={{ cursor: 'pointer' }}
-          >
-            <Search size={18} className="search-icon" />
-            <input type="text" placeholder="Search..." readOnly style={{ cursor: 'pointer' }} />
-          </div>
-
 
             <div className="topbar-actions">
               {/* Notification Bell wrapped in a link to Notifications page */}
@@ -94,4 +87,3 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
-
