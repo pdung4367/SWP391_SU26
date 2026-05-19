@@ -28,7 +28,7 @@ const Header = () => {
         <div className="header-right">
           <Link to={ROUTES.LOGIN} className="sign-in-btn">Sign In</Link>
           <div className="header-avatar">
-            <img src="https://i.pravatar.cc/150?img=11" alt="Avatar" />
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
           </div>
         </div>
       </div>

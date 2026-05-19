@@ -9,11 +9,18 @@ import AdminLayout from '../layouts/AdminLayout';
 
 // Features (using unified exports)
 import { LoginPage, RegisterPage } from '../features/auth';
+import { SearchPage, FavoritesPage, DepositPaymentPage, AIChatPage, RoomDetailPage } from '../features/tenant';
 import { SearchPage, FavoritesPage, DepositPaymentPage, AIChatPage } from '../features/tenant';
 import { LandlordDashboard } from '../features/landlord';
 
 // Pages
 import HomePage from '../pages/HomePage';
+import LoginPage from '../features/auth/pages/LoginPage';
+import RegisterPage from '../features/auth/pages/RegisterPage';
+import SearchPage from '../features/tenant/pages/SearchPage';
+import FavoritesPage from '../features/tenant/pages/FavoritesPage';
+import DepositPaymentPage from '../features/tenant/pages/DepositPaymentPage';
+import RentalRequestManagementPage from '../features/rental';
 import HelpCenterPage from '../pages/HelpCenterPage';
 import NotificationsPage from '../pages/NotificationsPage';
 import MessagesPage from '../pages/MessagesPage';
@@ -51,6 +58,7 @@ const AppRoutes = () => {
       <Route element={<MainLayout />}>
         <Route path={ROUTES.HOME} element={<HomePage />} />
         <Route path={ROUTES.ROOMS} element={<SearchPage />} />
+        <Route path={ROUTES.ROOM_DETAIL} element={<RoomDetailPage />} />
         <Route path={ROUTES.TENANT.FAVORITES} element={<FavoritesPage />} />
         <Route path={ROUTES.TENANT.CHAT} element={<AIChatPage />} />
         <Route path={ROUTES.TENANT.NOTIFICATIONS} element={<div className="container" style={{padding:'2rem'}}><h2>Notifications</h2><p>Coming soon...</p></div>} />

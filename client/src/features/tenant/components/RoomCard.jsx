@@ -1,13 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Star, MapPin, Heart, BedDouble, Bath, Maximize } from 'lucide-react';
 import { clsx } from 'clsx';
 import './RoomCard.css';
 
 const RoomCard = ({ room, variant = 'standard' }) => {
-  const { title, price, rating, location, distance, tags = [], imageTags = [], specs = [], isFavorite, image } = room;
+  const navigate = useNavigate();
+  const { id, title, price, rating, location, distance, tags = [], imageTags = [], specs = [], isFavorite, image } = room;
+
+  const handleClick = () => {
+    if (variant === 'standard') {
+      navigate(`/rooms/${id}`);
+    }
+  };
 
   return (
-    <div className={clsx("room-card", `room-card-${variant}`)}>
+    <div className={clsx("room-card", `room-card-${variant}`)} onClick={handleClick}>
       <div className="room-card-image-wrapper">
         <img src={image} alt={title} className="room-card-image" />
         
@@ -27,8 +35,8 @@ const RoomCard = ({ room, variant = 'standard' }) => {
           </div>
         )}
 
-        {/* Floating price for chat variant */}
-        {variant === 'chat' && (
+        {/* Floating price for chat and standard variants */}
+        {(variant === 'chat' || variant === 'standard') && (
           <div className="chat-floating-price">
             ${price.toLocaleString()}/mo
           </div>
@@ -36,7 +44,7 @@ const RoomCard = ({ room, variant = 'standard' }) => {
 
         {variant !== 'chat' && (
           <button className="favorite-btn">
-            <Heart size={20} className={clsx('heart-icon', isFavorite && 'filled')} />
+            <Heart size={18} className={clsx('heart-icon', isFavorite && 'filled')} />
           </button>
         )}
       </div>
@@ -50,13 +58,10 @@ const RoomCard = ({ room, variant = 'standard' }) => {
               {rating && (
                 <div className="room-card-rating">
                   <Star size={14} className="star-icon" />
-                  <span>{rating}</span>
+                  <span>{rating.toFixed(1)}</span>
                 </div>
               )}
             </div>
-            <p className="room-card-price">
-              <span>${price}</span>/mo
-            </p>
             <div className="room-card-location">
               <MapPin size={14} />
               <span>{location} {distance ? `• ${distance}` : ''}</span>
