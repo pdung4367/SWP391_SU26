@@ -10,7 +10,8 @@ import {
   Plus, 
   HelpCircle, 
   LogOut,
-  Home
+  Home,
+  CreditCard
 } from 'lucide-react';
 import { ROUTES } from '../../constants';
 import './Sidebar.css';
@@ -20,10 +21,11 @@ const Sidebar = () => {
 
   const navLinks = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.LANDLORD.DASHBOARD },
+    { icon: <BarChart3 size={20} />, label: 'Reports & Analytics', path: ROUTES.LANDLORD.ANALYTICS },
+    { icon: <CreditCard size={20} />, label: 'Payment & Transaction', path: ROUTES.LANDLORD.TRANSACTIONS },
     { icon: <Users size={20} />, label: 'Users', path: ROUTES.LANDLORD.USERS },
     { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
     { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.LANDLORD.REQUESTS },
-    { icon: <BarChart3 size={20} />, label: 'Analytics', path: ROUTES.LANDLORD.ANALYTICS },
     { icon: <Settings size={20} />, label: 'Settings', path: ROUTES.LANDLORD.SETTINGS },
   ];
 

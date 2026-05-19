@@ -19,6 +19,7 @@ export const ROUTES = {
     REQUESTS: '/admin/requests',
     USERS: '/admin/users',
     ANALYTICS: '/admin/analytics',
+    TRANSACTIONS: '/admin/transactions',
     SETTINGS: '/admin/settings',
     HELP: '/admin/help',
   }
