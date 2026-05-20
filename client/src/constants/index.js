@@ -35,6 +35,7 @@ export const ROUTES = {
     PROFILE: '/landlord/profile',
     NOTIFICATIONS: '/landlord/notifications',
     MANAGE_ROOMS: '/landlord/rooms',
+    MESSAGES: '/landlord/messages',
   },
 
   ADMIN: {
