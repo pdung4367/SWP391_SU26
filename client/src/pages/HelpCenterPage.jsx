@@ -16,7 +16,8 @@ import {
   Phone,
   AlertTriangle,
   ArrowRight,
-  ArrowLeft
+  ArrowLeft,
+  Search
 } from 'lucide-react';
 import './HelpCenterPage.css';
 
@@ -141,17 +142,15 @@ const HelpCenterPage = () => {
         </p>
       </div>
 
-
-        {/* Large Central Search Box */}
-        <div className="help-search-container">
-          <Search size={22} className="help-search-icon" />
-          <input
-            type="text"
-            placeholder="Search for articles, guides, or keywords..."
-            className="help-search-input"
-          />
-        </div>
-      </section>
+      {/* Large Central Search Box */}
+      <div className="help-search-container">
+        <Search size={22} className="help-search-icon" />
+        <input
+          type="text"
+          placeholder="Search for articles, guides, or keywords..."
+          className="help-search-input"
+        />
+      </div>
 
       {/* Grid split */}
       <div className="help-grid-split">

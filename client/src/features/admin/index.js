@@ -6,6 +6,7 @@ export { default as ListingsPage } from './pages/ListingsPage';
 export { default as UsersPage } from './pages/UsersPage';
 export { default as RequestsPage } from './pages/RequestsPage';
 export { default as SettingsPage } from './pages/SettingsPage';
+export { default as ViolationManagementPage } from './pages/ViolationManagementPage';
 
 // Components
 export { default as StatCard } from './components/StatCard';

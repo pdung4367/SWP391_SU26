@@ -9,10 +9,7 @@ import {
   Settings,
   HelpCircle,
   LogOut,
-
-  Home,
-  CreditCard
-
+  CreditCard,
 } from 'lucide-react';
 import { ROUTES } from '../../constants';
 import './Sidebar.css';
@@ -20,22 +17,13 @@ import './Sidebar.css';
 const Sidebar = () => {
   const location = useLocation();
 
-  // Navigation Links ordered exactly as Figma design:
-  // Dashboard -> Listings -> Requests -> Analytics -> Users -> Settings
   const navLinks = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.LANDLORD.DASHBOARD },
-
     { icon: <BarChart3 size={20} />, label: 'Reports & Analytics', path: ROUTES.LANDLORD.ANALYTICS },
     { icon: <CreditCard size={20} />, label: 'Payment & Transaction', path: ROUTES.LANDLORD.TRANSACTIONS },
     { icon: <Users size={20} />, label: 'Users', path: ROUTES.LANDLORD.USERS },
     { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
     { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.LANDLORD.REQUESTS },
-
-    { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
-    { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.LANDLORD.REQUESTS },
-    { icon: <BarChart3 size={20} />, label: 'Analytics', path: ROUTES.LANDLORD.ANALYTICS },
-    { icon: <Users size={20} />, label: 'Users', path: ROUTES.LANDLORD.USERS },
-
     { icon: <Settings size={20} />, label: 'Settings', path: ROUTES.LANDLORD.SETTINGS },
   ];
 
@@ -43,12 +31,12 @@ const Sidebar = () => {
 
   return (
     <aside className="admin-sidebar">
-      {/* Brand Header (Matches Figma Brand Element with Avatar) */}
+      {/* Brand Header */}
       <Link to={ROUTES.LANDLORD.PROFILE} className="sidebar-brand-profile-link">
         <div className="sidebar-brand-profile">
-          <img 
-            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&auto=format&fit=crop&q=80" 
-            alt="Robert Sterling" 
+          <img
+            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&auto=format&fit=crop&q=80"
+            alt="Admin"
             className="sidebar-brand-avatar"
           />
           <div className="profile-info">
@@ -61,7 +49,6 @@ const Sidebar = () => {
       {/* Navigation Links */}
       <nav className="sidebar-nav">
         <ul>
-
           {navLinks.map((link) => (
             <li key={link.label}>
               <Link
@@ -73,26 +60,6 @@ const Sidebar = () => {
               </Link>
             </li>
           ))}
-
-          {navLinks.map((link) => {
-            const isSettingsOrProfileActive = 
-              link.path === ROUTES.LANDLORD.SETTINGS && 
-              (location.pathname === ROUTES.LANDLORD.SETTINGS || location.pathname === ROUTES.LANDLORD.PROFILE);
-            const isActive = location.pathname === link.path || isSettingsOrProfileActive;
-
-            return (
-              <li key={link.label}>
-                <Link
-                  to={link.path}
-                  className={`sidebar-link ${isActive ? 'active' : ''}`}
-                >
-                  {link.icon}
-                  <span>{link.label}</span>
-                </Link>
-              </li>
-            );
-          })}
-
         </ul>
       </nav>
 
@@ -100,15 +67,9 @@ const Sidebar = () => {
       <div className="sidebar-footer">
         <ul className="footer-links">
           <li>
-
-            <Link 
-              to={ROUTES.LANDLORD.HELP} 
-              className={`sidebar-link ${isActive(ROUTES.LANDLORD.HELP) ? 'active' : ''}`}
-
             <Link
               to={ROUTES.LANDLORD.HELP}
-              className={`sidebar-link ${location.pathname === ROUTES.LANDLORD.HELP ? 'active-help' : ''}`}
-
+              className={`sidebar-link ${isActive(ROUTES.LANDLORD.HELP) ? 'active' : ''}`}
             >
               <HelpCircle size={20} />
               <span>Help</span>

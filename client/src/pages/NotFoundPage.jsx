@@ -1,29 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ROUTES } from '../constants';
-import './NotFoundPage.css';
-
-const NotFoundPage = () => {
-  return (
-    <div className="not-found-page">
-      <h1 className="not-found-code">404</h1>
-      <p className="not-found-title">Page not found</p>
-      <p className="not-found-desc">The page you're looking for doesn't exist or has been moved.</p>
-      <Link to={ROUTES.HOME} className="not-found-link">Go back home</Link>
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Home, 
-  Search, 
-  Cpu, 
-  HelpCircle, 
-  ArrowRight,
-  MessageSquare,
-  X,
-  Sparkles
-} from 'lucide-react';
+import { Home, Search, Cpu, HelpCircle, X } from 'lucide-react';
 import { ROUTES } from '../constants';
-import dogIllustration from '../assets/images/404-dog.png';
 import './NotFoundPage.css';
 
 const NotFoundPage = () => {
@@ -34,16 +12,6 @@ const NotFoundPage = () => {
     <div className="notfound-page-container">
       {/* 404 Split Panel Layout */}
       <div className="notfound-card-wrapper">
-        
-        {/* Left Side: Custom Cuteconfused Dog Illustration */}
-        <div className="notfound-visual-pane">
-          <img 
-            src={dogIllustration} 
-            alt="Page Not Found Illustration" 
-            className="dog-illustration-img" 
-          />
-        </div>
-
         {/* Right Side: Text & Quick-Path navigators */}
         <div className="notfound-content-pane">
           <span className="error-code-badge">404</span>
@@ -61,8 +29,8 @@ const NotFoundPage = () => {
           {/* 3 Interactive Cards Row */}
           <div className="suggest-cards-grid">
             {/* Card 1: Home */}
-            <div 
-              onClick={() => navigate(ROUTES.HOME)} 
+            <div
+              onClick={() => navigate(ROUTES.HOME)}
               className="suggest-card-item"
             >
               <div className="suggest-icon-circle blue-circle">
@@ -72,8 +40,8 @@ const NotFoundPage = () => {
             </div>
 
             {/* Card 2: Search Rooms */}
-            <div 
-              onClick={() => navigate(ROUTES.ROOMS)} 
+            <div
+              onClick={() => navigate(ROUTES.ROOMS)}
               className="suggest-card-item"
             >
               <div className="suggest-icon-circle purple-circle">
@@ -83,8 +51,8 @@ const NotFoundPage = () => {
             </div>
 
             {/* Card 3: AI Assistant */}
-            <div 
-              onClick={() => setShowAiModal(true)} 
+            <div
+              onClick={() => setShowAiModal(true)}
               className="suggest-card-item"
             >
               <div className="suggest-icon-circle indigo-circle">
@@ -98,16 +66,14 @@ const NotFoundPage = () => {
           <div className="notfound-footer-row">
             <HelpCircle size={16} className="help-footer-icon" />
             <span>Need further assistance?</span>
-            <span 
-              onClick={() => navigate(ROUTES.LANDLORD.HELP)}
+            <span
+              onClick={() => navigate(ROUTES.HELP)}
               className="contact-support-highlight"
             >
               Contact Support
             </span>
           </div>
-
         </div>
-
       </div>
 
       {/* Mini Interactive AI Assistant Dialog Modal */}
@@ -124,7 +90,7 @@ const NotFoundPage = () => {
                   <span>Online Assistant</span>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setShowAiModal(false)}
                 className="btn-close-ai-assist"
               >
@@ -143,7 +109,7 @@ const NotFoundPage = () => {
 
               {/* Bot selection triggers */}
               <div className="ai-suggest-options">
-                <button 
+                <button
                   onClick={() => {
                     setShowAiModal(false);
                     navigate(ROUTES.HOME);
@@ -154,7 +120,7 @@ const NotFoundPage = () => {
                   <span>Go to Homepage</span>
                 </button>
 
-                <button 
+                <button
                   onClick={() => {
                     setShowAiModal(false);
                     navigate(ROUTES.ROOMS);
@@ -165,10 +131,10 @@ const NotFoundPage = () => {
                   <span>Search Property Listings</span>
                 </button>
 
-                <button 
+                <button
                   onClick={() => {
                     setShowAiModal(false);
-                    navigate(ROUTES.LANDLORD.HELP);
+                    navigate(ROUTES.HELP);
                   }}
                   className="ai-option-btn outline"
                 >

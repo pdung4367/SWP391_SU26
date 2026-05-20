@@ -1,5 +1,4 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ROUTES } from '../constants';
 
 // Layouts
@@ -11,12 +10,29 @@ import AdminLayout from '../layouts/AdminLayout';
 import { LoginPage, RegisterPage } from '../features/auth';
 
 // Tenant feature
-import { SearchPage, FavoritesPage, DepositPaymentPage } from '../features/tenant';
-// Features (using unified exports)
-import { LoginPage, RegisterPage, ForgotPasswordPage } from '../features/auth';
-import { VerificationPage } from '../features/verification';
-import { SearchPage, FavoritesPage, DepositPaymentPage, RoomDetailPage, AIChatPage, TenantNotificationsPage, RentalRequestPage, DepositHistoryPage, TenantProfilePage } from '../features/tenant';
-import { LandlordDashboard, ManageListingsPage, AddNewPropertyPage, DepositManagementPage, AISystemMonitoringPage, LandlordProfilePage, MessagesPage, LandlordNotificationsPage } from '../features/landlord';
+import {
+  SearchPage,
+  FavoritesPage,
+  DepositPaymentPage,
+  RoomDetailPage,
+  AIChatPage,
+  TenantNotificationsPage,
+  RentalRequestPage,
+  DepositHistoryPage,
+  TenantProfilePage,
+} from '../features/tenant';
+
+// Landlord feature
+import {
+  LandlordDashboard,
+  ManageListingsPage,
+  AddNewPropertyPage,
+  DepositManagementPage,
+  AISystemMonitoringPage,
+  LandlordProfilePage,
+  MessagesPage,
+  LandlordNotificationsPage,
+} from '../features/landlord';
 
 // Admin feature
 import {
@@ -25,22 +41,25 @@ import {
   TransactionsPage,
   ListingsPage,
   UsersPage,
-  RequestsPage,
-  SettingsPage,
+  SettingsPage as AdminSettingsPage,
+  ViolationManagementPage,
 } from '../features/admin';
+
+// Rental feature
+import { RentalRequestManagementPage } from '../features/rental';
+
+// Verification feature
+import { VerificationPage } from '../features/verification';
 
 // Shared pages
 import HomePage from '../pages/HomePage';
-import { RentalRequestManagementPage } from '../features/rental';
 import HelpCenterPage from '../pages/HelpCenterPage';
-import TermsPage from '../pages/TermsPage';
-import SettingsPage from '../pages/SettingsPage';
 import NotFoundPage from '../pages/NotFoundPage';
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public / Tenant Routes */}
+      {/* ===== PUBLIC / TENANT ROUTES ===== */}
       <Route element={<MainLayout />}>
         <Route path={ROUTES.HOME} element={<HomePage />} />
         <Route path={ROUTES.ROOMS} element={<SearchPage />} />
@@ -54,51 +73,43 @@ const AppRoutes = () => {
         <Route path={ROUTES.HELP} element={<HelpCenterPage />} />
       </Route>
 
-      {/* Auth Routes */}
+      {/* ===== AUTH ROUTES ===== */}
       <Route element={<AuthLayout />}>
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-        <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
+        <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       </Route>
 
-      {/* Standalone Pages (no layout wrapper) */}
-      <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+      {/* ===== STANDALONE PAGES (NO LAYOUT) ===== */}
       <Route path={ROUTES.TENANT.PAYMENT} element={<DepositPaymentPage />} />
-      <Route path={ROUTES.TERMS} element={<TermsPage />} />
+      <Route path={ROUTES.VERIFICATION} element={<VerificationPage />} />
 
-      {/* Admin / Landlord Routes */}
+      {/* ===== LANDLORD ROUTES ===== */}
       <Route element={<AdminLayout />}>
-        <Route path={ROUTES.LANDLORD.DASHBOARD} element={<DashboardPage />} />
-        <Route path={ROUTES.LANDLORD.ANALYTICS} element={<AnalyticsPage />} />
-        <Route path={ROUTES.LANDLORD.TRANSACTIONS} element={<TransactionsPage />} />
-        <Route path={ROUTES.LANDLORD.LISTINGS} element={<ListingsPage />} />
-        <Route path={ROUTES.LANDLORD.USERS} element={<UsersPage />} />
-        <Route path={ROUTES.LANDLORD.REQUESTS} element={<RequestsPage />} />
-        <Route path={ROUTES.LANDLORD.SETTINGS} element={<SettingsPage />} />
-        <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
-      </Route>
-
-      {/* Standalone layouts */}
-      <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
-      <Route path={ROUTES.TENANT.PAYMENT} element={<DepositPaymentPage />} />
         <Route path={ROUTES.LANDLORD.DASHBOARD} element={<LandlordDashboard />} />
-        <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
-        <Route path={ROUTES.LANDLORD.NOTIFICATIONS} element={<LandlordNotificationsPage />} />
-        <Route path={ROUTES.LANDLORD.MESSAGES} element={<MessagesPage />} />
-
-        <Route path={ROUTES.LANDLORD.USERS} element={<div style={{ padding: '1rem' }}><h2>Users Management</h2><p>Admin console users database table.</p></div>} />
         <Route path={ROUTES.LANDLORD.LISTINGS} element={<ManageListingsPage />} />
-        <Route path={ROUTES.LANDLORD.DEPOSITS} element={<DepositManagementPage />} />
         <Route path={ROUTES.LANDLORD.NEW_LISTING} element={<AddNewPropertyPage />} />
+        <Route path={ROUTES.LANDLORD.DEPOSITS} element={<DepositManagementPage />} />
         <Route path={ROUTES.LANDLORD.REQUESTS} element={<RentalRequestManagementPage />} />
         <Route path={ROUTES.LANDLORD.ANALYTICS} element={<AISystemMonitoringPage />} />
         <Route path={ROUTES.LANDLORD.PROFILE} element={<LandlordProfilePage />} />
-        <Route path={ROUTES.LANDLORD.SETTINGS} element={<SettingsPage />} />
+        <Route path={ROUTES.LANDLORD.MESSAGES} element={<MessagesPage />} />
+        <Route path={ROUTES.LANDLORD.NOTIFICATIONS} element={<LandlordNotificationsPage />} />
+        <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
       </Route>
 
-      {/* Standalone Split & Minimal Layouts */}
-      <Route path={ROUTES.VERIFICATION} element={<VerificationPage />} />
+      {/* ===== ADMIN ROUTES ===== */}
+      <Route element={<AdminLayout />}>
+        <Route path={ROUTES.ADMIN.DASHBOARD} element={<DashboardPage />} />
+        <Route path={ROUTES.ADMIN.ANALYTICS} element={<AnalyticsPage />} />
+        <Route path={ROUTES.ADMIN.TRANSACTIONS} element={<TransactionsPage />} />
+        <Route path={ROUTES.ADMIN.LISTINGS} element={<ListingsPage />} />
+        <Route path={ROUTES.ADMIN.USERS} element={<UsersPage />} />
+        <Route path={ROUTES.ADMIN.MODERATION} element={<ViolationManagementPage />} />
+        <Route path={ROUTES.ADMIN.SETTINGS} element={<AdminSettingsPage />} />
+        <Route path={ROUTES.ADMIN.HELP} element={<HelpCenterPage />} />
+      </Route>
 
-      {/* Fallback */}
+      {/* ===== 404 FALLBACK ===== */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
