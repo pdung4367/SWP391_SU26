@@ -14,7 +14,7 @@ import {
   User,
   Sparkles
 } from 'lucide-react';
-import Button from '../components/common/Button';
+import Button from '../../../components/common/Button';
 import './MessagesPage.css';
 
 const INITIAL_THREADS = [
