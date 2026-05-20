@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -9,6 +8,7 @@ import {
   Settings,
   HelpCircle,
   LogOut,
+  CreditCard,
 } from 'lucide-react';
 import { ROUTES } from '../../constants';
 import './Sidebar.css';
@@ -16,25 +16,25 @@ import './Sidebar.css';
 const Sidebar = () => {
   const location = useLocation();
 
-  // Navigation Links ordered exactly as Figma design:
-  // Dashboard -> Listings -> Requests -> Analytics -> Users -> Settings
   const navLinks = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.LANDLORD.DASHBOARD },
+    { icon: <BarChart3 size={20} />, label: 'Reports & Analytics', path: ROUTES.LANDLORD.ANALYTICS },
     { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
     { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.LANDLORD.REQUESTS },
-    { icon: <BarChart3 size={20} />, label: 'Analytics', path: ROUTES.LANDLORD.ANALYTICS },
-    { icon: <Users size={20} />, label: 'Users', path: ROUTES.LANDLORD.USERS },
+    { icon: <CreditCard size={20} />, label: 'Deposits', path: ROUTES.LANDLORD.DEPOSITS },
     { icon: <Settings size={20} />, label: 'Settings', path: ROUTES.LANDLORD.SETTINGS },
   ];
 
+  const isActive = (path) => location.pathname === path;
+
   return (
     <aside className="admin-sidebar">
-      {/* Brand Header (Matches Figma Brand Element with Avatar) */}
+      {/* Brand Header */}
       <Link to={ROUTES.LANDLORD.PROFILE} className="sidebar-brand-profile-link">
         <div className="sidebar-brand-profile">
-          <img 
-            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&auto=format&fit=crop&q=80" 
-            alt="Robert Sterling" 
+          <img
+            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&auto=format&fit=crop&q=80"
+            alt="Admin"
             className="sidebar-brand-avatar"
           />
           <div className="profile-info">
@@ -47,24 +47,17 @@ const Sidebar = () => {
       {/* Navigation Links */}
       <nav className="sidebar-nav">
         <ul>
-          {navLinks.map((link) => {
-            const isSettingsOrProfileActive = 
-              link.path === ROUTES.LANDLORD.SETTINGS && 
-              (location.pathname === ROUTES.LANDLORD.SETTINGS || location.pathname === ROUTES.LANDLORD.PROFILE);
-            const isActive = location.pathname === link.path || isSettingsOrProfileActive;
-
-            return (
-              <li key={link.label}>
-                <Link
-                  to={link.path}
-                  className={`sidebar-link ${isActive ? 'active' : ''}`}
-                >
-                  {link.icon}
-                  <span>{link.label}</span>
-                </Link>
-              </li>
-            );
-          })}
+          {navLinks.map((link) => (
+            <li key={link.label}>
+              <Link
+                to={link.path}
+                className={`sidebar-link ${isActive(link.path) ? 'active' : ''}`}
+              >
+                {link.icon}
+                <span>{link.label}</span>
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
 
@@ -74,7 +67,7 @@ const Sidebar = () => {
           <li>
             <Link
               to={ROUTES.LANDLORD.HELP}
-              className={`sidebar-link ${location.pathname === ROUTES.LANDLORD.HELP ? 'active-help' : ''}`}
+              className={`sidebar-link ${isActive(ROUTES.LANDLORD.HELP) ? 'active' : ''}`}
             >
               <HelpCircle size={20} />
               <span>Help</span>
