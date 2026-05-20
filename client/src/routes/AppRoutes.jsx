@@ -17,6 +17,7 @@ import { LandlordDashboard, ManageListingsPage, AddNewPropertyPage, DepositManag
 import HomePage from '../pages/HomePage';
 import { RentalRequestManagementPage } from '../features/rental';
 import HelpCenterPage from '../pages/HelpCenterPage';
+import ContactSupportPage from '../pages/ContactSupportPage';
 import TermsPage from '../pages/TermsPage';
 import SettingsPage from '../pages/SettingsPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -53,6 +54,7 @@ const AppRoutes = () => {
       <Route element={<AdminLayout />}>
         <Route path={ROUTES.LANDLORD.DASHBOARD} element={<LandlordDashboard />} />
         <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
+        <Route path={ROUTES.LANDLORD.CONTACT_SUPPORT} element={<ContactSupportPage />} />
         <Route path={ROUTES.LANDLORD.NOTIFICATIONS} element={<LandlordNotificationsPage />} />
         <Route path={ROUTES.LANDLORD.MESSAGES} element={<MessagesPage />} />
 
