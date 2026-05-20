@@ -1,525 +1,334 @@
-import React, { useState, useRef } from 'react';
-import { 
-  User, 
-  Building2, 
-  Mail, 
-  Phone, 
-  Lock, 
-  Upload, 
-  Check, 
-  X, 
-  CheckCircle2, 
-  AlertCircle 
+import React, { useState } from 'react';
+import {
+  Globe,
+  Bell,
+  Shield,
+  Users,
+  Settings,
+  Monitor,
+  Bot,
+  ChevronRight,
+  Check,
 } from 'lucide-react';
 import './SettingsPage.css';
 
 const SettingsPage = () => {
-  // Navigation / Tabs State
-  // activeMainTab can be 'personal' or 'business'
-  const [activeMainTab, setActiveMainTab] = useState('personal');
-  const [activeSubTab, setActiveSubTab] = useState('Personal Info'); // For styling active tab in menu
+  const [activeSection, setActiveSection] = useState('general');
 
-  // References for scrolling inside 'personal' view
-  const personalRef = useRef(null);
-  const contactRef = useRef(null);
-  const securityRef = useRef(null);
+  // Appearance
+  const [appearance, setAppearance] = useState('light');
 
-  // Form State - Personal Information
-  const [personalInfo, setPersonalInfo] = useState({
-    firstName: 'Robert',
-    lastName: 'Chen',
-    bio: 'Experienced property manager specializing in high-end residential boarding houses. Committed to providing premium, frictionless rental experiences.'
-  });
-  const [isEditingPersonal, setIsEditingPersonal] = useState(false);
-  const [tempPersonalInfo, setTempPersonalInfo] = useState({ ...personalInfo });
+  // Language & Region
+  const [language, setLanguage] = useState('English (United States)');
+  const [dateFormat, setDateFormat] = useState('MM/DD/YYYY');
 
-  // Form State - Contact Info
-  const [contactInfo, setContactInfo] = useState({
-    email: 'r.chen@smartboarding.com',
-    phone: '+1 (555) 123-4567'
-  });
-  const [isEditingContact, setIsEditingContact] = useState(false);
-  const [tempContactInfo, setTempContactInfo] = useState({ ...contactInfo });
-
-  // Form State - Business Details
-  const [businessInfo, setBusinessInfo] = useState({
-    companyName: 'Smart Boarding Ltd.',
-    taxId: 'TX-98234-89',
-    officeAddress: 'Suite 400, 100 Innovation Way, Tech District',
-    licenseNumber: 'BL-2024-998822',
-    businessPhone: '+1 (555) 987-6543'
-  });
-  const [isEditingBusiness, setIsEditingBusiness] = useState(false);
-  const [tempBusinessInfo, setTempBusinessInfo] = useState({ ...businessInfo });
-
-  // Form State - Security (Password)
-  const [securityInfo, setSecurityInfo] = useState({
-    currentPassword: '••••••••', // visual placeholder
-    newPassword: '',
-    confirmNewPassword: ''
+  // Notification Preferences
+  const [notifications, setNotifications] = useState({
+    email: true,
+    sms: false,
+    push: true,
   });
 
-  // Profile Picture State
-  const [profilePic, setProfilePic] = useState('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&auto=format&fit=crop&q=80');
-  const fileInputRef = useRef(null);
+  // AI Support Assistant
+  const [aiEnabled, setAiEnabled] = useState(true);
+  const [aiName, setAiName] = useState('SmartHost AI');
+  const [aiThreshold, setAiThreshold] = useState(50);
 
-  // Toast Notification State
-  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  // Toast
+  const [saved, setSaved] = useState(false);
 
-  const showToast = (message, type = 'success') => {
-    setToast({ show: true, message, type });
-    setTimeout(() => {
-      setToast(prev => ({ ...prev, show: false }));
-    }, 3500);
+  const handleSave = () => {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
   };
 
-  // Profile Picture Upload Handler
-  const handleUpdatePhotoClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePic(reader.result);
-        showToast('Profile photo updated successfully!', 'success');
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Personal Info Form Handlers
-  const handleEditPersonal = () => {
-    setTempPersonalInfo({ ...personalInfo });
-    setIsEditingPersonal(true);
-  };
-
-  const handleCancelPersonal = () => {
-    setIsEditingPersonal(false);
-  };
-
-  const handleSavePersonal = () => {
-    setPersonalInfo({ ...tempPersonalInfo });
-    setIsEditingPersonal(false);
-    showToast('Personal information saved successfully!', 'success');
-  };
-
-  // Contact Info Form Handlers
-  const handleEditContact = () => {
-    setTempContactInfo({ ...contactInfo });
-    setIsEditingContact(true);
-  };
-
-  const handleCancelContact = () => {
-    setIsEditingContact(false);
-  };
-
-  const handleSaveContact = () => {
-    setContactInfo({ ...tempContactInfo });
-    setIsEditingContact(false);
-    showToast('Contact information saved successfully!', 'success');
-  };
-
-  // Business Info Form Handlers
-  const handleEditBusiness = () => {
-    setTempBusinessInfo({ ...businessInfo });
-    setIsEditingBusiness(true);
-  };
-
-  const handleCancelBusiness = () => {
-    setIsEditingBusiness(false);
-  };
-
-  const handleSaveBusiness = () => {
-    setBusinessInfo({ ...tempBusinessInfo });
-    setIsEditingBusiness(false);
-    showToast('Business details saved successfully!', 'success');
-  };
-
-  // Security Form Handlers
-  const handleUpdatePassword = (e) => {
-    e.preventDefault();
-    if (!securityInfo.newPassword || !securityInfo.confirmNewPassword) {
-      showToast('Please fill in both new password fields.', 'error');
-      return;
-    }
-    if (securityInfo.newPassword !== securityInfo.confirmNewPassword) {
-      showToast('New passwords do not match.', 'error');
-      return;
-    }
-    if (securityInfo.newPassword.length < 8) {
-      showToast('New password must be at least 8 characters long.', 'error');
-      return;
-    }
-    // Simulation Success
-    setSecurityInfo({
-      currentPassword: '••••••••',
-      newPassword: '',
-      confirmNewPassword: ''
-    });
-    showToast('Password updated successfully!', 'success');
-  };
-
-  // Scroll spy helper
-  const scrollToRef = (ref, tabName) => {
-    setActiveMainTab('personal');
-    setActiveSubTab(tabName);
-    setTimeout(() => {
-      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 100);
-  };
+  const navItems = [
+    { id: 'general', label: 'General', icon: <Settings size={17} /> },
+    { id: 'security', label: 'Security', icon: <Shield size={17} /> },
+    { id: 'alerts', label: 'Alerts', icon: <Bell size={17} /> },
+    { id: 'team', label: 'Team', icon: <Users size={17} /> },
+  ];
 
   return (
-    <div className="account-settings-container">
-      {/* Toast Notification */}
-      {toast.show && (
-        <div className={`settings-toast ${toast.type}`}>
-          {toast.type === 'success' ? (
-            <CheckCircle2 size={18} className="toast-icon-svg" />
-          ) : (
-            <AlertCircle size={18} className="toast-icon-svg" />
-          )}
-          <span>{toast.message}</span>
-        </div>
-      )}
-
-      {/* Page Title & Header */}
-      <div className="settings-header-section">
-        <h1 className="settings-page-title">Account Settings</h1>
-        <p className="settings-page-subtitle">
-          Manage your professional profile and security preferences.
-        </p>
+    <div className="sys-settings-wrapper">
+      {/* Page Header */}
+      <div className="sys-settings-header">
+        <h1 className="sys-settings-title">System Settings</h1>
+        <p className="sys-settings-subtitle">Manage your platform preferences and configurations.</p>
       </div>
 
-      {/* Main Grid Workspace */}
-      <div className="settings-workspace-grid">
-        
-        {/* Left Side: Profile Card & Tab Navigation List */}
-        <div className="settings-left-column">
-          
-          {/* Card 1: Avatar / Profile Card */}
-          <div className="left-profile-summary-card">
-            <div className="settings-avatar-wrapper">
-              <img src={profilePic} alt="Robert Chen Avatar" className="settings-avatar-img" />
-            </div>
-            
-            <h2 className="profile-name-text">
-              {personalInfo.firstName} {personalInfo.lastName}
-            </h2>
-            <span className="profile-role-title">Senior Property Manager</span>
-            
-            <button className="btn-update-photo" onClick={handleUpdatePhotoClick}>
-              <Upload size={14} />
-              <span>Update Photo</span>
-            </button>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange} 
-              accept="image/*" 
-              style={{ display: 'none' }} 
-            />
-          </div>
-
-          {/* Card 2: Tab Selections */}
-          <div className="left-tabs-navigation-card">
-            <button 
-              className={`menu-tab-btn ${activeMainTab === 'personal' && activeSubTab === 'Personal Info' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveMainTab('personal');
-                setActiveSubTab('Personal Info');
-                personalRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }}
+      <div className="sys-settings-layout">
+        {/* Left Nav */}
+        <nav className="sys-settings-nav">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              className={`sys-nav-item ${activeSection === item.id ? 'active' : ''}`}
+              onClick={() => setActiveSection(item.id)}
             >
-              <User size={18} className="tab-icon" />
-              <span>Personal Info</span>
+              <span className="sys-nav-icon">{item.icon}</span>
+              <span>{item.label}</span>
+              {activeSection === item.id && <ChevronRight size={15} className="sys-nav-chevron" />}
             </button>
+          ))}
+        </nav>
 
-            <button 
-              className={`menu-tab-btn ${activeMainTab === 'business' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveMainTab('business');
-                setActiveSubTab('Business Details');
-              }}
-            >
-              <Building2 size={18} className="tab-icon" />
-              <span>Business Details</span>
-            </button>
+        {/* Right Content */}
+        <div className="sys-settings-content">
 
-            <button 
-              className={`menu-tab-btn ${activeMainTab === 'personal' && activeSubTab === 'Contact Info' ? 'active' : ''}`}
-              onClick={() => scrollToRef(contactRef, 'Contact Info')}
-            >
-              <Mail size={18} className="tab-icon" />
-              <span>Contact Info</span>
-            </button>
-
-            <button 
-              className={`menu-tab-btn ${activeMainTab === 'personal' && activeSubTab === 'Security' ? 'active' : ''}`}
-              onClick={() => scrollToRef(securityRef, 'Security')}
-            >
-              <Lock size={18} className="tab-icon" />
-              <span>Security</span>
-            </button>
-          </div>
-
-        </div>
-
-        {/* Right Side: Tab panel contents */}
-        <div className="settings-right-column">
-          
-          {activeMainTab === 'personal' ? (
-            <div className="settings-sections-stack">
-              
-              {/* Card 1: Personal Information */}
-              <div className="settings-card" ref={personalRef}>
-                <div className="settings-card-header">
-                  <h3 className="card-title-text">Personal Information</h3>
-                  {isEditingPersonal ? (
-                    <div className="editing-actions">
-                      <button className="btn-action-link cancel" onClick={handleCancelPersonal}>
-                        Cancel
-                      </button>
-                      <button className="btn-action-link save" onClick={handleSavePersonal}>
-                        Save
-                      </button>
-                    </div>
-                  ) : (
-                    <button className="btn-action-link edit" onClick={handleEditPersonal}>
-                      Edit
-                    </button>
-                  )}
-                </div>
-
-                <div className="settings-card-body">
-                  <div className="inputs-row">
-                    <div className="settings-input-group">
-                      <label className="input-field-label">First Name</label>
-                      <input 
-                        type="text" 
-                        value={isEditingPersonal ? tempPersonalInfo.firstName : personalInfo.firstName}
-                        onChange={e => setTempPersonalInfo(prev => ({ ...prev, firstName: e.target.value }))}
-                        disabled={!isEditingPersonal}
-                        className={`settings-input-box ${isEditingPersonal ? 'enabled' : 'disabled'}`}
-                      />
-                    </div>
-                    <div className="settings-input-group">
-                      <label className="input-field-label">Last Name</label>
-                      <input 
-                        type="text" 
-                        value={isEditingPersonal ? tempPersonalInfo.lastName : personalInfo.lastName}
-                        onChange={e => setTempPersonalInfo(prev => ({ ...prev, lastName: e.target.value }))}
-                        disabled={!isEditingPersonal}
-                        className={`settings-input-box ${isEditingPersonal ? 'enabled' : 'disabled'}`}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="settings-input-group full-width" style={{ marginTop: '1.25rem' }}>
-                    <label className="input-field-label">Bio</label>
-                    <textarea 
-                      value={isEditingPersonal ? tempPersonalInfo.bio : personalInfo.bio}
-                      onChange={e => setTempPersonalInfo(prev => ({ ...prev, bio: e.target.value }))}
-                      disabled={!isEditingPersonal}
-                      rows={4}
-                      className={`settings-textarea-box ${isEditingPersonal ? 'enabled' : 'disabled'}`}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 2: Contact Info */}
-              <div className="settings-card" ref={contactRef}>
-                <div className="settings-card-header">
-                  <h3 className="card-title-text">Contact Info</h3>
-                  {isEditingContact ? (
-                    <div className="editing-actions">
-                      <button className="btn-action-link cancel" onClick={handleCancelContact}>
-                        Cancel
-                      </button>
-                      <button className="btn-action-link save" onClick={handleSaveContact}>
-                        Save
-                      </button>
-                    </div>
-                  ) : (
-                    <button className="btn-action-link edit" onClick={handleEditContact}>
-                      Edit
-                    </button>
-                  )}
-                </div>
-
-                <div className="settings-card-body">
-                  <div className="inputs-row">
-                    <div className="settings-input-group with-prefix-icon">
-                      <label className="input-field-label">Email Address</label>
-                      <div className="input-icon-wrapper">
-                        <Mail size={16} className="input-prefix-icon" />
-                        <input 
-                          type="email" 
-                          value={isEditingContact ? tempContactInfo.email : contactInfo.email}
-                          onChange={e => setTempContactInfo(prev => ({ ...prev, email: e.target.value }))}
-                          disabled={!isEditingContact}
-                          className={`settings-input-box prefix-indent ${isEditingContact ? 'enabled' : 'disabled'}`}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="settings-input-group with-prefix-icon">
-                      <label className="input-field-label">Phone Number</label>
-                      <div className="input-icon-wrapper">
-                        <Phone size={16} className="input-prefix-icon" />
-                        <input 
-                          type="text" 
-                          value={isEditingContact ? tempContactInfo.phone : contactInfo.phone}
-                          onChange={e => setTempContactInfo(prev => ({ ...prev, phone: e.target.value }))}
-                          disabled={!isEditingContact}
-                          className={`settings-input-box prefix-indent ${isEditingContact ? 'enabled' : 'disabled'}`}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 3: Security */}
-              <div className="settings-card" ref={securityRef}>
-                <div className="settings-card-header no-border">
+          {activeSection === 'general' && (
+            <>
+              {/* Appearance */}
+              <div className="sys-section-card">
+                <div className="sys-section-header">
+                  <Monitor size={20} className="sys-section-icon" />
                   <div>
-                    <h3 className="card-title-text">Security</h3>
-                    <p className="card-subtitle-caption">
-                      Update your password to keep your account secure.
-                    </p>
+                    <h2 className="sys-section-title">Appearance</h2>
+                    <p className="sys-section-desc">Customize the look and feel of your admin dashboard.</p>
                   </div>
                 </div>
-
-                <form onSubmit={handleUpdatePassword} className="settings-card-body pt-0">
-                  <div className="settings-input-group" style={{ marginBottom: '1.25rem' }}>
-                    <label className="input-field-label">Current Password</label>
-                    <input 
-                      type="password" 
-                      value={securityInfo.currentPassword}
-                      onChange={e => setSecurityInfo(prev => ({ ...prev, currentPassword: e.target.value }))}
-                      className="settings-input-box secure-input"
-                    />
+                <div className="sys-appearance-grid">
+                  <div
+                    className={`sys-theme-card ${appearance === 'light' ? 'selected' : ''}`}
+                    onClick={() => setAppearance('light')}
+                  >
+                    <div className="sys-theme-preview light-preview">
+                      <div className="preview-bar" />
+                      <div className="preview-line" />
+                      <div className="preview-line short" />
+                    </div>
+                    <span className="sys-theme-label">Light Mode</span>
+                    {appearance === 'light' && <div className="sys-theme-check"><Check size={12} /></div>}
                   </div>
 
-                  <div className="settings-input-group" style={{ marginBottom: '1.25rem' }}>
-                    <label className="input-field-label">New Password</label>
-                    <input 
-                      type="password" 
-                      value={securityInfo.newPassword}
-                      onChange={e => setSecurityInfo(prev => ({ ...prev, newPassword: e.target.value }))}
-                      placeholder="••••••••"
-                      className="settings-input-box secure-input"
-                    />
+                  <div
+                    className={`sys-theme-card ${appearance === 'dark' ? 'selected' : ''}`}
+                    onClick={() => setAppearance('dark')}
+                  >
+                    <div className="sys-theme-preview dark-preview">
+                      <div className="preview-bar dark" />
+                      <div className="preview-line dark" />
+                      <div className="preview-line short dark" />
+                    </div>
+                    <span className="sys-theme-label">Dark Mode</span>
+                    {appearance === 'dark' && <div className="sys-theme-check"><Check size={12} /></div>}
                   </div>
 
-                  <div className="settings-input-group" style={{ marginBottom: '1.5rem' }}>
-                    <label className="input-field-label">Confirm New Password</label>
-                    <input 
-                      type="password" 
-                      value={securityInfo.confirmNewPassword}
-                      onChange={e => setSecurityInfo(prev => ({ ...prev, confirmNewPassword: e.target.value }))}
-                      placeholder="••••••••"
-                      className="settings-input-box secure-input"
-                    />
+                  <div
+                    className={`sys-theme-card ${appearance === 'system' ? 'selected' : ''}`}
+                    onClick={() => setAppearance('system')}
+                  >
+                    <div className="sys-theme-preview system-preview">
+                      <Monitor size={28} className="system-preview-icon" />
+                    </div>
+                    <span className="sys-theme-label">System Sync</span>
+                    <span className="sys-theme-sublabel">Follows OS setting</span>
+                    {appearance === 'system' && <div className="sys-theme-check"><Check size={12} /></div>}
                   </div>
-
-                  <button type="submit" className="btn-update-password-submit">
-                    Update Password
-                  </button>
-                </form>
+                </div>
               </div>
 
-            </div>
-          ) : (
-            /* Business Details Card (Rendered when Business Details tab is active) */
-            <div className="settings-sections-stack">
-              <div className="settings-card">
-                <div className="settings-card-header">
-                  <h3 className="card-title-text">Business Details</h3>
-                  {isEditingBusiness ? (
-                    <div className="editing-actions">
-                      <button className="btn-action-link cancel" onClick={handleCancelBusiness}>
-                        Cancel
-                      </button>
-                      <button className="btn-action-link save" onClick={handleSaveBusiness}>
-                        Save
-                      </button>
+              {/* Language & Region */}
+              <div className="sys-section-card">
+                <div className="sys-section-header">
+                  <Globe size={20} className="sys-section-icon" />
+                  <div>
+                    <h2 className="sys-section-title">Language & Region</h2>
+                    <p className="sys-section-desc">Set your primary language and regional formatting.</p>
+                  </div>
+                </div>
+                <div className="sys-form-row">
+                  <div className="sys-form-group">
+                    <label className="sys-form-label">Display Language</label>
+                    <select
+                      className="sys-select"
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                    >
+                      <option>English (United States)</option>
+                      <option>Vietnamese (Vietnam)</option>
+                      <option>French (France)</option>
+                      <option>Spanish (Spain)</option>
+                    </select>
+                  </div>
+                  <div className="sys-form-group">
+                    <label className="sys-form-label">Date Format</label>
+                    <select
+                      className="sys-select"
+                      value={dateFormat}
+                      onChange={(e) => setDateFormat(e.target.value)}
+                    >
+                      <option>MM/DD/YYYY</option>
+                      <option>DD/MM/YYYY</option>
+                      <option>YYYY-MM-DD</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Notification Preferences */}
+              <div className="sys-section-card">
+                <div className="sys-section-header">
+                  <Bell size={20} className="sys-section-icon" />
+                  <div>
+                    <h2 className="sys-section-title">Notification Preferences</h2>
+                    <p className="sys-section-desc">Choose how and when you want to be alerted.</p>
+                  </div>
+                </div>
+                <div className="sys-toggle-list">
+                  <div className="sys-toggle-item">
+                    <div className="sys-toggle-info">
+                      <span className="sys-toggle-name">Email Notifications</span>
+                      <span className="sys-toggle-desc">Receive daily summaries and critical alerts via email.</span>
                     </div>
-                  ) : (
-                    <button className="btn-action-link edit" onClick={handleEditBusiness}>
-                      Edit
+                    <button
+                      className={`sys-toggle-btn ${notifications.email ? 'on' : 'off'}`}
+                      onClick={() => setNotifications(n => ({ ...n, email: !n.email }))}
+                    >
+                      <span className="sys-toggle-thumb">
+                        {notifications.email && <Check size={10} />}
+                      </span>
                     </button>
-                  )}
-                </div>
-
-                <div className="settings-card-body">
-                  <div className="inputs-row">
-                    <div className="settings-input-group">
-                      <label className="input-field-label">Company Name</label>
-                      <input 
-                        type="text" 
-                        value={isEditingBusiness ? tempBusinessInfo.companyName : businessInfo.companyName}
-                        onChange={e => setTempBusinessInfo(prev => ({ ...prev, companyName: e.target.value }))}
-                        disabled={!isEditingBusiness}
-                        className={`settings-input-box ${isEditingBusiness ? 'enabled' : 'disabled'}`}
-                      />
-                    </div>
-                    <div className="settings-input-group">
-                      <label className="input-field-label">Tax ID / Business Registration</label>
-                      <input 
-                        type="text" 
-                        value={isEditingBusiness ? tempBusinessInfo.taxId : businessInfo.taxId}
-                        onChange={e => setTempBusinessInfo(prev => ({ ...prev, taxId: e.target.value }))}
-                        disabled={!isEditingBusiness}
-                        className={`settings-input-box ${isEditingBusiness ? 'enabled' : 'disabled'}`}
-                      />
-                    </div>
                   </div>
 
-                  <div className="inputs-row" style={{ marginTop: '1.25rem' }}>
-                    <div className="settings-input-group">
-                      <label className="input-field-label">Operating License Number</label>
-                      <input 
-                        type="text" 
-                        value={isEditingBusiness ? tempBusinessInfo.licenseNumber : businessInfo.licenseNumber}
-                        onChange={e => setTempBusinessInfo(prev => ({ ...prev, licenseNumber: e.target.value }))}
-                        disabled={!isEditingBusiness}
-                        className={`settings-input-box ${isEditingBusiness ? 'enabled' : 'disabled'}`}
-                      />
+                  <div className="sys-toggle-item">
+                    <div className="sys-toggle-info">
+                      <span className="sys-toggle-name">SMS Alerts</span>
+                      <span className="sys-toggle-desc">Get text messages for urgent booking requests.</span>
                     </div>
-                    <div className="settings-input-group">
-                      <label className="input-field-label">Business Phone</label>
-                      <input 
-                        type="text" 
-                        value={isEditingBusiness ? tempBusinessInfo.businessPhone : businessInfo.businessPhone}
-                        onChange={e => setTempBusinessInfo(prev => ({ ...prev, businessPhone: e.target.value }))}
-                        disabled={!isEditingBusiness}
-                        className={`settings-input-box ${isEditingBusiness ? 'enabled' : 'disabled'}`}
-                      />
-                    </div>
+                    <button
+                      className={`sys-toggle-btn ${notifications.sms ? 'on' : 'off'}`}
+                      onClick={() => setNotifications(n => ({ ...n, sms: !n.sms }))}
+                    >
+                      <span className="sys-toggle-thumb">
+                        {notifications.sms && <Check size={10} />}
+                      </span>
+                    </button>
                   </div>
 
-                  <div className="settings-input-group full-width" style={{ marginTop: '1.25rem' }}>
-                    <label className="input-field-label">Registered Office Address</label>
-                    <input 
-                      type="text" 
-                      value={isEditingBusiness ? tempBusinessInfo.officeAddress : businessInfo.officeAddress}
-                      onChange={e => setTempBusinessInfo(prev => ({ ...prev, officeAddress: e.target.value }))}
-                      disabled={!isEditingBusiness}
-                      className={`settings-input-box ${isEditingBusiness ? 'enabled' : 'disabled'}`}
-                    />
+                  <div className="sys-toggle-item">
+                    <div className="sys-toggle-info">
+                      <span className="sys-toggle-name">Push Notifications</span>
+                      <span className="sys-toggle-desc">Browser notifications for real-time updates.</span>
+                    </div>
+                    <button
+                      className={`sys-toggle-btn ${notifications.push ? 'on' : 'off'}`}
+                      onClick={() => setNotifications(n => ({ ...n, push: !n.push }))}
+                    >
+                      <span className="sys-toggle-thumb">
+                        {notifications.push && <Check size={10} />}
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>
+
+              {/* AI Support Assistant */}
+              <div className="sys-section-card">
+                <div className="sys-section-header">
+                  <Bot size={20} className="sys-section-icon" />
+                  <div>
+                    <h2 className="sys-section-title">AI Support Assistant</h2>
+                    <p className="sys-section-desc">Configure the automated chatbot for initial tenant inquiries.</p>
+                  </div>
+                </div>
+
+                <div className="sys-ai-enable-row">
+                  <div className="sys-ai-enable-info">
+                    <Bot size={20} className="sys-ai-bot-icon" />
+                    <div>
+                      <span className="sys-ai-enable-title">Enable Smart Assistant</span>
+                      <span className="sys-ai-enable-sub">Allow AI to handle common questions.</span>
+                    </div>
+                  </div>
+                  <button
+                    className={`sys-toggle-btn ${aiEnabled ? 'on' : 'off'}`}
+                    onClick={() => setAiEnabled(!aiEnabled)}
+                  >
+                    <span className="sys-toggle-thumb">
+                      {aiEnabled && <Check size={10} />}
+                    </span>
+                  </button>
+                </div>
+
+                <div className="sys-form-group" style={{ marginTop: '1.5rem' }}>
+                  <label className="sys-form-label">Assistant Persona Name</label>
+                  <input
+                    type="text"
+                    className="sys-input"
+                    value={aiName}
+                    onChange={(e) => setAiName(e.target.value)}
+                  />
+                </div>
+
+                <div className="sys-form-group" style={{ marginTop: '1.25rem' }}>
+                  <label className="sys-form-label">Escalation Threshold</label>
+                  <input
+                    type="range"
+                    className="sys-range"
+                    min={0}
+                    max={100}
+                    value={aiThreshold}
+                    onChange={(e) => setAiThreshold(e.target.value)}
+                  />
+                  <div className="sys-range-labels">
+                    <span />
+                    <span className="sys-range-value">Medium</span>
+                  </div>
+                  <p className="sys-range-desc">Determines when the AI hands over to a human agent based on query complexity.</p>
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeSection === 'security' && (
+            <div className="sys-section-card">
+              <div className="sys-section-header">
+                <Shield size={20} className="sys-section-icon" />
+                <div>
+                  <h2 className="sys-section-title">Security Settings</h2>
+                  <p className="sys-section-desc">Manage authentication and access control.</p>
+                </div>
+              </div>
+              <p className="sys-placeholder-text">Security settings content coming soon.</p>
             </div>
           )}
 
-        </div>
+          {activeSection === 'alerts' && (
+            <div className="sys-section-card">
+              <div className="sys-section-header">
+                <Bell size={20} className="sys-section-icon" />
+                <div>
+                  <h2 className="sys-section-title">Alert Configurations</h2>
+                  <p className="sys-section-desc">Advanced alert thresholds and targets.</p>
+                </div>
+              </div>
+              <p className="sys-placeholder-text">Alert settings content coming soon.</p>
+            </div>
+          )}
 
+          {activeSection === 'team' && (
+            <div className="sys-section-card">
+              <div className="sys-section-header">
+                <Users size={20} className="sys-section-icon" />
+                <div>
+                  <h2 className="sys-section-title">Team Management</h2>
+                  <p className="sys-section-desc">Manage roles and permissions for team members.</p>
+                </div>
+              </div>
+              <p className="sys-placeholder-text">Team settings content coming soon.</p>
+            </div>
+          )}
+
+          {/* Footer Actions */}
+          <div className="sys-footer-actions">
+            <button className="sys-btn-discard" onClick={() => {}}>Discard Changes</button>
+            <button className="sys-btn-save" onClick={handleSave}>
+              {saved ? <><Check size={16} /> Saved!</> : 'Save Preferences'}
+            </button>
+          </div>
+
+        </div>
       </div>
     </div>
   );
