@@ -7,6 +7,7 @@ import {
   Settings,
   HelpCircle,
   LogOut,
+  CreditCard,
 } from 'lucide-react';
 import { ROUTES } from '../../constants';
 import './Sidebar.css';
@@ -20,6 +21,12 @@ const Sidebar = () => {
     { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.ADMIN.MODERATION },
     { icon: <BarChart3 size={20} />, label: 'Analytics', path: ROUTES.ADMIN.ANALYTICS },
     { icon: <Settings size={20} />, label: 'Settings', path: ROUTES.ADMIN.SETTINGS },
+    { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.LANDLORD.DASHBOARD },
+    { icon: <BarChart3 size={20} />, label: 'Reports & Analytics', path: ROUTES.LANDLORD.ANALYTICS },
+    { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
+    { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.LANDLORD.REQUESTS },
+    { icon: <CreditCard size={20} />, label: 'Deposits', path: ROUTES.LANDLORD.DEPOSITS },
+    { icon: <Settings size={20} />, label: 'Settings', path: ROUTES.LANDLORD.SETTINGS },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -65,6 +72,8 @@ const Sidebar = () => {
             <Link
               to={ROUTES.ADMIN.HELP}
               className={`sidebar-link ${isActive(ROUTES.ADMIN.HELP) ? 'active' : ''}`}
+              to={ROUTES.LANDLORD.HELP}
+              className={`sidebar-link ${isActive(ROUTES.LANDLORD.HELP) ? 'active' : ''}`}
             >
               <HelpCircle size={20} />
               <span>Help</span>

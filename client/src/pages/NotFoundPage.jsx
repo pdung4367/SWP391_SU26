@@ -7,8 +7,10 @@ import {
   HelpCircle,
   X,
 } from 'lucide-react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Home, Search, Cpu, HelpCircle, X } from 'lucide-react';
 import { ROUTES } from '../constants';
-import dogIllustration from '../assets/images/404-dog.png';
 import './NotFoundPage.css';
 
 const NotFoundPage = () => {
@@ -29,6 +31,7 @@ const NotFoundPage = () => {
         </div>
 
         {/* Right Side: Text & Navigation */}
+        {/* Right Side: Text & Quick-Path navigators */}
         <div className="notfound-content-pane">
           <span className="error-code-badge">404</span>
           <h1 className="error-title-text">Page Not Found</h1>

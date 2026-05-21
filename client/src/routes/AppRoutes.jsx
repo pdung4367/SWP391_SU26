@@ -56,6 +56,7 @@ import { VerificationPage } from '../features/verification';
 import HomePage from '../pages/HomePage';
 import HelpCenterPage from '../pages/HelpCenterPage';
 import TermsPage from '../pages/TermsPage';
+import ContactSupportPage from '../pages/ContactSupportPage';
 import NotFoundPage from '../pages/NotFoundPage';
 
 const AppRoutes = () => {
@@ -90,6 +91,8 @@ const AppRoutes = () => {
       {/* ===== LANDLORD ROUTES ===== */}
       <Route element={<AdminLayout />}>
         <Route path={ROUTES.LANDLORD.DASHBOARD} element={<LandlordDashboard />} />
+        <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
+        <Route path={ROUTES.LANDLORD.CONTACT_SUPPORT} element={<ContactSupportPage />} />
         <Route path={ROUTES.LANDLORD.LISTINGS} element={<ManageListingsPage />} />
         <Route path={ROUTES.LANDLORD.NEW_LISTING} element={<AddNewPropertyPage />} />
         <Route path={ROUTES.LANDLORD.DEPOSITS} element={<DepositManagementPage />} />

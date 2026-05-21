@@ -1,49 +1,144 @@
 import React, { useState, useRef } from 'react';
-import {
-  Home,
-  CreditCard,
-  Wrench,
-  UploadCloud,
-  HelpCircle,
-  Lightbulb,
+import { 
+  Home, 
+  CreditCard, 
+  Wrench, 
+  UploadCloud, 
+  HelpCircle, 
+  Lightbulb, 
   ExternalLink,
   MessageSquare,
   X,
   CheckCircle,
   FileText,
+  User,
   Mail,
   Phone,
   AlertTriangle,
   ArrowRight,
-  ArrowLeft,
-  Search,
+  ArrowLeft
 } from 'lucide-react';
-import React from 'react';
-import { Search, Smartphone, CreditCard, UserCog, Bot, MessageSquare } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../constants';
-import './HelpCenterPage.css';
+import './ContactSupportPage.css';
 
-const HelpCenterPage = () => {
-  const navigate = useNavigate();
+const ContactSupportPage = () => {
+  // Wizard Step State: 1 = Issue Details, 2 = Contact Info, 3 = Success
+  const [step, setStep] = useState(1);
+
+  // Form State
+  const [selectedCategory, setSelectedCategory] = useState('Property Listing');
+  const [issueDescription, setIssueDescription] = useState('');
+  const [uploadedFile, setUploadedFile] = useState(null);
+  
+  // Step 2 Form State
+  const [contactEmail, setContactEmail] = useState('admin@smartboarding.com');
+  const [contactPhone, setContactPhone] = useState('+1 (555) 019-2834');
+  const [urgencyLevel, setUrgencyLevel] = useState('Medium');
+
+  // File Upload Reference
+  const fileInputRef = useRef(null);
+
+  // Live Chat Floating Widget State
+  const [showLiveChat, setShowLiveChat] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    { sender: 'bot', text: 'Hello! Thanks for starting a live chat. How can I help you today? 💬' }
+  ]);
+  const [inputChatMessage, setInputChatMessage] = useState('');
+
+  // Toast Notification State
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const triggerToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  // Mock Upload Handler
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setUploadedFile({
+        name: file.name,
+        size: (file.size / 1024).toFixed(1) + ' KB'
+      });
+      triggerToast(`File "${file.name}" attached successfully.`);
+    }
+  };
+
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const removeAttachment = () => {
+    setUploadedFile(null);
+    triggerToast('Attachment removed.');
+  };
+
+  // Live Chat Send Message Handler
+  const handleSendChatMessage = (e) => {
+    e.preventDefault();
+    if (!inputChatMessage.trim()) return;
+
+    const userMsg = inputChatMessage;
+    setChatMessages(prev => [...prev, { sender: 'user', text: userMsg }]);
+    setInputChatMessage('');
+
+    // Simulate Support response after 1s
+    setTimeout(() => {
+      setChatMessages(prev => [
+        ...prev, 
+        { sender: 'bot', text: 'Thanks for the details! Connecting you with a live support representative... 👨‍💻' }
+      ]);
+    }, 1000);
+  };
+
+  // Continue to Step 2
+  const handleContinue = (e) => {
+    e.preventDefault();
+    if (!issueDescription.trim()) {
+      triggerToast('Please describe your issue before continuing.');
+      return;
+    }
+    setStep(2);
+  };
+
+  // Save Draft simulation
+  const handleSaveDraft = () => {
+    triggerToast('Ticket draft saved successfully.');
+  };
+
+  // Submit Ticket (leads to Step 3)
+  const handleSubmitTicket = (e) => {
+    e.preventDefault();
+    setStep(3);
+    triggerToast('Ticket submitted successfully!');
+  };
+
+  // Reset wizard back to Step 1
+  const handleResetForm = () => {
+    setStep(1);
+    setIssueDescription('');
+    setUploadedFile(null);
+    setUrgencyLevel('Medium');
+  };
 
   return (
-    <div className="hc-container">
-      {/* Hero Section */}
-      <div className="hc-hero">
-        <h1 className="hc-title">How can we help you today?</h1>
-        <p className="hc-subtitle">
-          Search our knowledge base or browse categories below to find answers to your questions about the SmartBoarding platform.
-        </p>
+    <div className="help-center-wrapper">
+      {/* Toast notification */}
+      {toastMessage && (
+        <div className="help-toast-popup">
+          <CheckCircle size={16} className="toast-check-icon" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
-      {/* Large Central Search Box */}
-      <div className="help-search-container">
-        <Search size={22} className="help-search-icon" />
-        <input
-          type="text"
-          placeholder="Search for articles, guides, or keywords..."
-          className="help-search-input"
-        />
+      {/* Hero Header block */}
+      <div className="help-hero-header">
+        <h1 className="help-hero-title">How can we help you today?</h1>
+        <p className="help-hero-subtitle">
+          Submit a support ticket or chat with us live. We're here to ensure your SmartBoarding experience is seamless.
+        </p>
       </div>
 
       {/* Grid split */}
@@ -300,83 +395,116 @@ const HelpCenterPage = () => {
               </div>
             )}
 
-        <div className="hc-search-wrapper">
-          <Search className="hc-search-icon" size={20} />
-          <input 
-            type="text" 
-            className="hc-search-input" 
-            placeholder="Search for articles, guides, or keywords..." 
-          />
+          </div>
+
         </div>
+
+        {/* Right Column: Widgets stack */}
+        <aside className="help-sidebar-widgets">
+          
+          {/* Widget 1: Need immediate help */}
+          <div className="widget-card chat-promo-widget">
+            <div className="chat-promo-icon-circle">
+              <MessageSquare size={20} />
+            </div>
+            <h3 className="chat-promo-title">Need immediate help?</h3>
+            <p className="chat-promo-desc">
+              Our support team is currently online and ready to assist you right now.
+            </p>
+            <button 
+              onClick={() => setShowLiveChat(true)}
+              className="btn-chat-promo-action"
+            >
+              <span className="pulse-active-dot"></span>
+              <span>Start Live Chat</span>
+            </button>
+          </div>
+
+          {/* Widget 2: Quick Answers */}
+          <div className="widget-card quick-answers-widget">
+            <header className="widget-card-header-sub">
+              <Lightbulb size={18} className="widget-icon-yellow" />
+              <h4 className="widget-title-sub">Quick Answers</h4>
+            </header>
+
+            <div className="faq-mini-stack">
+              <div className="faq-mini-item">
+                <h5 className="faq-question">How do I update my billing info?</h5>
+                <p className="faq-answer">Navigate to Settings &gt; Billing to update cards.</p>
+              </div>
+
+              <div className="faq-mini-item">
+                <h5 className="faq-question">When will my listing go live?</h5>
+                <p className="faq-answer">Most listings are approved within 24 hours.</p>
+              </div>
+            </div>
+
+            <footer className="widget-card-footer-sub">
+              <a 
+                href="#knowledge-base" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  triggerToast('Redirecting to full Knowledge Base center...');
+                }}
+                className="kb-footer-link"
+              >
+                <span>View Knowledge Base</span>
+                <ExternalLink size={14} />
+              </a>
+            </footer>
+          </div>
+
+        </aside>
+
       </div>
 
-      {/* Categories Grid */}
-      <div className="hc-categories-grid">
-        {/* Card 1 */}
-        <div className="hc-category-card">
-          <div className="hc-icon-wrapper">
-            <Smartphone size={24} className="hc-icon" />
-          </div>
-          <h3 className="hc-card-title">Booking & Reservations</h3>
-          <p className="hc-card-desc">
-            Manage stays, modifications, and cancellation policies.
-          </p>
-        </div>
+      {/* Floating Live Chat Mock Dialog */}
+      {showLiveChat && (
+        <div className="floating-live-chat-panel">
+          <header className="chat-panel-header">
+            <div className="chat-panel-hdr-left">
+              <span className="chat-hdr-pulse-dot"></span>
+              <div className="chat-hdr-meta">
+                <h5>Live Chat Agent</h5>
+                <span>Online & Ready</span>
+              </div>
+            </div>
+            <button 
+              onClick={() => setShowLiveChat(false)}
+              className="chat-hdr-close-btn"
+            >
+              <X size={16} />
+            </button>
+          </header>
 
-        {/* Card 2 */}
-        <div className="hc-category-card">
-          <div className="hc-icon-wrapper">
-            <CreditCard size={24} className="hc-icon" />
-          </div>
-          <h3 className="hc-card-title">Billing & Payments</h3>
-          <p className="hc-card-desc">
-            Invoices, payment methods, and payout scheduling.
-          </p>
-        </div>
+          <div className="chat-panel-body">
+            <div className="chat-messages-container">
+              {chatMessages.map((msg, index) => (
+                <div key={index} className={`chat-message-bubble ${msg.sender}`}>
+                  <span className="msg-avatar">{msg.sender === 'bot' ? '👩‍💻' : '👤'}</span>
+                  <div className="msg-text">{msg.text}</div>
+                </div>
+              ))}
+            </div>
 
-        {/* Card 3 */}
-        <div className="hc-category-card">
-          <div className="hc-icon-wrapper">
-            <UserCog size={24} className="hc-icon" />
+            <form onSubmit={handleSendChatMessage} className="chat-panel-form-input">
+              <input 
+                type="text" 
+                value={inputChatMessage}
+                onChange={e => setInputChatMessage(e.target.value)}
+                placeholder="Type a message..."
+                className="chat-panel-textbox"
+              />
+              <button type="submit" className="chat-panel-send-btn">
+                Send
+              </button>
+            </form>
           </div>
-          <h3 className="hc-card-title">Account Management</h3>
-          <p className="hc-card-desc">
-            Profile settings, user roles, and security features.
-          </p>
         </div>
+      )}
 
-        {/* Card 4 */}
-        <div className="hc-category-card">
-          <div className="hc-icon-wrapper">
-            <Bot size={24} className="hc-icon" />
-          </div>
-          <h3 className="hc-card-title">AI Assistant</h3>
-          <p className="hc-card-desc">
-            Learn how to utilize our automated support tools.
-          </p>
-        </div>
-      </div>
-
-      {/* Bottom Assistance Card */}
-      <div className="hc-assistance-card">
-        <div className="hc-assistance-content">
-          <h2 className="hc-assistance-title">Still need assistance?</h2>
-          <p className="hc-assistance-desc">
-            Our support team and AI agents are available 24/7 to resolve complex issues.
-          </p>
-        </div>
-        <div className="hc-assistance-actions">
-          <button className="hc-btn hc-btn-outline" onClick={() => navigate(ROUTES.LANDLORD?.CONTACT_SUPPORT || '#')}>
-            Contact Support
-          </button>
-          <button className="hc-btn hc-btn-solid" onClick={() => navigate(ROUTES.TENANT?.CHAT || '#')}>
-            <MessageSquare size={18} />
-            Chat with AI
-          </button>
-        </div>
-      </div>
     </div>
   );
 };
 
-export default HelpCenterPage;
+export default ContactSupportPage;
