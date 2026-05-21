@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { AlertTriangle, AlertCircle, Shield, Clock, CheckCircle, Search, Bell, Mail, MessageSquare, Settings, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { AlertTriangle, AlertCircle, Shield, Search, Bell, Mail, MessageSquare } from 'lucide-react';
 import './ViolationManagementPage.css';
 
 const ViolationManagementPage = () => {
@@ -132,170 +132,113 @@ const ViolationManagementPage = () => {
 
   return (
     <div className="violation-management-page">
-      {/* Sidebar */}
-      <aside className="violation-sidebar">
-        <div className="sidebar-brand">
-          <h1>SmartBoarding</h1>
-          <p>Admin Console</p>
+      {/* Page Header */}
+      <div className="page-header">
+        <div className="header-content">
+          <h1>Violation Management</h1>
+          <p>Monitor and manage platform violations, fraud, and abuse reports in real-time.</p>
         </div>
-
-        <button className="btn-new-listing">+ New Listing</button>
-
-        <nav className="sidebar-nav">
-          <a href="#" className="nav-link">Dashboard</a>
-          <a href="#" className="nav-link">Reports</a>
-          <a href="#" className="nav-link">Analytics</a>
-          <a href="#" className="nav-link active">Violations</a>
-          <a href="#" className="nav-link">Listings</a>
-          <a href="#" className="nav-link">Users</a>
-        </nav>
-
-        <div className="sidebar-footer">
-          <a href="#" className="nav-link">Help Center</a>
-          <a href="#" className="nav-link">Logout</a>
+        <div className="header-actions">
+          <button className="btn-filter">⚙ Filter</button>
+          <button className="btn-export">📊 Export</button>
         </div>
-      </aside>
+      </div>
 
-      {/* Top Navigation */}
-      <header className="violation-topbar">
-        <div className="search-container">
-          <Search size={18} className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search reports, users, or properties..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+      {/* Priority Cards (Bento Style) */}
+      <div className="priority-cards-grid">
+        {priorityCards.map((card) => (
+          <div key={card.id} className={`priority-card priority-${card.color}`} style={{ borderColor: card.borderColor }}>
+            <div className="card-header">
+              <div className="card-icon" style={{ backgroundColor: card.bgColor }}>
+                <card.icon size={24} color={card.textColor} />
+              </div>
+              <div className="card-badge" style={{ backgroundColor: card.bgColor }}>
+                <span style={{ color: card.badgeColor }}>Active</span>
+              </div>
+            </div>
 
-        <div className="topbar-actions">
-          <button className="icon-btn">
-            <Bell size={20} />
-            <span className="notification-dot"></span>
-          </button>
-          <button className="icon-btn">
-            <Mail size={20} />
-          </button>
-          <button className="icon-btn">
-            <MessageSquare size={20} />
-          </button>
-          <div className="divider"></div>
-          <button className="btn-support">Support</button>
-          <button className="btn-action">Quick Action</button>
-          <img src="https://i.pravatar.cc/150?img=12" alt="Admin" className="admin-avatar" />
-        </div>
-      </header>
+            <h3 className="card-title">{card.title}</h3>
+            <p className="card-description">{card.description}</p>
 
-      {/* Main Content */}
-      <main className="violation-main-content">
-        {/* Page Header */}
-        <div className="page-header">
-          <div className="header-content">
-            <h1>Violation Management</h1>
-            <p>Monitor and manage platform violations, fraud, and abuse reports in real-time.</p>
+            <div className="card-footer">
+              <div className="card-count" style={{ color: card.textColor }}>
+                {card.count}
+              </div>
+              <a href="#" className="card-link">View All →</a>
+            </div>
           </div>
-          <div className="header-actions">
-            <button className="btn-filter">⚙ Filter</button>
-            <button className="btn-export">📊 Export</button>
-          </div>
-        </div>
+        ))}
+      </div>
 
-        {/* Priority Cards (Bento Style) */}
-        <div className="priority-cards-grid">
-          {priorityCards.map((card) => (
-            <div key={card.id} className={`priority-card priority-${card.color}`} style={{ borderColor: card.borderColor }}>
-              <div className="card-header">
-                <div className="card-icon" style={{ backgroundColor: card.bgColor }}>
-                  <card.icon size={24} color={card.textColor} />
-                </div>
-                <div className="card-badge" style={{ backgroundColor: card.bgColor }}>
-                  <span style={{ color: card.badgeColor }}>Active</span>
-                </div>
+      {/* Main Feed & Timeline Container */}
+      <div className="feed-timeline-container">
+        {/* Active Alerts Feed */}
+        <div className="alerts-feed">
+          <h2 className="feed-title">Active Alerts</h2>
+
+          {alerts.map((alert) => (
+            <div key={alert.id} className={`alert-item ${getSeverityClass(alert.severity)}`}>
+              <div className="alert-icon">
+                {alert.severity === 'critical' && <AlertTriangle size={24} />}
+                {alert.severity === 'warning' && <AlertCircle size={24} />}
+                {alert.severity === 'info' && <Shield size={24} />}
               </div>
 
-              <h3 className="card-title">{card.title}</h3>
-              <p className="card-description">{card.description}</p>
-
-              <div className="card-footer">
-                <div className="card-count" style={{ color: card.textColor }}>
-                  {card.count}
+              <div className="alert-content">
+                <div className="alert-header">
+                  <h4 className="alert-title">{alert.title}</h4>
+                  <span className="alert-time">{alert.time}</span>
                 </div>
-                <a href="#" className="card-link">View All →</a>
+                <p className="alert-description">{alert.description}</p>
+
+                <div className="alert-actions">
+                  <button className="btn-primary">{alert.actionLabel}</button>
+                  <button className="btn-secondary">{alert.secondaryAction}</button>
+                </div>
               </div>
             </div>
           ))}
+
+          <button className="btn-load-more">Load More Alerts</button>
         </div>
 
-        {/* Main Feed & Timeline Container */}
-        <div className="feed-timeline-container">
-          {/* Active Alerts Feed */}
-          <div className="alerts-feed">
-            <h2 className="feed-title">Active Alerts</h2>
+        {/* Right Column: Timeline & Moderation Log */}
+        <div className="right-column">
+          {/* Security Timeline */}
+          <div className="security-timeline">
+            <h3 className="timeline-title">🔒 Security Timeline</h3>
 
-            {alerts.map((alert) => (
-              <div key={alert.id} className={`alert-item ${getSeverityClass(alert.severity)}`}>
-                <div className="alert-icon">
-                  {alert.severity === 'critical' && <AlertTriangle size={24} />}
-                  {alert.severity === 'warning' && <AlertCircle size={24} />}
-                  {alert.severity === 'info' && <Shield size={24} />}
+            <div className="timeline-events">
+              {timelineEvents.map((event) => (
+                <div key={event.id} className="timeline-item">
+                  <div className="timeline-time">{event.time}</div>
+                  <div className="timeline-dot" style={{ backgroundColor: getTimelineColor(event.severity) }} />
+                  <div className="timeline-content">{event.title}</div>
                 </div>
-
-                <div className="alert-content">
-                  <div className="alert-header">
-                    <h4 className="alert-title">{alert.title}</h4>
-                    <span className="alert-time">{alert.time}</span>
-                  </div>
-                  <p className="alert-description">{alert.description}</p>
-
-                  <div className="alert-actions">
-                    <button className="btn-primary">{alert.actionLabel}</button>
-                    <button className="btn-secondary">{alert.secondaryAction}</button>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            <button className="btn-load-more">Load More Alerts</button>
+              ))}
+            </div>
           </div>
 
-          {/* Right Column: Timeline & Moderation Log */}
-          <div className="right-column">
-            {/* Security Timeline */}
-            <div className="security-timeline">
-              <h3 className="timeline-title">🔒 Security Timeline</h3>
+          {/* Moderation Log */}
+          <div className="moderation-log">
+            <h3 className="log-title">Recent Resolutions</h3>
 
-              <div className="timeline-events">
-                {timelineEvents.map((event) => (
-                  <div key={event.id} className="timeline-item">
-                    <div className="timeline-time">{event.time}</div>
-                    <div className="timeline-dot" style={{ backgroundColor: getTimelineColor(event.severity) }}></div>
-                    <div className="timeline-content">{event.title}</div>
+            <div className="resolutions-list">
+              {resolutions.map((resolution) => (
+                <div key={resolution.id} className="resolution-item">
+                  <div className="resolution-info">
+                    <p className="resolution-title">{resolution.title}</p>
+                    <p className="resolution-date">{resolution.date}</p>
                   </div>
-                ))}
-              </div>
+                  <span className="resolution-status">{resolution.status}</span>
+                </div>
+              ))}
             </div>
 
-            {/* Moderation Log */}
-            <div className="moderation-log">
-              <h3 className="log-title">Recent Resolutions</h3>
-
-              <div className="resolutions-list">
-                {resolutions.map((resolution) => (
-                  <div key={resolution.id} className="resolution-item">
-                    <div className="resolution-info">
-                      <p className="resolution-title">{resolution.title}</p>
-                      <p className="resolution-date">{resolution.date}</p>
-                    </div>
-                    <span className="resolution-status">{resolution.status}</span>
-                  </div>
-                ))}
-              </div>
-
-              <button className="btn-view-all">View All Resolutions</button>
-            </div>
+            <button className="btn-view-all">View All Resolutions</button>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };

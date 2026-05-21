@@ -4,7 +4,6 @@ import {
   Building2,
   ClipboardList,
   BarChart3,
-  Users,
   Settings,
   HelpCircle,
   LogOut,
@@ -17,6 +16,11 @@ const Sidebar = () => {
   const location = useLocation();
 
   const navLinks = [
+    { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.ADMIN.DASHBOARD },
+    { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.ADMIN.LISTINGS },
+    { icon: <ClipboardList size={20} />, label: 'Requests', path: ROUTES.ADMIN.MODERATION },
+    { icon: <BarChart3 size={20} />, label: 'Analytics', path: ROUTES.ADMIN.ANALYTICS },
+    { icon: <Settings size={20} />, label: 'Settings', path: ROUTES.ADMIN.SETTINGS },
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: ROUTES.LANDLORD.DASHBOARD },
     { icon: <BarChart3 size={20} />, label: 'Reports & Analytics', path: ROUTES.LANDLORD.ANALYTICS },
     { icon: <Building2 size={20} />, label: 'Listings', path: ROUTES.LANDLORD.LISTINGS },
@@ -66,6 +70,8 @@ const Sidebar = () => {
         <ul className="footer-links">
           <li>
             <Link
+              to={ROUTES.ADMIN.HELP}
+              className={`sidebar-link ${isActive(ROUTES.ADMIN.HELP) ? 'active' : ''}`}
               to={ROUTES.LANDLORD.HELP}
               className={`sidebar-link ${isActive(ROUTES.LANDLORD.HELP) ? 'active' : ''}`}
             >
@@ -81,7 +87,7 @@ const Sidebar = () => {
           </li>
         </ul>
         <div className="support-btn-container" style={{ marginTop: '0.75rem' }}>
-          <Link to={ROUTES.LANDLORD.HELP} className="btn-support-center">
+          <Link to={ROUTES.ADMIN.HELP} className="btn-support-center">
             Support Center
           </Link>
         </div>

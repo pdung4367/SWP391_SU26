@@ -7,7 +7,7 @@ import AuthLayout from '../layouts/AuthLayout';
 import AdminLayout from '../layouts/AdminLayout';
 
 // Auth feature
-import { LoginPage, RegisterPage } from '../features/auth';
+import { LoginPage, RegisterPage, ForgotPasswordPage } from '../features/auth';
 
 // Tenant feature
 import {
@@ -41,6 +41,7 @@ import {
   TransactionsPage,
   ListingsPage,
   UsersPage,
+  RequestsPage,
   SettingsPage as AdminSettingsPage,
   ViolationManagementPage,
 } from '../features/admin';
@@ -54,6 +55,7 @@ import { VerificationPage } from '../features/verification';
 // Shared pages
 import HomePage from '../pages/HomePage';
 import HelpCenterPage from '../pages/HelpCenterPage';
+import TermsPage from '../pages/TermsPage';
 import ContactSupportPage from '../pages/ContactSupportPage';
 import NotFoundPage from '../pages/NotFoundPage';
 
@@ -78,11 +80,13 @@ const AppRoutes = () => {
       <Route element={<AuthLayout />}>
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
         <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+        <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
       </Route>
 
       {/* ===== STANDALONE PAGES (NO LAYOUT) ===== */}
       <Route path={ROUTES.TENANT.PAYMENT} element={<DepositPaymentPage />} />
       <Route path={ROUTES.VERIFICATION} element={<VerificationPage />} />
+      <Route path={ROUTES.TERMS} element={<TermsPage />} />
 
       {/* ===== LANDLORD ROUTES ===== */}
       <Route element={<AdminLayout />}>
@@ -97,6 +101,7 @@ const AppRoutes = () => {
         <Route path={ROUTES.LANDLORD.PROFILE} element={<LandlordProfilePage />} />
         <Route path={ROUTES.LANDLORD.MESSAGES} element={<MessagesPage />} />
         <Route path={ROUTES.LANDLORD.NOTIFICATIONS} element={<LandlordNotificationsPage />} />
+        <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
       </Route>
 
       {/* ===== ADMIN ROUTES ===== */}

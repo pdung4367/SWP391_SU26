@@ -43,3 +43,24 @@ export const formatDateTime = (date) => {
     minute: '2-digit',
   }).format(d);
 };
+
+/**
+ * Validates an email address
+ * @param {string} email - The email to validate
+ * @returns {boolean} True if valid email format
+ */
+export const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+/**
+ * Truncates a string to a maximum length
+ * @param {string} str - The string to truncate
+ * @param {number} maxLength - Maximum length
+ * @returns {string} The truncated string
+ */
+export const truncateString = (str, maxLength = 50) => {
+  if (!str) return '';
+  return str.length > maxLength ? `${str.substring(0, maxLength)}...` : str;
+};

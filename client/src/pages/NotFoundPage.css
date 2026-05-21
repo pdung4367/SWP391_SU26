@@ -40,6 +40,8 @@
 
 .not-found-link:hover {
   background-color: var(--primary-hover);
+}
+
 .notfound-page-container {
   display: flex;
   align-items: center;
@@ -368,8 +370,8 @@
   color: #0F172A;
 }
 
-/* Animations */
-@keyframes fadeIn {
+/* Animations - Handled by CSS-in-JS or inline styles */
+/* @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
@@ -377,7 +379,7 @@
 @keyframes scaleUp {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
-}
+} */
 
 /* Responsive queries */
 @media (max-width: 900px) {

@@ -2,20 +2,56 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-main);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background elements */
+.auth-layout::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-layout::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .auth-header {
   padding: 1.5rem 2rem;
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .auth-logo {
-  color: var(--primary);
-  font-size: 1.25rem;
-  font-weight: 700;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 800;
   text-decoration: none;
+  letter-spacing: -0.5px;
+  transition: opacity 0.2s;
+}
+
+.auth-logo:hover {
+  opacity: 0.9;
 }
 
 .auth-container {
@@ -24,22 +60,39 @@
   align-items: center;
   justify-content: center;
   padding: 2rem 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .auth-card {
   width: 100%;
   max-width: 440px;
-  background-color: var(--bg-card);
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .auth-footer {
   padding: 1.5rem 2rem;
-  border-top: 1px solid var(--border-light);
-  background-color: var(--bg-main);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
 }
 
 .auth-footer-content {
@@ -51,7 +104,7 @@
   justify-content: space-between;
   gap: 1rem;
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 @media (min-width: 768px) {
@@ -66,10 +119,11 @@
 }
 
 .auth-footer-links a {
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
+  transition: color 0.2s;
 }
 
 .auth-footer-links a:hover {
-  color: var(--text-main);
+  color: white;
 }
