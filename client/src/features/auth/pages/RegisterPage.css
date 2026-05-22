@@ -1,8 +1,13 @@
-/* RegisterPage - Professional Design */
+/* ====================================================
+   RegisterPage — Clean Light Panel Style
+   ==================================================== */
 
 .register-form-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
+  margin: 0 auto;
   animation: slideInRight 0.5s ease-out;
 }
 
@@ -17,39 +22,39 @@
   }
 }
 
+/* ======================== Header ======================== */
 .register-header {
-  margin-bottom: 2.5rem;
-  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .register-header h1 {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 800;
-  color: var(--text-main);
-  margin-bottom: 0.5rem;
+  color: #0f172a;
+  margin-bottom: 0.4rem;
   letter-spacing: -0.5px;
 }
 
 .register-header p {
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  line-height: 1.5;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
-/* Role Selector */
+/* ======================== Role Selector ======================== */
 .role-selector {
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .role-label {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 1rem;
+  color: #64748b;
+  margin-bottom: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
 }
 
 .role-tabs {
@@ -63,51 +68,34 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding: 1.5rem 1rem;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem;
   border-radius: 12px;
-  border: 2px solid var(--border-light);
-  background-color: var(--bg-card);
-  color: var(--text-main);
+  border: 1.5px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #64748b;
   font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.85rem;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
 
-.role-tab::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
 .role-tab:hover {
-  border-color: var(--primary);
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+  color: #3b82f6;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-}
-
-.role-text {
-  font-size: 0.9rem;
-  position: relative;
-  z-index: 1;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
 }
 
 .role-tab.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
   border-color: transparent;
   color: white;
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
   transform: translateY(-2px);
-}
-
-.role-tab.active svg {
-  color: white;
 }
 
 .role-tab svg {
@@ -116,147 +104,180 @@
   transition: color 0.3s;
 }
 
-/* Form Styles */
+/* ======================== Form ======================== */
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
+/* Glass-style inputs on light bg */
+.register-form .input-field {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.8rem 0.9rem;
+  font-size: 0.875rem;
+  color: #0f172a;
+  transition: all 0.25s;
+}
+
+.register-form .input-field.has-left-icon {
+  padding-left: 2.75rem;
+}
+
+.register-form .input-field::placeholder {
+  color: #94a3b8;
+}
+
+.register-form .input-field:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
+}
+
+.register-form .input-label {
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.register-form .input-icon-left {
+  color: #94a3b8;
+}
+
+.register-form .input-icon-right {
+  color: #94a3b8;
+}
+
+/* ======================== Checkbox ======================== */
 .terms-checkbox {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
 }
 
 .terms-checkbox label {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 0.6rem;
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: #64748b;
   cursor: pointer;
   line-height: 1.4;
 }
 
 .terms-checkbox input[type="checkbox"] {
-  margin-top: 0.25rem;
-  width: 1.1rem;
-  height: 1.1rem;
-  min-width: 1.1rem;
-  border-radius: 6px;
-  border: 2px solid var(--border-light);
+  margin-top: 0.15rem;
+  width: 1rem;
+  height: 1rem;
+  min-width: 1rem;
+  border-radius: 5px;
+  border: 2px solid #cbd5e1;
   cursor: pointer;
-  accent-color: var(--primary);
+  accent-color: #3b82f6;
   transition: all 0.2s;
 }
 
 .terms-checkbox input[type="checkbox"]:hover {
-  border-color: var(--primary);
+  border-color: #3b82f6;
 }
 
 .terms-checkbox a {
-  color: var(--primary);
+  color: #3b82f6;
   text-decoration: none;
   font-weight: 600;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
 }
 
 .terms-checkbox a:hover {
-  opacity: 0.8;
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
+/* ======================== Button ======================== */
 .btn-create-account {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding: 1rem;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
   font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-weight: 700;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
   color: white;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   margin-top: 0.5rem;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+}
+
+.btn-create-account::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-create-account:hover::after {
+  left: 100%;
 }
 
 .btn-create-account:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  box-shadow:
+    0 6px 20px rgba(59, 130, 246, 0.35),
+    0 0 30px rgba(99, 102, 241, 0.1);
 }
 
 .btn-create-account:active {
   transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
 }
 
+/* ======================== Footer ======================== */
 .register-footer {
-  margin-top: 2rem;
+  margin-top: 1.75rem;
   text-align: center;
-  font-size: 0.9rem;
-  color: var(--text-main);
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-light);
+  font-size: 0.875rem;
+  color: #64748b;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
 }
 
 .register-footer a {
-  color: var(--primary);
+  color: #3b82f6;
   font-weight: 700;
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
 }
 
 .register-footer a:hover {
-  opacity: 0.8;
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
-/* Responsive Design */
+/* ======================== Responsive ======================== */
 @media (max-width: 768px) {
   .register-form-container {
     max-width: 100%;
   }
 
   .register-header h1 {
-    font-size: 1.75rem;
-  }
-
-  .register-header p {
-    font-size: 0.9rem;
-  }
-
-  .role-tabs {
-    gap: 0.75rem;
-  }
-
-  .role-tab {
-    padding: 1.25rem 0.75rem;
-    font-size: 0.85rem;
-    gap: 0.5rem;
-  }
-
-  .role-tab svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .register-form {
-    gap: 1.25rem;
+    font-size: 1.6rem;
   }
 }
 
 @media (max-width: 480px) {
   .register-header h1 {
-    font-size: 1.35rem;
-  }
-
-  .register-header p {
-    font-size: 0.85rem;
-  }
-
-  .role-selector {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .role-tabs {
@@ -264,15 +285,11 @@
   }
 
   .role-tab {
-    padding: 1rem 0.5rem;
+    padding: 0.75rem 0.5rem;
     font-size: 0.8rem;
   }
 
   .register-form {
     gap: 1rem;
-  }
-
-  .terms-checkbox label {
-    font-size: 0.75rem;
   }
 }

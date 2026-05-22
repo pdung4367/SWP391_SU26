@@ -20,7 +20,7 @@ const AIChatPage = () => {
       id: 1,
       sender: 'bot',
       type: 'text_with_chips',
-      text: "Hello! I'm your SmartBoard Assistant. I can help you find your next home, manage your current lease, or answer any questions about our properties.\n\nHere are a few things you can ask me:",
+      text: "Hello! I'm your RentalRoom Assistant. I can help you find your next home, manage your current lease, or answer any questions about our properties.\n\nHere are a few things you can ask me:",
       chips: ["Find a 2-bedroom", "Book a tour", "Maintenance help"]
     },
     {
@@ -79,7 +79,7 @@ const AIChatPage = () => {
           </div>
           <div className="bot-info">
             <h2>AI Assistant</h2>
-            <p>SmartBoard Help</p>
+            <p>RentalRoom Help</p>
           </div>
         </div>
 
