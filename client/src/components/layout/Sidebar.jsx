@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Building2,
@@ -17,6 +17,8 @@ import {
   FileText,
 } from 'lucide-react';
 import { ROUTES } from '../../constants';
+import useAuthStore from '../../store/useAuthStore';
+import { supabase } from '../../config/supabase';
 import './Sidebar.css';
 
 // ── Menu configs per role ──
@@ -45,6 +47,19 @@ const ADMIN_NAV = [
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout, user } = useAuthStore();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await supabase.auth.signOut();
+      logout();
+      navigate(ROUTES.LOGIN);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Detect role context from current URL
   const isLandlord = location.pathname.startsWith('/landlord');
@@ -105,10 +120,10 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to={ROUTES.LOGIN} className="sidebar-link logout-link">
+            <a href="#" onClick={handleLogout} className="sidebar-link logout-link">
               <LogOut size={20} />
               <span>Sign Out</span>
-            </Link>
+            </a>
           </li>
         </ul>
         <div className="support-btn-container" style={{ marginTop: '0.75rem' }}>

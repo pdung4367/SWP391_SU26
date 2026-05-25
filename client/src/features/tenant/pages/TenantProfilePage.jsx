@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Calendar, ShieldCheck, Star, Edit, Edit3, Lock, Bell, 
   CreditCard, ChevronRight, Wrench, ThermometerSnowflake, 
-  CheckCircle2, Clock, ArrowRight, Plus 
+  CheckCircle2, Clock, ArrowRight, Plus, Save, X
 } from 'lucide-react';
+import useAuthStore from '../../../store/useAuthStore';
+import { supabase } from '../../../config/supabase';
+import ChangePasswordModal from '../../auth/components/ChangePasswordModal';
 import './TenantProfilePage.css';
 
 const MOCK_REQUESTS = [
@@ -28,6 +31,49 @@ const MOCK_REQUESTS = [
 ];
 
 const TenantProfilePage = () => {
+  const { user, updateUser } = useAuthStore();
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: '',
+    phone: ''
+  });
+  const [isSaving, setIsSaving] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        fullName: user.user_metadata?.fullName || '',
+        phone: user.user_metadata?.phone || ''
+      });
+    }
+  }, [user]);
+
+  const handleSaveProfile = async () => {
+    setIsSaving(true);
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        data: {
+          fullName: formData.fullName,
+          phone: formData.phone
+        }
+      });
+      if (error) throw error;
+      updateUser(data.user);
+      setIsEditing(false);
+    } catch (error) {
+      alert(error.message || 'Error updating profile');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const getJoinDate = () => {
+    if (!user?.created_at) return 'Member';
+    const date = new Date(user.created_at);
+    return `Member since ${date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
+  };
+
   return (
     <div className="profile-page-wrapper">
       <div className="profile-page container">
@@ -36,15 +82,15 @@ const TenantProfilePage = () => {
         <div className="profile-header-card">
           <div className="profile-header-info">
             <img 
-              src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&auto=format&q=80" 
-              alt="Sarah Jenkins" 
+              src={`https://ui-avatars.com/api/?name=${user?.user_metadata?.fullName || 'User'}&background=random&size=150`}
+              alt="Profile" 
               className="profile-avatar" 
             />
             <div className="profile-details">
-              <h1 className="profile-name">Sarah Jenkins</h1>
+              <h1 className="profile-name">{user?.user_metadata?.fullName || 'User Name'}</h1>
               <p className="profile-member-since">
                 <Calendar size={16} />
-                <span>Member since October 2023</span>
+                <span>{getJoinDate()}</span>
               </p>
               <div className="profile-badges">
                 <div className="badge-blue">
@@ -58,10 +104,23 @@ const TenantProfilePage = () => {
               </div>
             </div>
           </div>
-          <button className="edit-profile-btn">
-            <Edit3 size={18} />
-            <span>Edit Profile</span>
-          </button>
+          {!isEditing ? (
+            <button className="edit-profile-btn" onClick={() => setIsEditing(true)}>
+              <Edit3 size={18} />
+              <span>Edit Profile</span>
+            </button>
+          ) : (
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button className="edit-profile-btn" onClick={() => setIsEditing(false)} style={{ background: '#f3f4f6', color: '#374151' }}>
+                <X size={18} />
+                <span>Cancel</span>
+              </button>
+              <button className="edit-profile-btn" onClick={handleSaveProfile} disabled={isSaving}>
+                <Save size={18} />
+                <span>{isSaving ? 'Saving...' : 'Save Changes'}</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Profile Content Grid */}
@@ -74,26 +133,48 @@ const TenantProfilePage = () => {
             <div className="profile-card personal-info-card">
               <div className="card-header">
                 <h2>Personal Information</h2>
-                <button className="icon-btn" aria-label="Edit personal info">
-                  <Edit size={18} />
-                </button>
+                {!isEditing && (
+                  <button className="icon-btn" aria-label="Edit personal info" onClick={() => setIsEditing(true)}>
+                    <Edit size={18} />
+                  </button>
+                )}
               </div>
               <div className="info-list">
                 <div className="info-item">
+                  <span className="info-label">Full Name</span>
+                  {isEditing ? (
+                    <input 
+                      type="text" 
+                      value={formData.fullName} 
+                      onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                      className="edit-input"
+                      style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd', width: '100%' }}
+                    />
+                  ) : (
+                    <span className="info-value">{user?.user_metadata?.fullName || 'Not provided'}</span>
+                  )}
+                </div>
+                <div className="info-item">
                   <span className="info-label">Email Address</span>
-                  <span className="info-value">sarah.jenkins@example.com</span>
+                  <span className="info-value" style={{ color: '#6b7280' }}>{user?.email || 'Not provided'} (Cannot change)</span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Phone Number</span>
-                  <span className="info-value">+1 (555) 123-4567</span>
+                  {isEditing ? (
+                    <input 
+                      type="text" 
+                      value={formData.phone} 
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      className="edit-input"
+                      style={{ padding: '8px', borderRadius: '6px', border: '1px solid #ddd', width: '100%' }}
+                    />
+                  ) : (
+                    <span className="info-value">{user?.user_metadata?.phone || 'Not provided'}</span>
+                  )}
                 </div>
                 <div className="info-item">
-                  <span className="info-label">Date of Birth</span>
-                  <span className="info-value">August 14, 1992</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">Emergency Contact</span>
-                  <span className="info-value">Michael Jenkins (Brother)<br/>+1 (555) 987-6543</span>
+                  <span className="info-label">Role</span>
+                  <span className="info-value" style={{ textTransform: 'capitalize' }}>{user?.user_metadata?.role || 'Tenant'}</span>
                 </div>
               </div>
             </div>
@@ -104,7 +185,7 @@ const TenantProfilePage = () => {
                 <h2>Account Settings</h2>
               </div>
               <div className="settings-menu">
-                <button className="settings-item">
+                <button className="settings-item" onClick={() => setIsPasswordModalOpen(true)}>
                   <div className="settings-item-left">
                     <div className="settings-icon-wrapper">
                       <Lock size={18} />
@@ -192,6 +273,12 @@ const TenantProfilePage = () => {
 
         </div>
       </div>
+      
+      {/* Change Password Modal */}
+      <ChangePasswordModal 
+        isOpen={isPasswordModalOpen} 
+        onClose={() => setIsPasswordModalOpen(false)} 
+      />
     </div>
   );
 };
