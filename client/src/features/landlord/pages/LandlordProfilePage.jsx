@@ -12,10 +12,12 @@ import {
   Award
 } from 'lucide-react';
 import { ROUTES } from '../../../constants';
+import useAuthStore from '../../../store/useAuthStore';
 import './LandlordProfilePage.css';
 
 const LandlordProfilePage = () => {
   const navigate = useNavigate();
+  const { user } = useAuthStore();
 
   const handleEditProfileClick = () => {
     navigate(ROUTES.LANDLORD.SETTINGS);
@@ -52,8 +54,8 @@ const LandlordProfilePage = () => {
         <div className="header-card-avatar-section">
           <div className="profile-large-avatar-wrapper">
             <img 
-              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80" 
-              alt="Robert Sterling" 
+              src={`https://ui-avatars.com/api/?name=${user?.user_metadata?.fullName || 'User'}&background=random&size=150`}
+              alt={user?.user_metadata?.fullName || 'Landlord'}
               className="profile-large-avatar"
             />
             <div className="profile-avatar-badge">
@@ -64,7 +66,7 @@ const LandlordProfilePage = () => {
 
         <div className="header-card-info-section">
           <div className="profile-name-row">
-            <h1 className="profile-full-name">Robert Sterling</h1>
+            <h1 className="profile-full-name">{user?.user_metadata?.fullName || 'Landlord Name'}</h1>
             <span className="premium-host-badge">
               <Star size={12} fill="currentColor" />
               <span>Premium Host</span>
@@ -159,11 +161,11 @@ const LandlordProfilePage = () => {
                 <div className="contact-info-list">
                   <div className="contact-info-item">
                     <span className="contact-label">Primary Email</span>
-                    <span className="contact-val">robert.sterling@smartstay.com</span>
+                    <span className="contact-val">{user?.email || 'Not provided'}</span>
                   </div>
                   <div className="contact-info-item">
                     <span className="contact-label">Phone Number</span>
-                    <span className="contact-val">+1 (555) 123-4567</span>
+                    <span className="contact-val">{user?.user_metadata?.phone || 'Not provided'}</span>
                   </div>
                   <div className="contact-info-item">
                     <span className="contact-label">Mailing Address</span>

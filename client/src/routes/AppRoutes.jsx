@@ -7,7 +7,7 @@ import AuthLayout from '../layouts/AuthLayout';
 import AdminLayout from '../layouts/AdminLayout';
 
 // Auth feature
-import { LoginPage, RegisterPage, ForgotPasswordPage } from '../features/auth';
+import { LoginPage, RegisterPage, ForgotPasswordPage, VerifyOTPPage, ResetPasswordPage } from '../features/auth';
 
 // Tenant feature
 import {
@@ -84,6 +84,8 @@ const AppRoutes = () => {
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
         <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
         <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
+        <Route path={ROUTES.VERIFY_OTP} element={<VerifyOTPPage />} />
+        <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />} />
       </Route>
 
       {/* ===== STANDALONE PAGES (NO LAYOUT) ===== */}
