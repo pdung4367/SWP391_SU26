@@ -6,7 +6,6 @@ import {
   ArrowLeft, 
   Printer, 
   Check, 
-  BookOpen,
   ChevronRight
 } from 'lucide-react';
 import { ROUTES } from '../constants';
@@ -96,7 +95,6 @@ const SECTIONS = [
 const TermsPage = () => {
   const [activeSectionId, setActiveSectionId] = useState('section-1');
   const [searchQuery, setSearchQuery] = useState('');
-  const sectionRefs = useRef({});
 
   // Trigger Print Setup
   const handlePrint = () => {
@@ -163,59 +161,58 @@ const TermsPage = () => {
   };
 
   return (
-    <div className="terms-page-container">
-      {/* Dynamic Floating Standalone Header */}
-      <header className="terms-standalone-header">
-        <div className="terms-brand">
-          <Home className="brand-logo-icon" size={22} />
-          <span className="brand-name-text">SmartBoarding</span>
-        </div>
-        <Link to={ROUTES.LANDLORD.DASHBOARD} className="back-dashboard-btn">
-          <ArrowLeft size={16} />
-          <span>Back to Dashboard</span>
-        </Link>
-      </header>
-
-      {/* Main Split Panels */}
-      <div className="terms-split-layout">
-        
-        {/* Left Side: Navigation Sidebar */}
-        <aside className="terms-sidebar-contents">
-          {/* Search bar */}
-          <div className="sidebar-search-box">
-            <Search size={16} className="search-box-icon" />
-            <input 
-              type="text" 
-              placeholder="Search document..." 
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="search-box-input"
-            />
+    <div className="terms-page-wrapper">
+      <div className="terms-page-top-title">Terms & Conditions Page</div>
+      
+      <div className="terms-main-container">
+        {/* Dynamic Floating Standalone Header */}
+        <header className="terms-standalone-header">
+          <div className="terms-brand">
+            <Home className="brand-logo-icon" size={22} />
+            <span className="brand-name-text">SmartBoarding</span>
           </div>
+          <Link to={ROUTES.LANDLORD.DASHBOARD} className="back-dashboard-btn">
+            <ArrowLeft size={16} />
+            <span>Back to Dashboard</span>
+          </Link>
+        </header>
 
-          {/* Heading */}
-          <div className="contents-label-hdr">Contents</div>
+        {/* Main Split Panels */}
+        <div className="terms-split-layout">
+          
+          {/* Left Side: Navigation Sidebar */}
+          <aside className="terms-sidebar-contents">
+            {/* Search bar */}
+            <div className="sidebar-search-box">
+              <Search size={16} className="search-box-icon" />
+              <input 
+                type="text" 
+                placeholder="Search document..." 
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="search-box-input"
+              />
+            </div>
 
-          {/* Table of Contents list */}
-          <nav className="contents-nav-menu">
-            {SECTIONS.map(sec => (
-              <button
-                key={sec.id}
-                onClick={() => handleScrollToSection(sec.id)}
-                className={`content-nav-btn ${activeSectionId === sec.id ? 'active' : ''}`}
-              >
-                <ChevronRight size={14} className="nav-arrow-indicator" />
-                <span className="nav-number-badge">{sec.number}.</span>
-                <span className="nav-title-label">{sec.title}</span>
-              </button>
-            ))}
-          </nav>
-        </aside>
+            {/* Heading */}
+            <div className="contents-label-hdr">CONTENTS</div>
 
-        {/* Right Side: Document Content Scroll Area */}
-        <main className="terms-main-document">
-          <div className="document-paper-card">
-            
+            {/* Table of Contents list */}
+            <nav className="contents-nav-menu">
+              {SECTIONS.map(sec => (
+                <button
+                  key={sec.id}
+                  onClick={() => handleScrollToSection(sec.id)}
+                  className={`content-nav-btn ${activeSectionId === sec.id ? 'active' : ''}`}
+                >
+                  <span className="nav-title-label">{sec.number}. {sec.title}</span>
+                </button>
+              ))}
+            </nav>
+          </aside>
+
+          {/* Right Side: Document Content Scroll Area */}
+          <main className="terms-main-document">
             {/* Title Header */}
             <div className="document-header-block">
               <h1 className="doc-main-title">Terms & Conditions</h1>
@@ -270,10 +267,8 @@ const TermsPage = () => {
                 <span>Print Document</span>
               </button>
             </footer>
-
-          </div>
-        </main>
-
+          </main>
+        </div>
       </div>
     </div>
   );

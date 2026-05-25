@@ -11,6 +11,7 @@ export const ROUTES = {
   ROOM_DETAIL: '/rooms/:id',
   TERMS: '/terms',
   VERIFICATION: '/verification',
+  SEARCH: '/search',
   TENANT: {
     PROFILE: '/profile',
     FAVORITES: '/favorites',
@@ -33,6 +34,7 @@ export const ROUTES = {
     SETTINGS: '/landlord/settings',
     HELP: '/landlord/help',
     CONTACT_SUPPORT: '/landlord/contact-support',
+    TERMS: '/landlord/terms',
     PROFILE: '/landlord/profile',
     NOTIFICATIONS: '/landlord/notifications',
     MANAGE_ROOMS: '/landlord/rooms',
@@ -45,6 +47,7 @@ export const ROUTES = {
     LISTINGS: '/admin/listings',
     MODERATION: '/admin/moderation',
     ANALYTICS: '/admin/analytics',
+    LOGS: '/admin/logs',
     TRANSACTIONS: '/admin/transactions',
     SETTINGS: '/admin/settings',
     HELP: '/admin/help',
@@ -52,7 +55,6 @@ export const ROUTES = {
     MESSAGES: '/admin/messages',
   },
 
-  TERMS: '/terms',
   PRIVACY: '/privacy',
   HELP: '/help',
   WELCOME: '/welcome',

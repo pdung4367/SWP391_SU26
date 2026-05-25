@@ -32,6 +32,7 @@ import {
   LandlordProfilePage,
   MessagesPage,
   LandlordNotificationsPage,
+  SystemLogsPage,
 } from '../features/landlord';
 
 // Admin feature
@@ -55,6 +56,9 @@ import { VerificationPage } from '../features/verification';
 import HomePage from '../pages/HomePage';
 import HelpCenterPage from '../pages/HelpCenterPage';
 import ContactSupportPage from '../pages/ContactSupportPage';
+import TermsPage from '../pages/TermsPage';
+import LandlordSettingsPage from '../pages/SettingsPage';
+import GlobalSearchPage from '../pages/GlobalSearchPage';
 import NotFoundPage from '../pages/NotFoundPage';
 
 const AppRoutes = () => {
@@ -77,18 +81,22 @@ const AppRoutes = () => {
       {/* ===== AUTH ROUTES ===== */}
       <Route element={<AuthLayout />}>
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-        <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       </Route>
 
       {/* ===== STANDALONE PAGES (NO LAYOUT) ===== */}
+      <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       <Route path={ROUTES.TENANT.PAYMENT} element={<DepositPaymentPage />} />
       <Route path={ROUTES.VERIFICATION} element={<VerificationPage />} />
+      <Route path={ROUTES.TERMS} element={<TermsPage />} />
+      <Route path={ROUTES.LANDLORD.TERMS} element={<TermsPage />} />
+      <Route path={ROUTES.SEARCH} element={<GlobalSearchPage />} />
 
       {/* ===== LANDLORD ROUTES ===== */}
       <Route element={<AdminLayout />}>
         <Route path={ROUTES.LANDLORD.DASHBOARD} element={<LandlordDashboard />} />
         <Route path={ROUTES.LANDLORD.HELP} element={<HelpCenterPage />} />
         <Route path={ROUTES.LANDLORD.CONTACT_SUPPORT} element={<ContactSupportPage />} />
+        <Route path={ROUTES.LANDLORD.SETTINGS} element={<LandlordSettingsPage />} />
         <Route path={ROUTES.LANDLORD.LISTINGS} element={<ManageListingsPage />} />
         <Route path={ROUTES.LANDLORD.NEW_LISTING} element={<AddNewPropertyPage />} />
         <Route path={ROUTES.LANDLORD.DEPOSITS} element={<DepositManagementPage />} />
@@ -103,6 +111,7 @@ const AppRoutes = () => {
       <Route element={<AdminLayout />}>
         <Route path={ROUTES.ADMIN.DASHBOARD} element={<DashboardPage />} />
         <Route path={ROUTES.ADMIN.ANALYTICS} element={<AnalyticsPage />} />
+        <Route path={ROUTES.ADMIN.LOGS} element={<SystemLogsPage />} />
         <Route path={ROUTES.ADMIN.TRANSACTIONS} element={<TransactionsPage />} />
         <Route path={ROUTES.ADMIN.LISTINGS} element={<ListingsPage />} />
         <Route path={ROUTES.ADMIN.USERS} element={<UsersPage />} />
