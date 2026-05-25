@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RotateCcw, Mail, ArrowRight, ArrowLeft } from 'lucide-react';
+import { supabase } from '../../../config/supabase';
 import { ROUTES } from '../../../constants';
 import Button from '../../../components/common/Button';
 import Input from '../../../components/common/Input';
@@ -10,6 +11,8 @@ const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,12 +28,16 @@ const ForgotPasswordPage = () => {
     setError('');
     setIsSubmitting(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email);
+      if (resetError) throw resetError;
+
+      navigate(ROUTES.VERIFY_OTP, { state: { email, type: 'recovery' } });
+    } catch (err) {
+      setError(err.message || 'Failed to send reset link');
+    } finally {
       setIsSubmitting(false);
-      // In a real app, you might show a success message here or redirect
-      console.log('Reset link sent to:', email);
-    }, 1000);
+    }
   };
 
   return (
@@ -67,7 +74,7 @@ const ForgotPasswordPage = () => {
           isLoading={isSubmitting}
           className="submit-btn"
         >
-          <span>Send Reset Link</span>
+          <span>Reset Password</span>
           <ArrowRight size={18} />
         </Button>
       </form>
