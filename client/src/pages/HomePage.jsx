@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Search,
-  ShieldCheck,
-  Sliders,
-  CreditCard,
-  Sparkles,
-  MapPin,
-  Calendar,
-  DollarSign,
-  MessageSquare,
+import { 
+  Search, 
+  Sparkles, 
+  MapPin, 
+  Star, 
+  ArrowRight, 
+  Wifi, 
+  Dumbbell,
+  ArrowUpRight
 } from 'lucide-react';
 import { ROUTES } from '../constants';
 import Button from '../components/common/Button';
@@ -17,204 +16,279 @@ import './HomePage.css';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleGetStarted = () => {
-    navigate(ROUTES.LOGIN);
+  const handleSearch = () => {
+    navigate(ROUTES.ROOMS);
   };
 
-  const handleExploreRooms = () => {
-    navigate(ROUTES.ROOMS);
+  const handleCustomSearch = () => {
+    navigate(ROUTES.TENANT.CHAT);
   };
 
   return (
     <div className="home-page">
+      {/* Background Decorators */}
+      <div className="bg-glow-blur bg-glow-primary"></div>
+      <div className="bg-glow-blur bg-glow-secondary"></div>
+
       {/* Hero Section */}
-      <section className="hero">
-        
-        {/* Full-width Background Image on the right with smooth fade-out gradient to the left */}
-        <div className="hero-bg-wrapper">
-          <img 
-            src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&h=800&q=80" 
-            alt="Cozy clean bedroom interior" 
-            className="hero-bg-img"
-          />
-          <div className="hero-bg-overlay"></div>
-        </div>
-
+      <section className="hero-section">
         <div className="container hero-container">
-          
-          {/* Left Column: Text & Stats */}
-          <div className="hero-text-side">
-            <div className="ai-badge">
-              <Sparkles size={16} className="ai-badge-icon" />
-              <span>AI-Powered Matching</span>
-            </div>
-            
+          <div className="hero-content">
             <h1 className="hero-title">
-              Find your perfect stay with AI<span className="hero-title-dot">.</span>
+              Find your perfect stay, <span className="text-gradient">smarter.</span>
             </h1>
-            
             <p className="hero-subtitle">
-              Smart room rental platform for students and young professionals. Discover verified listings tailored to your lifestyle and budget, instantly.
+              Use our advanced AI to discover modern boarding houses that match your exact lifestyle and budget.
             </p>
-            
-            <div className="hero-actions">
-              <Button variant="primary" size="lg" onClick={handleGetStarted}>
-                Get Started
-              </Button>
-              <Button variant="outline" size="lg" onClick={handleExploreRooms}>
-                Explore Rooms
-              </Button>
-            </div>
-            
-            <div className="hero-divider-line"></div>
-            
-            <div className="hero-stats">
-              <div className="stat-item">
-                <span className="stat-number">10k+</span>
-                <span className="stat-label">Active Users</span>
-              </div>
-              <div className="stat-divider"></div>
-              <div className="stat-item">
-                <span className="stat-number">4.9/5</span>
-                <span className="stat-label">App Store Rating</span>
-              </div>
-            </div>
-          </div>
-          
-          {/* Right Column: Floating AI Card on top of Background Image */}
-          <div className="hero-graphic-side">
-            <div className="floating-ai-card">
-              <div className="ai-card-header">
-                <div className="ai-search-icon-circle">
-                  <Search size={18} />
-                </div>
-                <div className="ai-search-info">
-                  <span className="ai-search-title">Smart Search Active</span>
-                  <span className="ai-search-desc">Finding matches near Downtown...</span>
-                </div>
-              </div>
-              
-              <div className="ai-progress-container">
-                <div className="ai-progress-bar">
-                  <div className="ai-progress-fill"></div>
-                </div>
-                <div className="ai-progress-labels">
-                  <span>Scanning verified listings</span>
-                  <span className="percentage-text">68%</span>
-                </div>
-              </div>
-            </div>
-          </div>
 
-        </div>
+            {/* Quick Filters */}
+            <div className="quick-filters">
+              <button className="filter-chip">Under 3M/month</button>
+              <button className="filter-chip">Near Metro Station</button>
+              <button className="filter-chip">Pet Friendly</button>
+              <button className="filter-chip">Private Bathroom</button>
+            </div>
 
-        {/* Floating Search Filter Bar at bottom of Hero */}
-        <div className="container filter-bar-container">
-          <div className="search-filter-bar">
-            
-            {/* Location Field */}
-            <div className="filter-field">
-              <div className="filter-field-icon">
-                <MapPin size={18} />
-              </div>
-              <div className="filter-field-text">
-                <span className="field-label">Location</span>
+            {/* AI Search Bar */}
+            <div className="ai-search-wrapper">
+              <div className="ai-search-bar">
+                <Sparkles size={20} className="ai-icon" />
                 <input 
                   type="text" 
-                  placeholder="Where are you moving?" 
-                  className="field-input" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder='Ask our AI: "I need a room under 4M near District 1"' 
+                  className="ai-search-input"
                 />
+                <Button variant="primary" className="search-btn" onClick={handleSearch}>
+                  Search
+                </Button>
               </div>
             </div>
-            
-            <div className="filter-divider"></div>
-            
-            {/* Move-in Date Field */}
-            <div className="filter-field">
-              <div className="filter-field-icon">
-                <Calendar size={18} />
-              </div>
-              <div className="filter-field-text">
-                <span className="field-label">Move-in Date</span>
-                <input 
-                  type="text" 
-                  placeholder="Add dates" 
-                  className="field-input" 
-                />
-              </div>
-            </div>
-            
-            <div className="filter-divider"></div>
-            
-            {/* Budget Field */}
-            <div className="filter-field">
-              <div className="filter-field-icon">
-                <DollarSign size={18} />
-              </div>
-              <div className="filter-field-text">
-                <span className="field-label">Budget</span>
-                <input 
-                  type="text" 
-                  placeholder="Monthly max" 
-                  className="field-input" 
-                />
-              </div>
-            </div>
-            
-            {/* Search Action Button */}
-            <button className="filter-search-btn" onClick={handleExploreRooms}>
-              <Search size={18} />
-              <span>Search</span>
-            </button>
-            
           </div>
         </div>
       </section>
 
-      {/* Why Choose Smart Stay Section */}
-      <section className="features">
+      {/* Featured Listings Section */}
+      <section className="featured-section">
         <div className="container">
-          <div className="features-header">
-            <h2>Why choose Smart Stay?</h2>
-            <p>We've reimagined the rental experience to be seamless, secure, and tailored exactly to your needs.</p>
+          <div className="featured-header">
+            <div>
+              <h2 className="featured-title">Featured Listings</h2>
+              <p className="featured-subtitle">Top-rated modern spaces tailored for you.</p>
+            </div>
+            <Button variant="outline" className="view-all-btn" onClick={() => navigate(ROUTES.ROOMS)}>
+              View all <ArrowRight size={16} />
+            </Button>
           </div>
+
+          <div className="bento-grid">
+            
+            {/* Promo Card (4 cols) */}
+            <div className="bento-card promo-card">
+              <div className="promo-content">
+                <div className="promo-icon-wrapper">
+                  <Sparkles size={28} className="promo-icon" />
+                </div>
+                <div className="promo-text">
+                  <h3 className="promo-title">Can't find the perfect match?</h3>
+                  <p className="promo-desc">Let our AI agent do the heavy lifting. Tell us what you need.</p>
+                </div>
+                <Button variant="primary" className="custom-search-btn" onClick={handleCustomSearch}>
+                  Start Custom Search <ArrowUpRight size={16} />
+                </Button>
+              </div>
+            </div>
+
+            {/* Nexus Urban Lofts (8 cols) */}
+            <div className="bento-card large-card" onClick={() => navigate(ROUTES.ROOM_DETAIL)}>
+              <div className="card-image-wrapper">
+                <img 
+                  src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80" 
+                  alt="The Nexus Urban Lofts" 
+                />
+                <div className="price-tag-overlay">
+                  $650<span className="price-mo">/mo</span>
+                </div>
+              </div>
+              <div className="card-info">
+                <div className="card-main-info">
+                  <h3 className="card-title">The Nexus Urban Lofts</h3>
+                  <div className="card-location">
+                    <MapPin size={14}/> District 1, Tech Hub
+                  </div>
+                  <div className="card-amenities">
+                    <span className="amenity-badge"><Wifi size={14}/> High-Speed Wi-Fi</span>
+                    <span className="amenity-badge"><Dumbbell size={14}/> Gym Access</span>
+                  </div>
+                </div>
+                <div className="card-divider"></div>
+                <div className="card-footer">
+                  <div className="rating">
+                    <Star size={16} className="star-icon" fill="currentColor"/> 
+                    <span className="rating-score">4.9</span>
+                    <span className="reviews">(128 reviews)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Oakwood Studios (4 cols) */}
+            <div className="bento-card small-card" onClick={() => navigate(ROUTES.ROOM_DETAIL)}>
+              <div className="card-image-wrapper">
+                <img 
+                  src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80" 
+                  alt="Oakwood Studios" 
+                />
+                <div className="price-tag-overlay">
+                  $420<span className="price-mo">/mo</span>
+                </div>
+              </div>
+              <div className="card-info">
+                <h3 className="card-title">Oakwood Studios</h3>
+                <div className="card-location">
+                  <MapPin size={14}/> District 3, Cultural Area
+                </div>
+                <div className="card-divider"></div>
+                <div className="card-footer">
+                  <div className="rating">
+                    <Star size={14} className="star-icon" fill="currentColor"/> 
+                    <span className="rating-score">4.7</span>
+                  </div>
+                  <div className="room-type">Private Room</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Vertex Co-Living (4 cols) */}
+            <div className="bento-card small-card" onClick={() => navigate(ROUTES.ROOM_DETAIL)}>
+              <div className="card-image-wrapper">
+                <img 
+                  src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80" 
+                  alt="Vertex Co-Living" 
+                />
+                <div className="price-tag-overlay">
+                  $550<span className="price-mo">/mo</span>
+                </div>
+              </div>
+              <div className="card-info">
+                <h3 className="card-title">Vertex Co-Living</h3>
+                <div className="card-location">
+                  <MapPin size={14}/> District 7, Riverside
+                </div>
+                <div className="card-divider"></div>
+                <div className="card-footer">
+                  <div className="rating">
+                    <Star size={14} className="star-icon" fill="currentColor"/> 
+                    <span className="rating-score">4.8</span>
+                  </div>
+                  <div className="room-type">Studio</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Eco Sharehouse (4 cols) */}
+            <div className="bento-card small-card" onClick={() => navigate(ROUTES.ROOM_DETAIL)}>
+              <div className="card-image-wrapper">
+                <img 
+                  src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=600&q=80" 
+                  alt="Eco Sharehouse" 
+                />
+                <div className="price-tag-overlay">
+                  $380<span className="price-mo">/mo</span>
+                </div>
+              </div>
+              <div className="card-info">
+                <h3 className="card-title">Eco Sharehouse</h3>
+                <div className="card-location">
+                  <MapPin size={14}/> District 2, Minimalist Hub
+                </div>
+                <div className="card-divider"></div>
+                <div className="card-footer">
+                  <div className="rating">
+                    <Star size={14} className="star-icon" fill="currentColor"/> 
+                    <span className="rating-score">4.6</span>
+                  </div>
+                  <div className="room-type">Shared Room</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Popular Areas Section */}
+      <section className="popular-areas-section">
+        <div className="container">
+          <h2 className="popular-areas-title">Popular Areas</h2>
           
-          <div className="features-grid">
-            {/* Feature 1 */}
-            <div className="feature-card">
-              <div className="feature-icon-box">
-                <ShieldCheck size={26} />
+          <div className="areas-grid">
+            {/* District 1 */}
+            <div className="area-card" onClick={() => navigate(ROUTES.ROOMS)}>
+              <div className="area-image-wrapper">
+                <img 
+                  src="https://images.unsplash.com/photo-1596443686812-2717610be2cb?auto=format&fit=crop&w=600&q=80" 
+                  alt="District 1" 
+                />
+                <div className="area-overlay"></div>
               </div>
-              <h3>Verified Listings</h3>
-              <p>Every room is physically inspected and verified by our team to ensure it meets our quality standards.</p>
+              <div className="area-info">
+                <h3 className="area-name">District 1</h3>
+                <p className="area-places">142 places</p>
+              </div>
             </div>
-            
-            {/* Feature 2 */}
-            <div className="feature-card">
-              <div className="feature-icon-box">
-                <Sliders size={26} />
+
+            {/* District 2 */}
+            <div className="area-card" onClick={() => navigate(ROUTES.ROOMS)}>
+              <div className="area-image-wrapper">
+                <img 
+                  src="https://images.unsplash.com/photo-1549925232-a5e2f98e6c40?auto=format&fit=crop&w=600&q=80" 
+                  alt="District 2" 
+                />
+                <div className="area-overlay"></div>
               </div>
-              <h3>AI Matchmaking</h3>
-              <p>Our algorithm considers your lifestyle, commute, and preferences to suggest the perfect housemates.</p>
+              <div className="area-info">
+                <h3 className="area-name">District 2</h3>
+                <p className="area-places">85 places</p>
+              </div>
             </div>
-            
-            {/* Feature 3 */}
-            <div className="feature-card">
-              <div className="feature-icon-box">
-                <CreditCard size={26} />
+
+            {/* District 3 */}
+            <div className="area-card" onClick={() => navigate(ROUTES.ROOMS)}>
+              <div className="area-image-wrapper">
+                <img 
+                  src="https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=600&q=80" 
+                  alt="District 3" 
+                />
+                <div className="area-overlay"></div>
               </div>
-              <h3>Seamless Payments</h3>
-              <p>Handle rent, utilities, and deposits through our secure, transparent digital platform with no hidden fees.</p>
+              <div className="area-info">
+                <h3 className="area-name">District 3</h3>
+                <p className="area-places">110 places</p>
+              </div>
+            </div>
+
+            {/* District 7 */}
+            <div className="area-card" onClick={() => navigate(ROUTES.ROOMS)}>
+              <div className="area-image-wrapper">
+                <img 
+                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" 
+                  alt="District 7" 
+                />
+                <div className="area-overlay"></div>
+              </div>
+              <div className="area-info">
+                <h3 className="area-name">District 7</h3>
+                <p className="area-places">94 places</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Floating Chat Widget Circle Button (Bottom Right) */}
-      <button className="floating-chat-widget" onClick={() => navigate(ROUTES.TENANT.CHAT)}>
-        <Sparkles size={24} />
-      </button>
     </div>
   );
 };
