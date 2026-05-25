@@ -129,6 +129,25 @@
   background-color: #1D4ED8;
 }
 
+.btn-quick-action {
+  background-color: #2563EB;
+  color: white;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-quick-action:hover {
+  background-color: #1D4ED8;
+}
+
 .user-avatar-container {
   width: 36px;
   height: 36px;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, Search, Cpu, HelpCircle, X } from 'lucide-react';
 import { ROUTES } from '../constants';
+import dogIllustration from '../assets/images/404-dog.png';
 import './NotFoundPage.css';
 
 const NotFoundPage = () => {
@@ -12,6 +13,16 @@ const NotFoundPage = () => {
     <div className="notfound-page-container">
       {/* 404 Split Panel Layout */}
       <div className="notfound-card-wrapper">
+        {/* Left Side: Dog Illustration */}
+        <div className="notfound-visual-pane">
+          <img
+            src={dogIllustration}
+            alt="Page Not Found Illustration"
+            className="dog-illustration-img"
+          />
+        </div>
+
+        {/* Right Side: Text & Navigation */}
         {/* Right Side: Text & Quick-Path navigators */}
         <div className="notfound-content-pane">
           <span className="error-code-badge">404</span>
@@ -21,7 +32,7 @@ const NotFoundPage = () => {
           </p>
 
           {/* Divider line */}
-          <div className="error-horizontal-divider"></div>
+          <div className="error-horizontal-divider" />
 
           {/* Let's get you back on track block */}
           <div className="track-suggest-header">Let's get you back on track:</div>
@@ -139,7 +150,7 @@ const NotFoundPage = () => {
                   className="ai-option-btn outline"
                 >
                   <HelpCircle size={14} />
-                  <span>Contact Human Host</span>
+                  <span>Contact Support</span>
                 </button>
               </div>
             </div>

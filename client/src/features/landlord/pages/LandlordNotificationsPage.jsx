@@ -60,7 +60,7 @@ const MOCK_NOTIFICATIONS = [
     type: 'System Update',
     category: 'System',
     time: 'Oct 24, 2023',
-    title: 'SmartBoarding v2.4 Deployed',
+    title: 'RentalRoom v2.4 Deployed',
     description: 'The platform has been updated with new reporting features and performance improvements.',
     isUnread: false,
     icon: <CheckCircle2 size={20} />,
