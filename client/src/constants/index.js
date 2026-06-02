@@ -26,7 +26,7 @@ export const ROUTES = {
   },
 
   LANDLORD: {
-    DASHBOARD: '/landlord',
+    DASHBOARD: '/landlord/dashboard',
     DEPOSITS: '/landlord/deposits',
     LISTINGS: '/landlord/listings',
     NEW_LISTING: '/landlord/listings/new',
@@ -41,6 +41,10 @@ export const ROUTES = {
     NOTIFICATIONS: '/landlord/notifications',
     MANAGE_ROOMS: '/landlord/rooms',
     MESSAGES: '/landlord/messages',
+    PAYMENTS: '/landlord/payments',
+    CONTRACTS: '/landlord/contracts',
+    COMPLAINTS: '/landlord/complaints',
+    SCHEDULES: '/landlord/schedules',
   },
 
   ADMIN: {

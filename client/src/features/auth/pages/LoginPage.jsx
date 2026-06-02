@@ -24,6 +24,19 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const login = useAuthStore(state => state.login);
+  const { user, isAuthenticated } = useAuthStore();
+
+  React.useEffect(() => {
+    if (isAuthenticated && user) {
+      const role = user.role || 'TENANT';
+      if (role === 'LANDLORD') {
+        navigate(ROUTES.LANDLORD.DASHBOARD, { replace: true });
+      } else if (role === 'ADMIN') {
+        navigate(ROUTES.ADMIN.DASHBOARD, { replace: true });
+      }
+    }
+  }, [isAuthenticated, user, navigate]);
+
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(loginSchema)
   });
