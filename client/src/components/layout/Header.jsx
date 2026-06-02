@@ -53,9 +53,19 @@ const Header = () => {
         </div>
 
         <nav className="header-tabs">
-          <Link to={ROUTES.ROOMS} className={`tab-link ${location.pathname === ROUTES.ROOMS ? 'active' : ''}`}>Explore</Link>
-          <Link to={ROUTES.TENANT.FAVORITES} className={`tab-link ${location.pathname === ROUTES.TENANT.FAVORITES ? 'active' : ''}`}>Favorites</Link>
-          <Link to={ROUTES.TENANT.RENTAL_REQUEST || '#'} className={`tab-link ${location.pathname === ROUTES.TENANT.RENTAL_REQUEST ? 'active' : ''}`}>Requests</Link>
+          {isAuthenticated && user?.role === 'LANDLORD' ? (
+            <>
+              <Link to="/landlord/dashboard" className={`tab-link ${location.pathname === '/landlord/dashboard' || location.pathname === '/landlord' ? 'active' : ''}`} style={{ fontWeight: '700', color: '#2563EB' }}>Landlord Dashboard</Link>
+              <Link to={ROUTES.LANDLORD.LISTINGS} className={`tab-link ${location.pathname === ROUTES.LANDLORD.LISTINGS ? 'active' : ''}`}>My Listings</Link>
+              <Link to={ROUTES.LANDLORD.MESSAGES} className={`tab-link ${location.pathname === ROUTES.LANDLORD.MESSAGES ? 'active' : ''}`}>Messages</Link>
+            </>
+          ) : (
+            <>
+              <Link to={ROUTES.ROOMS} className={`tab-link ${location.pathname === ROUTES.ROOMS ? 'active' : ''}`}>Explore</Link>
+              <Link to={ROUTES.TENANT.FAVORITES} className={`tab-link ${location.pathname === ROUTES.TENANT.FAVORITES ? 'active' : ''}`}>Favorites</Link>
+              <Link to={ROUTES.TENANT.RENTAL_REQUEST || '#'} className={`tab-link ${location.pathname === ROUTES.TENANT.RENTAL_REQUEST ? 'active' : ''}`}>Requests</Link>
+            </>
+          )}
         </nav>
 
         <div className="header-right">
@@ -71,7 +81,16 @@ const Header = () => {
             <Link to={ROUTES.LOGIN} className="sign-in-btn">Sign In</Link>
           ) : (
             <div className="user-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <Link to={ROUTES.TENANT.PROFILE}>
+              {user?.role === 'LANDLORD' && (
+                <Link 
+                  to="/landlord/dashboard" 
+                  className="sign-in-btn" 
+                  style={{ background: '#2563EB', color: 'white', border: 'none', padding: '0.4rem 0.9rem', fontSize: '0.85rem', fontWeight: '600', textDecoration: 'none', borderRadius: '4px' }}
+                >
+                  Landlord Portal
+                </Link>
+              )}
+              <Link to={user?.role === 'LANDLORD' ? ROUTES.LANDLORD.PROFILE : ROUTES.TENANT.PROFILE}>
                 <div className="header-avatar" title="Profile">
                   <img src={getAvatarUrl()} alt="Avatar" />
                 </div>
