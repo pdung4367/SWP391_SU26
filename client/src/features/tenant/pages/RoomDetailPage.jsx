@@ -1,63 +1,103 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { 
   MapPin, Star, Share2, Heart, Wifi, Snowflake, Key, 
-  Coffee, Compass, Dumbbell, Grid, ChevronDown, ChevronLeft 
+  Coffee, Compass, Dumbbell, Grid, ChevronDown, ChevronLeft, MessageSquare, CheckCircle 
 } from 'lucide-react';
 import './RoomDetailPage.css';
 
 const RoomDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [roomData, setRoomData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showMoreAbout, setShowMoreAbout] = useState(false);
-
+  
   // Booking Card States
-  const [moveIn, setMoveIn] = useState('2024-10-01');
-  const [moveOut, setMoveOut] = useState('2025-04-01');
+  const [moveIn, setMoveIn] = useState('');
+  const [moveOut, setMoveOut] = useState('');
   const [guests, setGuests] = useState('1 Guest');
 
-  // Hardcoded mockup data matching the Figma layout exactly
-  const roomData = {
-    title: 'Premium Co-living Suite with Smart Tech',
-    price: 1850,
-    rating: 4.92,
-    reviewsCount: 128,
-    location: 'Downtown Innovation District, San Francisco',
-    specs: ['2 Guests', '1 Bedroom', '1 Private Bath'],
-    images: [
-      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1000&auto=format&fit=crop&q=80', // Main Living Room
-      'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=500&auto=format&fit=crop&q=80',  // Bedroom
-      'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=500&auto=format&fit=crop&q=80',  // Kitchen
-      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&auto=format&fit=crop&q=80',  // Bathroom
-      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop&q=80'   // Lounge/Cinema Room
-    ],
-    host: {
-      name: 'RentalRoom Properties',
-      badge: 'Superhost',
-      responseTime: 'Responds within an hour',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80' // Professional Avatar
-    },
-    about: 'Experience seamless urban living in our premium smart suite. Designed for professionals seeking both efficiency and comfort, this space integrates cutting-edge technology with high-end design.\n\nEnjoy keyless entry, climate control via our proprietary app, and gigabit fiber internet. The suite includes a dedicated workspace, a fully equipped kitchenette, and access to premium communal areas.',
-    amenities: [
-      { name: 'Gigabit High-Speed Wi-Fi', icon: Wifi },
-      { name: 'Dedicated Kitchenette', icon: Coffee },
-      { name: 'Smart Climate Control', icon: Snowflake },
-      { name: 'Ergonomic Workspace', icon: Compass },
-      { name: 'Keyless Smart Entry', icon: Key },
-      { name: 'On-site Gym Access', icon: Dumbbell }
-    ]
+  useEffect(() => {
+    const fetchListing = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/listings/${id}`);
+        if (response.data.success) {
+          setRoomData(response.data.data);
+        }
+      } catch (err) {
+        setError('Failed to load listing details');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchListing();
+  }, [id]);
+
+  const handleBookingRequest = async (type) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+      const response = await axios.post('http://localhost:5000/api/bookings', {
+        listing_id: id,
+        type: type // 'view' or 'rent'
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        alert(type === 'rent' ? 'Deposit request sent!' : 'Viewing request sent!');
+        if (type === 'rent') navigate('/payment');
+      }
+    } catch (err) {
+      alert('Failed to send request. ' + (err.response?.data?.message || ''));
+    }
   };
 
-  const handleSendRequest = () => {
-    // Navigate to payment/deposit page or display success
-    navigate('/payment');
+  const handleChatWithLandlord = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+      // First, get or create conversation
+      const response = await axios.post('http://localhost:5000/api/landlord/conversations', {
+        participantId: roomData.landlord_id,
+        roomId: roomData.room_id
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        const convId = response.data.data.conversationId;
+        navigate(`/messages?conversationId=${convId}`);
+      }
+    } catch (err) {
+      alert('Failed to start chat. ' + (err.response?.data?.message || ''));
+    }
   };
+
+  if (loading) return <div className="p-8 text-center">Loading...</div>;
+  if (error || !roomData) return <div className="p-8 text-center text-red-500">{error || 'Listing not found'}</div>;
+
+  const images = roomData.images?.length > 0 
+    ? roomData.images.map(img => `http://localhost:5000${img.image_url}`)
+    : (roomData.thumbnailUrl ? [`http://localhost:5000${roomData.thumbnailUrl}`] : ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&auto=format&fit=crop&q=60']);
+    
+  // Ensure we have at least 5 images for the grid
+  while (images.length < 5) {
+    images.push(images[0]);
+  }
 
   return (
-    <div className="room-detail-page container">
+    <div className="room-detail-page container pt-20">
       {/* Back button for convenient navigation */}
-      <button className="back-btn" onClick={() => navigate('/rooms')}>
+      <button className="back-btn" onClick={() => navigate('/listings')}>
         <ChevronLeft size={16} />
         <span>Back to Explore</span>
       </button>
@@ -65,14 +105,14 @@ const RoomDetailPage = () => {
       {/* Gallery Section */}
       <section className="detail-gallery">
         <div className="gallery-main">
-          <img src={roomData.images[0]} alt="Main space" />
+          <img src={images[0]} alt="Main space" />
         </div>
         <div className="gallery-grid">
-          <div className="gallery-item"><img src={roomData.images[1]} alt="Bedroom" /></div>
-          <div className="gallery-item"><img src={roomData.images[2]} alt="Kitchen" /></div>
-          <div className="gallery-item"><img src={roomData.images[3]} alt="Bathroom" /></div>
+          <div className="gallery-item"><img src={images[1]} alt="Bedroom" /></div>
+          <div className="gallery-item"><img src={images[2]} alt="Kitchen" /></div>
+          <div className="gallery-item"><img src={images[3]} alt="Bathroom" /></div>
           <div className="gallery-item relative">
-            <img src={roomData.images[4]} alt="Lounge" />
+            <img src={images[4]} alt="Lounge" />
             <button className="show-photos-btn">
               <Grid size={16} />
               <span>Show all photos</span>
@@ -104,21 +144,18 @@ const RoomDetailPage = () => {
             
             <div className="location-row">
               <MapPin size={16} className="location-icon" />
-              <span>{roomData.location}</span>
+              <span>{roomData.address}</span>
             </div>
 
             <div className="meta-specs-row">
               <span className="rating-span">
                 <Star size={14} className="star-icon" />
-                <strong>{roomData.rating}</strong> ({roomData.reviewsCount} reviews)
+                <strong>5.0</strong> (12 reviews)
               </span>
               <span className="spec-dot">•</span>
-              {roomData.specs.map((spec, index) => (
-                <React.Fragment key={index}>
-                  <span>{spec}</span>
-                  {index < roomData.specs.length - 1 && <span className="spec-dot">•</span>}
-                </React.Fragment>
-              ))}
+              <span>1 Bedroom</span>
+              <span className="spec-dot">•</span>
+              <span>{roomData.areaSqm || 0} sqm</span>
             </div>
           </div>
 
@@ -127,13 +164,15 @@ const RoomDetailPage = () => {
           {/* Host Card Section */}
           <section className="host-card">
             <div className="host-info">
-              <img src={roomData.host.avatar} alt={roomData.host.name} className="host-avatar" />
+              <img src={roomData.landlord?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'} alt={roomData.landlord?.full_name} className="host-avatar" />
               <div className="host-text">
-                <h3>Managed by {roomData.host.name}</h3>
-                <p>{roomData.host.badge} • {roomData.host.responseTime}</p>
+                <h3>Managed by {roomData.landlord?.full_name || 'Landlord'}</h3>
+                <p>Phone: {roomData.landlord?.phone || 'N/A'}</p>
               </div>
             </div>
-            <button className="contact-host-btn">Contact</button>
+            <button className="contact-host-btn flex items-center justify-center gap-2" onClick={handleChatWithLandlord}>
+              <MessageSquare size={16} /> [Chat with Landlord]
+            </button>
           </section>
 
           <hr className="section-divider" />
@@ -142,7 +181,7 @@ const RoomDetailPage = () => {
           <section className="about-section">
             <h2>About this space</h2>
             <div className={`about-text ${showMoreAbout ? 'expanded' : ''}`}>
-              <p>{roomData.about}</p>
+              <p>{roomData.description}</p>
             </div>
             <button 
               className="show-more-link" 
@@ -158,17 +197,15 @@ const RoomDetailPage = () => {
           <section className="amenities-section">
             <h2>What this place offers</h2>
             <div className="amenities-grid">
-              {roomData.amenities.map((amenity, idx) => {
-                const IconComponent = amenity.icon;
+              {roomData.facilities?.map((amenity, idx) => {
                 return (
                   <div className="amenity-item" key={idx}>
-                    <IconComponent size={20} className="amenity-icon" />
-                    <span>{amenity.name}</span>
+                    <CheckCircle size={20} className="amenity-icon" />
+                    <span>{amenity.facility_name}</span>
                   </div>
                 );
               })}
             </div>
-            <button className="show-amenities-btn">Show all 32 amenities</button>
           </section>
         </div>
 
@@ -176,7 +213,7 @@ const RoomDetailPage = () => {
         <aside className="detail-sidebar">
           <div className="booking-card">
             <div className="booking-price-row">
-              <span className="booking-price">${roomData.price.toLocaleString()}</span>
+              <span className="booking-price">${roomData.pricePerMonth?.toLocaleString() || 0}</span>
               <span className="booking-period">/ month</span>
             </div>
 
@@ -208,9 +245,14 @@ const RoomDetailPage = () => {
               </div>
             </div>
 
-            <button className="send-request-btn" onClick={handleSendRequest}>
-              Send Request
-            </button>
+            <div className="flex flex-col gap-3 mt-4">
+              <button className="send-request-btn" onClick={() => handleBookingRequest('view')}>
+                [Request Viewing]
+              </button>
+              <button className="border border-primary text-primary font-bold py-3 rounded-lg hover:bg-primary/5 transition" onClick={() => handleBookingRequest('rent')}>
+                [Request Rent / Deposit]
+              </button>
+            </div>
             
             <p className="booking-disclaimer">You won't be charged yet</p>
 
@@ -218,7 +260,7 @@ const RoomDetailPage = () => {
 
             <div className="booking-estimate-row">
               <span>Total Monthly Estimate</span>
-              <span>${roomData.price.toLocaleString()}</span>
+              <span>${roomData.pricePerMonth?.toLocaleString() || 0}</span>
             </div>
           </div>
         </aside>
