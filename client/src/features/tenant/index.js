@@ -1,5 +1,6 @@
 // Pages
 export { default as SearchPage } from './pages/SearchPage';
+export { default as ListingsPage } from './pages/ListingsPage';
 export { default as FavoritesPage } from './pages/FavoritesPage';
 export { default as DepositPaymentPage } from './pages/DepositPaymentPage';
 export { default as AIChatPage } from './pages/AIChatPage';
