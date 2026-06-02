@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants';
-import { 
-  Plus, 
-  Search, 
-  MapPin, 
-  ArrowUpRight, 
-  Pencil, 
-  Trash2, 
+import {
+  Plus,
+  Search,
+  MapPin,
+  ArrowUpRight,
+  Pencil,
+  Trash2,
   SlidersHorizontal,
   ChevronDown,
   X,
@@ -16,6 +16,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import Button from '../../../components/common/Button';
+import { useRooms } from '../hooks/useRooms';
 import './ManageListingsPage.css';
 
 // Initial Mock Listings
@@ -84,11 +85,53 @@ const INITIAL_LISTINGS = [
 
 const ManageListingsPage = () => {
   const navigate = useNavigate();
-  const [listings, setListings] = useState(INITIAL_LISTINGS);
+  const { rooms, loading: roomsLoading, error: roomsError, updateRoom, deleteRoom } = useRooms();
+  const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
   const [typeFilter, setTypeFilter] = useState('Property Type');
-  
+
+  useEffect(() => {
+    if (rooms) {
+      const mapped = rooms.map(room => {
+        // Find covers or primary image
+        let coverImg = 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&auto=format&fit=crop&q=80';
+        if (room.images && room.images.length > 0) {
+          const primary = room.images.find(img => img.is_primary || img.isPrimary);
+          coverImg = primary ? primary.url : room.images[0].url;
+        } else if (room.thumbnailUrl) {
+          coverImg = room.thumbnailUrl;
+        }
+
+        // Facilities mapping
+        let tags = ['High-Speed Wi-Fi', 'Private Bath'];
+        if (room.facilities && room.facilities.length > 0) {
+          tags = room.facilities.map(f => f.facilityName || f.facility_name);
+        }
+
+        return {
+          id: (room.roomId || room.room_id || room.id).toString(),
+          title: room.title || '',
+          address: room.address || '',
+          city: room.city || '',
+          district: room.district || '',
+          price: Number(room.pricePerMonth || room.price_per_month || 0),
+          status: room.status === 'available' ? 'Available' : 'Occupied',
+          type: room.roomType || 'Apartment',
+          image: coverImg,
+          tags: tags,
+          performance: {
+            views: Math.floor((((room.roomId || room.id || 0) * 47) % 500) + 50),
+            inquiries: Math.floor((((room.roomId || room.id || 0) * 11) % 40) + 2),
+            revenue: room.status === 'rented' ? Number(room.pricePerMonth || 0) : 0
+          },
+          rawRoom: room
+        };
+      });
+      setListings(mapped);
+    }
+  }, [rooms]);
+
   // Modals state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -111,15 +154,15 @@ const ManageListingsPage = () => {
 
   // Filter listings
   const filteredListings = listings.filter(item => {
-    const matchesSearch = 
+    const matchesSearch =
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.address.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = 
+    const matchesStatus =
       statusFilter === 'All Statuses' || item.status === statusFilter;
 
-    const matchesType = 
+    const matchesType =
       typeFilter === 'Property Type' || item.type === typeFilter;
 
     return matchesSearch && matchesStatus && matchesType;
@@ -140,7 +183,7 @@ const ManageListingsPage = () => {
     e.preventDefault();
     const newId = formId.trim() || `APT-${Math.floor(100 + Math.random() * 900)}${String.fromCharCode(65 + Math.floor(Math.random() * 26))}`;
     const defaultImage = formImage.trim() || 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&auto=format&fit=crop&q=80';
-    
+
     const newListing = {
       id: newId,
       title: formTitle,
@@ -175,31 +218,52 @@ const ManageListingsPage = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleEditSubmit = (e) => {
+  const handleEditSubmit = async (e) => {
     e.preventDefault();
-    setListings(listings.map(item => {
-      if (item.id === selectedListing.id) {
-        return {
-          ...item,
-          title: formTitle,
-          address: formAddress,
-          price: Number(formPrice),
-          status: formStatus,
-          type: formType,
-          image: formImage || item.image,
-          tags: formTags.split(',').map(t => t.trim()).filter(Boolean)
-        };
-      }
-      return item;
-    }));
-    setIsEditModalOpen(false);
-    setSelectedListing(null);
-    resetForm();
+    try {
+      const roomPayload = {
+        title: formTitle,
+        address: formAddress,
+        city: selectedListing.city || 'Da Nang',
+        district: selectedListing.district || 'Ngu Hanh Son',
+        pricePerMonth: Number(formPrice),
+        status: formStatus === 'Available' ? 'available' : 'rented',
+        roomType: formType,
+      };
+
+      await updateRoom(selectedListing.id, roomPayload);
+
+      setListings(listings.map(item => {
+        if (item.id === selectedListing.id) {
+          return {
+            ...item,
+            title: formTitle,
+            address: formAddress,
+            price: Number(formPrice),
+            status: formStatus,
+            type: formType,
+            image: formImage || item.image,
+            tags: formTags.split(',').map(t => t.trim()).filter(Boolean)
+          };
+        }
+        return item;
+      }));
+      setIsEditModalOpen(false);
+      setSelectedListing(null);
+      resetForm();
+    } catch (err) {
+      alert(err.message || 'Failed to update room');
+    }
   };
 
-  const handleDeleteClick = (id) => {
+  const handleDeleteClick = async (id) => {
     if (window.confirm(`Are you sure you want to delete listing ${id}?`)) {
-      setListings(listings.filter(item => item.id !== id));
+      try {
+        await deleteRoom(id);
+        setListings(listings.filter(item => item.id !== id));
+      } catch (err) {
+        alert(err.message || 'Failed to delete room');
+      }
     }
   };
 
@@ -216,9 +280,9 @@ const ManageListingsPage = () => {
           <h1 className="manage-listings__title">Manage Listings</h1>
           <p className="manage-listings__subtitle">View, edit, and monitor your property portfolio.</p>
         </div>
-        <Button 
-          variant="primary" 
-          icon={<Plus size={18} />} 
+        <Button
+          variant="primary"
+          icon={<Plus size={18} />}
           onClick={() => navigate(ROUTES.LANDLORD.NEW_LISTING)}
         >
           Add New Listing
@@ -230,9 +294,9 @@ const ManageListingsPage = () => {
         {/* Search */}
         <div className="filter-search">
           <Search size={18} className="filter-search__icon" />
-          <input 
-            type="text" 
-            placeholder="Search by address, ID, or title..." 
+          <input
+            type="text"
+            placeholder="Search by address, ID, or title..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="filter-search__input"
@@ -241,7 +305,7 @@ const ManageListingsPage = () => {
 
         {/* Dropdown 1: All Statuses */}
         <div className="filter-dropdown-container">
-          <button 
+          <button
             className="filter-dropdown-btn"
             onClick={() => {
               setShowStatusDropdown(!showStatusDropdown);
@@ -254,8 +318,8 @@ const ManageListingsPage = () => {
           {showStatusDropdown && (
             <div className="filter-dropdown-menu">
               {['All Statuses', 'Available', 'Occupied'].map((st) => (
-                <button 
-                  key={st} 
+                <button
+                  key={st}
                   className={`filter-dropdown-item ${statusFilter === st ? 'active' : ''}`}
                   onClick={() => {
                     setStatusFilter(st);
@@ -271,7 +335,7 @@ const ManageListingsPage = () => {
 
         {/* Dropdown 2: Property Type */}
         <div className="filter-dropdown-container">
-          <button 
+          <button
             className="filter-dropdown-btn"
             onClick={() => {
               setShowTypeDropdown(!showTypeDropdown);
@@ -284,8 +348,8 @@ const ManageListingsPage = () => {
           {showTypeDropdown && (
             <div className="filter-dropdown-menu">
               {['Property Type', 'Apartment', 'Co-living', 'House'].map((tp) => (
-                <button 
-                  key={tp} 
+                <button
+                  key={tp}
                   className={`filter-dropdown-item ${typeFilter === tp ? 'active' : ''}`}
                   onClick={() => {
                     setTypeFilter(tp);
@@ -300,7 +364,7 @@ const ManageListingsPage = () => {
         </div>
 
         {/* More Filters button */}
-        <button 
+        <button
           className="filter-more-btn"
           onClick={() => {
             setStatusFilter('All Statuses');
@@ -314,81 +378,97 @@ const ManageListingsPage = () => {
         </button>
       </div>
 
+      {/* Loading & Error States */}
+      {roomsLoading && (
+        <div className="manage-listings__loading">
+          <div className="spinner-loader"></div>
+          <p>Loading listings from database...</p>
+        </div>
+      )}
+
+      {roomsError && (
+        <div className="manage-listings__error">
+          <p>⚠️ Error loading listings: {roomsError}</p>
+        </div>
+      )}
+
       {/* Grid of Listings */}
-      {filteredListings.length > 0 ? (
-        <div className="manage-listings__grid">
-          {filteredListings.map((listing) => (
-            <div className="listing-card" key={listing.id}>
-              {/* Image & Badges */}
-              <div className="listing-card__image-container">
-                <img src={listing.image} alt={listing.title} className="listing-card__img" />
-                
-                {/* Status Badge */}
-                <div className={`listing-card__badge-status status-${listing.status.toLowerCase()}`}>
-                  <span className="badge-status-dot"></span>
-                  <span>{listing.status}</span>
+      {!roomsLoading && !roomsError && (
+        filteredListings.length > 0 ? (
+          <div className="manage-listings__grid">
+            {filteredListings.map((listing) => (
+              <div className="listing-card" key={listing.id}>
+                {/* Image & Badges */}
+                <div className="listing-card__image-container">
+                  <img src={listing.image} alt={listing.title} className="listing-card__img" />
+
+                  {/* Status Badge */}
+                  <div className={`listing-card__badge-status status-${listing.status.toLowerCase()}`}>
+                    <span className="badge-status-dot"></span>
+                    <span>{listing.status}</span>
+                  </div>
+
+                  {/* Price Tag */}
+                  <div className="listing-card__badge-price">
+                    <span className="price-amount">${listing.price.toLocaleString()}</span>
+                    <span className="price-unit">/mo</span>
+                  </div>
                 </div>
 
-                {/* Price Tag */}
-                <div className="listing-card__badge-price">
-                  <span className="price-amount">${listing.price.toLocaleString()}</span>
-                  <span className="price-unit">/mo</span>
+                {/* Body */}
+                <div className="listing-card__body">
+                  <div className="listing-card__id">ID: {listing.id}</div>
+                  <h3 className="listing-card__title">{listing.title}</h3>
+
+                  <div className="listing-card__address">
+                    <MapPin size={15} />
+                    <span>{listing.address}</span>
+                  </div>
+
+                  <div className="listing-card__tags">
+                    {listing.tags.map((tag, idx) => (
+                      <span key={idx} className="listing-card__tag-pill">{tag}</span>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Body */}
-              <div className="listing-card__body">
-                <div className="listing-card__id">ID: {listing.id}</div>
-                <h3 className="listing-card__title">{listing.title}</h3>
-                
-                <div className="listing-card__address">
-                  <MapPin size={15} />
-                  <span>{listing.address}</span>
-                </div>
-
-                <div className="listing-card__tags">
-                  {listing.tags.map((tag, idx) => (
-                    <span key={idx} className="listing-card__tag-pill">{tag}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Footer Actions */}
-              <div className="listing-card__footer">
-                <button 
-                  className="btn-performance-link"
-                  onClick={() => handlePerfClick(listing)}
-                >
-                  <span>View Performance</span>
-                  <ArrowUpRight size={16} />
-                </button>
-
-                <div className="listing-card__actions">
-                  <button 
-                    className="action-icon-btn btn-edit" 
-                    title="Edit Listing"
-                    onClick={() => handleEditClick(listing)}
+                {/* Footer Actions */}
+                <div className="listing-card__footer">
+                  <button
+                    className="btn-performance-link"
+                    onClick={() => handlePerfClick(listing)}
                   >
-                    <Pencil size={15} />
+                    <span>View Performance</span>
+                    <ArrowUpRight size={16} />
                   </button>
-                  <button 
-                    className="action-icon-btn btn-delete" 
-                    title="Delete Listing"
-                    onClick={() => handleDeleteClick(listing.id)}
-                  >
-                    <Trash2 size={15} />
-                  </button>
+
+                  <div className="listing-card__actions">
+                    <button
+                      className="action-icon-btn btn-edit"
+                      title="Edit Listing"
+                      onClick={() => handleEditClick(listing)}
+                    >
+                      <Pencil size={15} />
+                    </button>
+                    <button
+                      className="action-icon-btn btn-delete"
+                      title="Delete Listing"
+                      onClick={() => handleDeleteClick(listing.id)}
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="manage-listings__empty">
-          <div className="empty-icon-wrapper">🏡</div>
-          <h3>No listings found</h3>
-          <p>Try adjusting your search criteria or add a new listing to get started.</p>
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="manage-listings__empty">
+            <div className="empty-icon-wrapper">🏡</div>
+            <h3>No listings found</h3>
+            <p>Try adjusting your search criteria or add a new listing to get started.</p>
+          </div>
+        )
       )}
 
       {/* Add New Listing Modal */}
@@ -406,44 +486,44 @@ const ManageListingsPage = () => {
                 <div className="form-group-row">
                   <div className="form-group">
                     <label>Listing ID (optional)</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       placeholder="e.g. APT-104A"
-                      value={formId} 
-                      onChange={(e) => setFormId(e.target.value)} 
+                      value={formId}
+                      onChange={(e) => setFormId(e.target.value)}
                     />
                   </div>
                   <div className="form-group">
                     <label>Monthly Rent (USD) *</label>
-                    <input 
-                      type="number" 
-                      required 
+                    <input
+                      type="number"
+                      required
                       placeholder="e.g. 1200"
-                      value={formPrice} 
-                      onChange={(e) => setFormPrice(e.target.value)} 
+                      value={formPrice}
+                      onChange={(e) => setFormPrice(e.target.value)}
                     />
                   </div>
                 </div>
 
                 <div className="form-group">
                   <label>Property Title *</label>
-                  <input 
-                    type="text" 
-                    required 
+                  <input
+                    type="text"
+                    required
                     placeholder="e.g. Sunny Studio in Downtown"
-                    value={formTitle} 
-                    onChange={(e) => setFormTitle(e.target.value)} 
+                    value={formTitle}
+                    onChange={(e) => setFormTitle(e.target.value)}
                   />
                 </div>
 
                 <div className="form-group">
                   <label>Full Address *</label>
-                  <input 
-                    type="text" 
-                    required 
+                  <input
+                    type="text"
+                    required
                     placeholder="e.g. 124 Main St, Floor 4"
-                    value={formAddress} 
-                    onChange={(e) => setFormAddress(e.target.value)} 
+                    value={formAddress}
+                    onChange={(e) => setFormAddress(e.target.value)}
                   />
                 </div>
 
@@ -467,21 +547,21 @@ const ManageListingsPage = () => {
 
                 <div className="form-group">
                   <label>Image URL (optional)</label>
-                  <input 
-                    type="text" 
-                    placeholder="https://unsplash.com/..." 
-                    value={formImage} 
-                    onChange={(e) => setFormImage(e.target.value)} 
+                  <input
+                    type="text"
+                    placeholder="https://unsplash.com/..."
+                    value={formImage}
+                    onChange={(e) => setFormImage(e.target.value)}
                   />
                 </div>
 
                 <div className="form-group">
                   <label>Tags / Amenities (comma separated)</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. Private Bath, High-Speed Wi-Fi, Gym Access" 
-                    value={formTags} 
-                    onChange={(e) => setFormTags(e.target.value)} 
+                  <input
+                    type="text"
+                    placeholder="e.g. Private Bath, High-Speed Wi-Fi, Gym Access"
+                    value={formTags}
+                    onChange={(e) => setFormTags(e.target.value)}
                   />
                 </div>
               </div>
@@ -515,32 +595,32 @@ const ManageListingsPage = () => {
               <div className="modal-body">
                 <div className="form-group">
                   <label>Property Title *</label>
-                  <input 
-                    type="text" 
-                    required 
-                    value={formTitle} 
-                    onChange={(e) => setFormTitle(e.target.value)} 
+                  <input
+                    type="text"
+                    required
+                    value={formTitle}
+                    onChange={(e) => setFormTitle(e.target.value)}
                   />
                 </div>
 
                 <div className="form-group">
                   <label>Full Address *</label>
-                  <input 
-                    type="text" 
-                    required 
-                    value={formAddress} 
-                    onChange={(e) => setFormAddress(e.target.value)} 
+                  <input
+                    type="text"
+                    required
+                    value={formAddress}
+                    onChange={(e) => setFormAddress(e.target.value)}
                   />
                 </div>
 
                 <div className="form-group-row">
                   <div className="form-group">
                     <label>Monthly Rent (USD) *</label>
-                    <input 
-                      type="number" 
-                      required 
-                      value={formPrice} 
-                      onChange={(e) => setFormPrice(e.target.value)} 
+                    <input
+                      type="number"
+                      required
+                      value={formPrice}
+                      onChange={(e) => setFormPrice(e.target.value)}
                     />
                   </div>
                   <div className="form-group">
@@ -563,20 +643,20 @@ const ManageListingsPage = () => {
                   </div>
                   <div className="form-group">
                     <label>Image URL</label>
-                    <input 
-                      type="text" 
-                      value={formImage} 
-                      onChange={(e) => setFormImage(e.target.value)} 
+                    <input
+                      type="text"
+                      value={formImage}
+                      onChange={(e) => setFormImage(e.target.value)}
                     />
                   </div>
                 </div>
 
                 <div className="form-group">
                   <label>Tags / Amenities (comma separated)</label>
-                  <input 
-                    type="text" 
-                    value={formTags} 
-                    onChange={(e) => setFormTags(e.target.value)} 
+                  <input
+                    type="text"
+                    value={formTags}
+                    onChange={(e) => setFormTags(e.target.value)}
                   />
                 </div>
               </div>
@@ -611,7 +691,7 @@ const ManageListingsPage = () => {
             </div>
             <div className="modal-body">
               <p className="perf-id-sub">Listing ID: {selectedListing.id} • {selectedListing.address}</p>
-              
+
               <div className="perf-stats-grid">
                 <div className="perf-stat-box">
                   <div className="perf-stat-icon-wrapper blue">
@@ -655,15 +735,15 @@ const ManageListingsPage = () => {
                         <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
                       </linearGradient>
                     </defs>
-                    <path 
-                      d="M 20 100 Q 80 80 140 40 T 260 60 T 380 20 L 380 100 L 20 100 Z" 
-                      fill="url(#miniChartGrad)" 
+                    <path
+                      d="M 20 100 Q 80 80 140 40 T 260 60 T 380 20 L 380 100 L 20 100 Z"
+                      fill="url(#miniChartGrad)"
                     />
-                    <path 
-                      d="M 20 100 Q 80 80 140 40 T 260 60 T 380 20" 
-                      fill="none" 
-                      stroke="#3B82F6" 
-                      strokeWidth="3" 
+                    <path
+                      d="M 20 100 Q 80 80 140 40 T 260 60 T 380 20"
+                      fill="none"
+                      stroke="#3B82F6"
+                      strokeWidth="3"
                       strokeLinecap="round"
                     />
                     <circle cx="20" cy="100" r="4" fill="#3B82F6" />
