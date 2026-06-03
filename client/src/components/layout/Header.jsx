@@ -4,6 +4,7 @@ import { Search, Menu, Bell } from 'lucide-react';
 import useAuthStore from '../../store/useAuthStore';
 import { supabase } from '../../config/supabase';
 import { ROUTES } from '../../constants';
+import ThemeToggle from '../ui/ThemeToggle';
 import { API_URL } from '../../config';
 import './Header.css';
 
@@ -69,6 +70,7 @@ const Header = () => {
         </nav>
 
         <div className="header-right">
+          <ThemeToggle />
           {/* Notification Bell */}
           <Link
             to={ROUTES.TENANT.NOTIFICATIONS}

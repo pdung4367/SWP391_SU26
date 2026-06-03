@@ -124,6 +124,15 @@ const Sidebar = () => {
         <ul className="footer-links">
           <li>
             <Link
+              to="/"
+              className="sidebar-link"
+            >
+              <LogOut size={20} style={{ transform: 'rotate(180deg)' }} />
+              <span>Back to Home</span>
+            </Link>
+          </li>
+          <li>
+            <Link
               to={helpPath}
               className={`sidebar-link ${isActive(helpPath) ? 'active' : ''}`}
             >
