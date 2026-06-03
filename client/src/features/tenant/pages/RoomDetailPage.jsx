@@ -37,15 +37,22 @@ const RoomDetailPage = () => {
     fetchListing();
   }, [id]);
 
+  const getToken = () => {
+    try {
+      const authStorage = JSON.parse(localStorage.getItem('auth-storage'));
+      return authStorage?.state?.token || null;
+    } catch { return null; }
+  };
+
   const handleBookingRequest = async (type) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = getToken();
       if (!token) {
         navigate('/login');
         return;
       }
       const response = await axios.post('http://localhost:5000/api/bookings', {
-        listing_id: id,
+        listing_id: parseInt(id),
         type: type // 'view' or 'rent'
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -55,13 +62,13 @@ const RoomDetailPage = () => {
         if (type === 'rent') navigate('/payment');
       }
     } catch (err) {
-      alert('Failed to send request. ' + (err.response?.data?.message || ''));
+      alert('Failed to send request. ' + (err.response?.data?.message || err.message));
     }
   };
 
   const handleChatWithLandlord = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = getToken();
       if (!token) {
         navigate('/login');
         return;

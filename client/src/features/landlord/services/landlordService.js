@@ -69,7 +69,7 @@ export const landlordService = {
   uploadRoomImage: async (roomId, file) => {
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('image', file);
       const response = await httpClient.post(`/landlord/rooms/${roomId}/images`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });

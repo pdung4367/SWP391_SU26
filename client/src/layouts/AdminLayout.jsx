@@ -1,21 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Bell,
   MessageSquare,
   Search,
-  ChevronDown,
-  LayoutDashboard,
-  Building2,
-  ClipboardList,
-  UserCircle,
-  PlusCircle,
-  Menu,
-  X,
-  CreditCard
+  LogOut,
 } from 'lucide-react';
 import Sidebar from '../components/layout/Sidebar';
 import SearchOverlay from '../components/ui/SearchOverlay';
+import ThemeToggle from '../components/ui/ThemeToggle';
 import { ROUTES } from '../constants';
 import useAuthStore from '../store/useAuthStore';
 import { API_URL } from '../config';
@@ -27,10 +20,6 @@ const AdminLayout = () => {
   const { user, isAuthenticated } = useAuthStore();
   
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
-  const [showQuickAction, setShowQuickAction] = useState(false);
-  const [showFloatingMenu, setShowFloatingMenu] = useState(false);
-
-  const quickActionRef = useRef(null);
 
   // Detect role context from current URL
   const isLandlord = location.pathname.startsWith('/landlord');
@@ -59,16 +48,7 @@ const AdminLayout = () => {
     }
   }, [isAuthenticated, user, location.pathname, isLandlord, isAdmin, navigate]);
 
-  // Click outside listener for the quick action menu
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (quickActionRef.current && !quickActionRef.current.contains(event.target)) {
-        setShowQuickAction(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+
 
   if (!isAuthenticated || !user) {
     return null; // Don't render anything while redirecting
@@ -123,6 +103,7 @@ const AdminLayout = () => {
             </div>
 
             <div className="topbar-actions">
+              <ThemeToggle />
               {/* Notification Bell */}
               <Link to={notificationsPath} className="topbar-icon-btn">
                 <Bell size={20} />
@@ -142,78 +123,14 @@ const AdminLayout = () => {
               {/* Support link */}
               <Link to={helpPath} className="btn-support">Support</Link>
 
-              {/* Quick Action Dropdown (Landlord Fast Nav Shortcuts) */}
-              {isLandlord ? (
-                <div className="quick-action-wrapper" ref={quickActionRef}>
-                  <button 
-                    className="btn-quick-action"
-                    onClick={() => setShowQuickAction(!showQuickAction)}
-                  >
-                    <span>Quick Navigation</span>
-                    <ChevronDown size={14} />
-                  </button>
-                  
-                  {showQuickAction && (
-                    <div className="quick-action-dropdown">
-                      <Link 
-                        to={ROUTES.LANDLORD.DASHBOARD} 
-                        className="quick-action-dropdown-item"
-                        onClick={() => setShowQuickAction(false)}
-                      >
-                        <LayoutDashboard size={16} />
-                        <span>Go to Dashboard</span>
-                      </Link>
-                      <Link 
-                        to={ROUTES.LANDLORD.LISTINGS} 
-                        className="quick-action-dropdown-item"
-                        onClick={() => setShowQuickAction(false)}
-                      >
-                        <Building2 size={16} />
-                        <span>Manage Listings</span>
-                      </Link>
-                      <Link 
-                        to={ROUTES.LANDLORD.MESSAGES} 
-                        className="quick-action-dropdown-item"
-                        onClick={() => setShowQuickAction(false)}
-                      >
-                        <MessageSquare size={16} />
-                        <span>Open Messages</span>
-                      </Link>
-                      <Link 
-                        to={ROUTES.LANDLORD.REQUESTS} 
-                        className="quick-action-dropdown-item"
-                        onClick={() => setShowQuickAction(false)}
-                      >
-                        <ClipboardList size={16} />
-                        <span>Manage Bookings</span>
-                      </Link>
-                      <div className="quick-action-dropdown-divider"></div>
-                      <Link 
-                        to={ROUTES.LANDLORD.PROFILE} 
-                        className="quick-action-dropdown-item"
-                        onClick={() => setShowQuickAction(false)}
-                      >
-                        <UserCircle size={16} />
-                        <span>My Profile</span>
-                      </Link>
-                      <Link 
-                        to={ROUTES.LANDLORD.NEW_LISTING} 
-                        className="quick-action-dropdown-item"
-                        onClick={() => setShowQuickAction(false)}
-                        style={{ color: '#2563EB', fontWeight: '600' }}
-                      >
-                        <PlusCircle size={16} style={{ color: '#2563EB' }} />
-                        <span>Add New Listing</span>
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <button className="btn-quick-action">
-                  <span>Quick Action</span>
-                  <ChevronDown size={14} />
-                </button>
-              )}
+              {/* Exit Dashboard — navigates to public home page */}
+              <button 
+                className="btn-exit-dashboard"
+                onClick={() => navigate('/')}
+              >
+                <LogOut size={16} />
+                <span>Exit Dashboard</span>
+              </button>
 
               {/* Dynamic Avatar */}
               <div className="user-avatar-container" onClick={() => navigate(isLandlord ? ROUTES.LANDLORD.PROFILE : ROUTES.ADMIN.SETTINGS)}>
@@ -228,63 +145,6 @@ const AdminLayout = () => {
           <Outlet />
         </main>
       </div>
-
-      {/* Floating Action Menu for Landlord (Fast Mobile/Desktop Navigation Shortcuts) */}
-      {isLandlord && (
-        <div className="floating-shortcut-container">
-          {showFloatingMenu && (
-            <div className="floating-shortcut-menu">
-              <Link 
-                to={ROUTES.LANDLORD.DASHBOARD} 
-                className="floating-shortcut-item"
-                onClick={() => setShowFloatingMenu(false)}
-              >
-                <span>Dashboard</span>
-                <div className="floating-shortcut-icon"><LayoutDashboard size={16} /></div>
-              </Link>
-              <Link 
-                to={ROUTES.LANDLORD.LISTINGS} 
-                className="floating-shortcut-item"
-                onClick={() => setShowFloatingMenu(false)}
-              >
-                <span>Listings</span>
-                <div className="floating-shortcut-icon"><Building2 size={16} /></div>
-              </Link>
-              <Link 
-                to={ROUTES.LANDLORD.MESSAGES} 
-                className="floating-shortcut-item"
-                onClick={() => setShowFloatingMenu(false)}
-              >
-                <span>Messages</span>
-                <div className="floating-shortcut-icon"><MessageSquare size={16} /></div>
-              </Link>
-              <Link 
-                to={ROUTES.LANDLORD.REQUESTS} 
-                className="floating-shortcut-item"
-                onClick={() => setShowFloatingMenu(false)}
-              >
-                <span>Bookings</span>
-                <div className="floating-shortcut-icon"><ClipboardList size={16} /></div>
-              </Link>
-              <Link 
-                to={ROUTES.LANDLORD.PROFILE} 
-                className="floating-shortcut-item"
-                onClick={() => setShowFloatingMenu(false)}
-              >
-                <span>Profile</span>
-                <div className="floating-shortcut-icon"><UserCircle size={16} /></div>
-              </Link>
-            </div>
-          )}
-          <button 
-            className={`floating-action-btn ${showFloatingMenu ? 'active' : ''}`}
-            onClick={() => setShowFloatingMenu(!showFloatingMenu)}
-            title="Fast Navigation Shortcuts"
-          >
-            {showFloatingMenu ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      )}
 
       {showSearchOverlay && (
         <SearchOverlay
