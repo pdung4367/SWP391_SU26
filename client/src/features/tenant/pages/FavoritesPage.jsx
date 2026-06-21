@@ -32,7 +32,7 @@ const FavoritesPage = () => {
             ],
             imageTags: room.status === 'available' ? [{ text: 'Available', type: 'primary' }] : [],
             isFavorite: true,
-            image: room.thumbnail_url ? `http://localhost:5000${room.thumbnail_url}` : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600'
+            image: room.thumbnail_url ? (room.thumbnail_url && room.thumbnail_url.startsWith('http') ? room.thumbnail_url : `http://localhost:5000${room.thumbnail_url}`) : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600'
           };
         });
         setFavorites(mappedFavorites);
