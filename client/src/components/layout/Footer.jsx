@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container footer-minimal-content">
         <div className="footer-left">
           <Link to="/" className="footer-logo">
-            RentalRoom
+            RentWise
           </Link>
         </div>
 
@@ -20,7 +20,11 @@ const Footer = () => {
         </div>
 
         <div className="footer-right">
+<<<<<<< Updated upstream
           &copy; 2024 RentalRoom. Modern housing for modern people.
+=======
+          &copy; 2026 RentWise. Modern housing for modern people.
+>>>>>>> Stashed changes
         </div>
       </div>
     </footer>

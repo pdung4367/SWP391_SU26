@@ -304,7 +304,7 @@ node testLandlordAPI.js
 
 ### Database
 - **Server**: localhost
-- **Database**: RentalRoomSystem
+- **Database**: RentWiseSystem
 - **User**: sa
 - **Password**: 123
 

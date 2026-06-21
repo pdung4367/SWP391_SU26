@@ -13,7 +13,7 @@ const HelpCenterPage = () => {
       <div className="hc-hero">
         <h1 className="hc-title">How can we help you today?</h1>
         <p className="hc-subtitle">
-          Search our knowledge base or browse categories below to find answers to your questions about the RentalRoom platform.
+          Search our knowledge base or browse categories below to find answers to your questions about the RentWise platform.
         </p>
 
         <div className="hc-search-wrapper">
