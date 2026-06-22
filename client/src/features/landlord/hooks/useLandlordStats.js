@@ -11,7 +11,7 @@ export const useLandlordStats = () => {
       try {
         setLoading(true);
         const data = await landlordService.getStats();
-        setStats(data);
+        setStats(data.data || data);
         setError(null);
       } catch (err) {
         setError(err.message);

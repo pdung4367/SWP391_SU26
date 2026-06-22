@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { ROUTES } from '../../../constants';
 import Button from '../../../components/common/Button';
+import useAuthStore from '../../../store/useAuthStore';
+import { useLandlordStats } from '../hooks/useLandlordStats';
 import './LandlordDashboard.css';
 
 // SVG Revenue Chart Component with smooth Bezier Spline
@@ -185,48 +187,51 @@ const RevenueChart = ({ activeMonth, setActiveMonth }) => {
 
 const LandlordDashboard = () => {
   const navigate = useNavigate();
+  const { user } = useAuthStore();
   const [activeMonth, setActiveMonth] = useState(4); // default May active
   const [showPeriodFilter, setShowPeriodFilter] = useState(false);
   const [filterPeriod, setFilterPeriod] = useState('Last 30 Days');
+
+  const { stats: statsData, loading, error } = useLandlordStats();
 
   // Stats matching Figma design precisely
   const stats = [
     {
       label: 'Total Rooms',
-      value: '124',
+      value: loading ? '...' : (statsData?.rooms?.total || 0).toString(),
       icon: <Building2 size={20} />,
       iconClass: 'dashboard-stat-icon--blue',
       badge: (
         <span className="dashboard-stat-badge dashboard-stat-badge--success">
-          <TrendingUp size={12} /> 2.4%
+          <TrendingUp size={12} /> Live
         </span>
       ),
     },
     {
       label: 'Available Units',
-      value: '18',
+      value: loading ? '...' : (statsData?.rooms?.available || 0).toString(),
       icon: <Key size={20} />,
       iconClass: 'dashboard-stat-icon--purple',
       badge: (
-        <span className="dashboard-stat-badge dashboard-stat-badge--danger">
-          <TrendingDown size={12} /> 5.1%
+        <span className="dashboard-stat-badge dashboard-stat-badge--success">
+          Active
         </span>
       ),
     },
     {
       label: 'Currently Rented',
-      value: '106',
+      value: loading ? '...' : (statsData?.rooms?.rented || 0).toString(),
       icon: <Bed size={20} />,
       iconClass: 'dashboard-stat-icon--green',
       badge: (
         <span className="dashboard-stat-badge dashboard-stat-badge--success">
-          <TrendingUp size={12} /> 8.2%
+          Occupied
         </span>
       ),
     },
     {
       label: 'Pending Requests',
-      value: '4',
+      value: loading ? '...' : (statsData?.requests?.pending || 0).toString(),
       icon: <Hourglass size={20} />,
       iconClass: 'dashboard-stat-icon--orange',
       badge: (
@@ -283,8 +288,12 @@ const LandlordDashboard = () => {
       {/* Overview Page Header */}
       <div className="dashboard-header-block">
         <div className="dashboard-title-box">
-          <h1 className="dashboard-main-title">Overview</h1>
-          <p className="dashboard-sub-title">Here's what's happening with your properties today.</p>
+          <h1 className="dashboard-main-title" style={{ fontSize: '2rem', fontWeight: '800', color: '#1E293B', letterSpacing: '-0.025em' }}>
+            Welcome back, {user?.fullName || 'Landlord'}! 👋
+          </h1>
+          <p className="dashboard-sub-title" style={{ color: '#64748B', fontSize: '0.975rem', marginTop: '0.25rem' }}>
+            Here's what's happening with your properties today.
+          </p>
         </div>
         
         {/* Actions bar (Filter dropdown & Button) */}
@@ -320,6 +329,8 @@ const LandlordDashboard = () => {
         </div>
       </div>
 
+
+
       {/* 4 Stat Cards */}
       <div className="dashboard-stats-grid">
         {stats.map((stat, i) => (
@@ -337,6 +348,8 @@ const LandlordDashboard = () => {
           </div>
         ))}
       </div>
+
+
 
       {/* Main Charts & Activity Row */}
       <div className="dashboard-main-layout-row">

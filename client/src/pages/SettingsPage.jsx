@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Globe,
   Bell,
@@ -8,6 +8,7 @@ import {
   Monitor,
   Bot,
   ChevronRight,
+  Check,
 } from 'lucide-react';
 import ChangePasswordModal from '../features/auth/components/ChangePasswordModal';
 import './SettingsPage.css';
@@ -16,8 +17,26 @@ const SettingsPage = () => {
   const [activeSection, setActiveSection] = useState('general');
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
-  // Appearance
-  const [appearance, setAppearance] = useState('light');
+  // Appearance - Read from localStorage or default to light
+  const [appearance, setAppearance] = useState(localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      let activeTheme = appearance;
+      // Removed system mode logic
+      if (activeTheme === 'dark') {
+        document.body.classList.add('dark');
+        document.body.classList.remove('light');
+      } else {
+        document.body.classList.add('light');
+        document.body.classList.remove('dark');
+      }
+      
+      localStorage.setItem('theme', appearance);
+    };
+
+    handleThemeChange();
+  }, [appearance]);
 
   // Language & Region
   const [language, setLanguage] = useState('English (United States)');
@@ -115,17 +134,6 @@ const SettingsPage = () => {
                     {appearance === 'dark' && <div className="sys-theme-check"><Check size={12} /></div>}
                   </div>
 
-                  <div
-                    className={`sys-theme-card ${appearance === 'system' ? 'selected' : ''}`}
-                    onClick={() => setAppearance('system')}
-                  >
-                    <div className="sys-theme-preview system-preview">
-                      <Monitor size={28} className="system-preview-icon" />
-                    </div>
-                    <span className="sys-theme-label">System Sync</span>
-                    <span className="sys-theme-sublabel">Follows OS setting</span>
-                    {appearance === 'system' && <div className="sys-theme-check"><Check size={12} /></div>}
-                  </div>
                 </div>
               </div>
 

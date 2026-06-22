@@ -63,7 +63,8 @@ const register = async (req, res, next) => {
 
     // Generate OTP and save
     const otpCode = generateOtp();
-    const expiredAt = sequelize.literal('DATEADD(minute, 5, GETDATE())'); // 5 minutes
+    const expiredAt = new Date();
+    expiredAt.setMinutes(expiredAt.getMinutes() + 5);
 
     await OtpVerification.create({
       user_id: newUser.user_id,
@@ -118,9 +119,9 @@ const verifyEmail = async (req, res, next) => {
         otp_code: otp,
         purpose: 'verify_email',
         is_used: false,
-        expired_at: { [Op.gt]: sequelize.literal('GETDATE()') },
+        expired_at: { [Op.gt]: new Date() },
       },
-      order: [['created_at', 'DESC']],
+      order: [['otp_id', 'DESC']],
     });
 
     if (!otpRecord) {
@@ -350,7 +351,8 @@ const forgotPassword = async (req, res, next) => {
 
     // Generate OTP
     const otpCode = generateOtp();
-    const expiredAt = sequelize.literal('DATEADD(minute, 5, GETDATE())');
+    const expiredAt = new Date();
+    expiredAt.setMinutes(expiredAt.getMinutes() + 5);
 
     await OtpVerification.create({
       user_id: user.user_id,
@@ -407,9 +409,9 @@ const resetPassword = async (req, res, next) => {
         otp_code: otp,
         purpose: 'forgot_password',
         is_used: false,
-        expired_at: { [Op.gt]: sequelize.literal('GETDATE()') },
+        expired_at: { [Op.gt]: new Date() },
       },
-      order: [['created_at', 'DESC']],
+      order: [['otp_id', 'DESC']],
     });
 
     if (!otpRecord) {
@@ -460,7 +462,8 @@ const resendOtp = async (req, res, next) => {
 
     // Generate new OTP
     const otpCode = generateOtp();
-    const expiredAt = sequelize.literal('DATEADD(minute, 5, GETDATE())');
+    const expiredAt = new Date();
+    expiredAt.setMinutes(expiredAt.getMinutes() + 5);
 
     await OtpVerification.create({
       user_id: user.user_id,
