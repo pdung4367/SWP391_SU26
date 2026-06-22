@@ -17,8 +17,8 @@ const SECTIONS = [
     number: '1',
     title: 'Introduction',
     content: [
-      'Welcome to RentalRoom. These Terms and Conditions govern your use of the RentalRoom platform, encompassing our website, mobile applications, and administrative consoles. By accessing or using our services, you agree to comply with and be bound by these terms.',
-      'RentalRoom serves as a premium digital marketplace connecting property managers and administrators with prospective long-term tenants. We facilitate secure transactions, identity verification, and lease management, ensuring a frictionless boarding experience.'
+      'Welcome to RentWise. These Terms and Conditions govern your use of the RentWise platform, encompassing our website, mobile applications, and administrative consoles. By accessing or using our services, you agree to comply with and be bound by these terms.',
+      'RentWise serves as a premium digital marketplace connecting property managers and administrators with prospective long-term tenants. We facilitate secure transactions, identity verification, and lease management, ensuring a frictionless boarding experience.'
     ]
   },
   {
@@ -30,7 +30,7 @@ const SECTIONS = [
     ],
     callout: {
       title: 'Identity Verification Requirement',
-      text: 'For the security of all ecosystem participants, RentalRoom employs rigorous KYC (Know Your Customer) protocols. Failure to provide adequate identification documentation may result in account suspension or termination of active bookings.'
+      text: 'For the security of all ecosystem participants, RentWise employs rigorous KYC (Know Your Customer) protocols. Failure to provide adequate identification documentation may result in account suspension or termination of active bookings.'
     }
   },
   {
@@ -43,7 +43,7 @@ const SECTIONS = [
     bullets: [
       'Digital signatures executed through the platform carry full legal weight.',
       'Standard lease durations are typically managed in 30-day increments unless otherwise specified.',
-      'RentalRoom acts as the facilitating agent, not the property owner.'
+      'RentWise acts as the facilitating agent, not the property owner.'
     ]
   },
   {
@@ -51,7 +51,7 @@ const SECTIONS = [
     number: '4',
     title: 'Payments, Fees & Deposits',
     content: [
-      'All financial transactions must be conducted through the RentalRoom secure payment gateway to ensure protection under our service guarantee. We support major credit cards and verified bank transfers.',
+      'All financial transactions must be conducted through the RentWise secure payment gateway to ensure protection under our service guarantee. We support major credit cards and verified bank transfers.',
       'Security deposits are held in a neutral escrow account and are released subject to the property administrator\'s final inspection report upon termination of the lease. Platform service fees are non-refundable.'
     ]
   },
@@ -78,7 +78,7 @@ const SECTIONS = [
     number: '7',
     title: 'Limitation of Liability',
     content: [
-      'RentalRoom acts solely as a connecting marketplace and administrative platform. We are not liable for direct, indirect, or accidental damages arising from tenancy disputes, landlord-tenant communication, or external financial transactions.'
+      'RentWise acts solely as a connecting marketplace and administrative platform. We are not liable for direct, indirect, or accidental damages arising from tenancy disputes, landlord-tenant communication, or external financial transactions.'
     ]
   },
   {
@@ -86,7 +86,7 @@ const SECTIONS = [
     number: '8',
     title: 'Data Privacy & Security',
     content: [
-      'Your privacy is paramount. RentalRoom\'s encrypted transmission channels and cloud storage systems adhere strictly to modern compliance standards.',
+      'Your privacy is paramount. RentWise\'s encrypted transmission channels and cloud storage systems adhere strictly to modern compliance standards.',
       'Personal identifiable details are collected solely to facilitate identity checks, background checks, and payment authorizations.'
     ]
   }
@@ -169,7 +169,7 @@ const TermsPage = () => {
         <header className="terms-standalone-header">
           <div className="terms-brand">
             <Home className="brand-logo-icon" size={22} />
-            <span className="brand-name-text">RentalRoom</span>
+            <span className="brand-name-text">RentWise</span>
           </div>
           <Link to={ROUTES.LANDLORD.DASHBOARD} className="back-dashboard-btn">
             <ArrowLeft size={16} />

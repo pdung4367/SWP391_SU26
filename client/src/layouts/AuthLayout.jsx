@@ -29,7 +29,7 @@ const AuthLayout = () => {
         <div className="brand-content">
           <Link to={ROUTES.HOME} className="brand-logo">
             <Home size={22} />
-            RentalRoom
+            RentWise
           </Link>
 
           <div className="brand-hero">
@@ -87,7 +87,7 @@ const AuthLayout = () => {
 
           {/* Footer */}
           <footer className="auth-footer">
-            <p>© 2026 RentalRoom. All rights reserved.</p>
+            <p>© 2026 RentWise. All rights reserved.</p>
             <div className="auth-footer-links">
               <Link to="#">Terms</Link>
               <Link to="#">Privacy</Link>

@@ -1,7 +1,7 @@
 export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export const CONFIG = {
-  APP_NAME: 'RentalRoom',
+  APP_NAME: 'RentWise',
   API_URL,
   ENV: import.meta.env.MODE || 'development',
   TIMEOUT: 10000,

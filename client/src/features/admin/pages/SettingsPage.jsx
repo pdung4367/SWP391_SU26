@@ -54,7 +54,7 @@ const SettingsPage = () => {
               <div className="settings-form">
                 <div className="settings-field">
                   <label>Platform Name</label>
-                  <input type="text" defaultValue="RentalRoom" />
+                  <input type="text" defaultValue="RentWise" />
                 </div>
                 <div className="settings-field">
                   <label>Support Email</label>

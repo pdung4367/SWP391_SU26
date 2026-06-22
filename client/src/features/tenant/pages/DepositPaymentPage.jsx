@@ -102,7 +102,7 @@ const DepositPaymentPage = () => {
       {/* Minimal Header */}
       <header className="payment-header">
         <div className="container payment-header-content">
-          <div className="logo font-bold text-xl text-primary">RentalRoom</div>
+          <div className="logo font-bold text-xl text-primary">RentWise</div>
           <button className="btn-cancel" onClick={handleCancel}>
             <X size={18} /> Cancel
           </button>
@@ -159,7 +159,7 @@ const DepositPaymentPage = () => {
               </div>
               <div className="secure-text">
                 <h4>Secure Payment</h4>
-                <p>Your payment is encrypted and securely processed.<br/>RentalRoom does not store your full card details.</p>
+                <p>Your payment is encrypted and securely processed.<br/>RentWise does not store your full card details.</p>
               </div>
             </div>
           </div>

@@ -184,7 +184,7 @@ node addTimestampsToUsers.js
 
 ### Database
 - **Server**: localhost:1433
-- **Database**: RentalRoomSystem
+- **Database**: RentWiseSystem
 - **User**: sa
 - **Password**: 123
 

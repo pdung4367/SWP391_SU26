@@ -137,7 +137,7 @@ const ContactSupportPage = () => {
       <div className="help-hero-header">
         <h1 className="help-hero-title">How can we help you today?</h1>
         <p className="help-hero-subtitle">
-          Submit a support ticket or chat with us live. We're here to ensure your RentalRoom experience is seamless.
+          Submit a support ticket or chat with us live. We're here to ensure your RentWise experience is seamless.
         </p>
       </div>
 

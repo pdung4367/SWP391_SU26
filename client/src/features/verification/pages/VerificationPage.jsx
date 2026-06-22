@@ -63,7 +63,7 @@ const VerificationPage = () => {
           <div className="verification-page__brand-icon">
             <Shield size={16} />
           </div>
-          RentalRoom
+          RentWise
         </div>
       </div>
 

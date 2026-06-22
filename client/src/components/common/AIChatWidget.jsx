@@ -97,7 +97,7 @@ const AIChatWidget = () => {
           <div className="ai-chat-header">
             <div className="flex items-center gap-2">
               <Sparkles size={18} />
-              <h4>AI Assistant</h4>
+              <h4>AI RentalWise</h4>
             </div>
             <button onClick={() => setIsOpen(false)} className="close-btn">
               <X size={20} />
